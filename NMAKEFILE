@@ -1,5 +1,5 @@
-USER_SOURCES = source.c
-EXECUTABLE = program.exe
+USER_SOURCES = neural-growth.cpp
+EXECUTABLE = neural-growth.exe
 ###################################
 SOURCE_DIR = src
 OBJECT_DIR = build
@@ -33,7 +33,7 @@ $(BINARY): $(OBJECTS)
 $(BINARY_DIR): $(DLLS_SRC)
 	for %n in ($**) do copy /y /v /b %n $@
 
-{$(SOURCE_DIR)\}.c{$(OBJECT_DIR)\}.obj::
+{$(SOURCE_DIR)\}.cpp{$(OBJECT_DIR)\}.obj::
 	$(CC) $(CFLAGS) $<
 
 clean:

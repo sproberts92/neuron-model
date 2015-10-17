@@ -1,5 +1,5 @@
-USER_SOURCES = source.c
-EXECUTABLE = program.out
+USER_SOURCES = neural-growth.c
+EXECUTABLE = neural-growth.out
 ###################################
 SOURCE_DIR = src
 OBJECT_DIR = build
