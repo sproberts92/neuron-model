@@ -72,6 +72,8 @@ void neuron::grow_axon(double rate, std::vector<double> &box)
 	std::vector<double> new_pos = grow_dir;
 	for (int i = 0; i < new_pos.size(); i++){
 		new_pos[i] = grow_dir[i] * rate + list_ptr->pos[i];
+
+		// Impose periodic boundary conditions
 		if(new_pos[i] < box[i * 2]) new_pos[i] += (box[i * 2 + 1] - box[i * 2]);
 		if(new_pos[i] >= box[i * 2 + 1]) new_pos[i] -= (box[i * 2 + 1] - box[i * 2]);
 	}
