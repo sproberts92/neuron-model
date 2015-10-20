@@ -1,4 +1,4 @@
-USER_SOURCES = neural-growth.cpp rand_gen.cpp node.cpp
+USER_SOURCES = neural-growth.cpp rand_gen.cpp neuron.cpp node.cpp
 EXECUTABLE = neural-growth.exe
 ###################################
 SOURCE_DIR = src
