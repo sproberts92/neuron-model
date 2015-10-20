@@ -8,7 +8,7 @@ EXTERN_DIR = ext
 ###################################
 CC = cl
 LINK = link
-CFLAGS = /Ox /c /EHsc /W3 /Fo.\$(OBJECT_DIR)\
+CFLAGS = /Ox /c /EHsc /W3 /Fo.\$(OBJECT_DIR)\ 
 
 LIBS = 
 DLLS_SRC = 
