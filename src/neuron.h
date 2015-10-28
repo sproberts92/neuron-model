@@ -1,6 +1,8 @@
 #pragma once
 
 #include <fstream>
+#include <iostream>
+#include <limits>
 
 #include "rand_gen.h"
 #include "node.h"
@@ -18,10 +20,10 @@ public:
 	neuron &operator= (const neuron &n);
 	~neuron();
 
-	void neuron::grow_axon(double rate, std::vector<double> &box);
-	void print_axon(std::ofstream &out_stream);
+	node *neuron::find_shortest(neuron &target);
 
 private:
-	std::vector<double> r_vec(int dim, std::vector<double> b_box);
+	std::vector<double> neuron::r_vec(int dim, std::vector<double> b_box);
+	std::vector<double> neuron::r_u_vec(int dim);
 	void normalise_grow_dir(void);
 };
