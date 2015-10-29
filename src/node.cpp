@@ -1,16 +1,19 @@
 #include "node.h"
 
-Node::Node(int d, const std::vector<double> p, bool v)
-	: dim(d), pos(p), value(v) {}
+Node::Node(int d, const std::vector<double> p)
+	: dim(d), pos(p), value(0), temp_value(0) {}
 
 Node::Node(const Node &n)
-	: dim(n.dim), pos(n.pos), value(n.value) {}
+	: dim(n.dim), pos(n.pos), value(n.value), temp_value(0) {}
 
 Node& Node::operator= (const Node &n)
 {
 	dim = n.dim;
 	value = n.value;
 	pos = n.pos;
+
+	// Temp_value is temporary and shouldn't be copied
+	temp_value = 0;
 
 	return *this;
 }
