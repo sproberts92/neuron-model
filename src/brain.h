@@ -17,7 +17,7 @@ public:
 	void place_neurons(void);
 	void grow_axons(void);
 	void Brain::connect_network(void);
-	void Brain::print_network(std::ostringstream &fileName);
+	void Brain::print_network(std::ostringstream &fileName, bool no_signal);
 	void Brain::propagate_signal(void);
 	Node *grow_axon(Node *base, std::vector<double> g_dir);
 	Node *Brain::branch_axon(Node *base, std::vector<double> g_dir);

@@ -107,17 +107,22 @@ Node *Brain::branch_axon(Node *base, std::vector<double> g_dir)
 	return new_axon;
 }
 
-void Brain::print_network(std::ostringstream &fileName)
+void Brain::print_network(std::ostringstream &fileName, bool no_signal)
 {
+	/* If no_signal == 1 then nodes which have no signal (value = 0) are
+	 * printed also */
+
 	std::ofstream out_stream;
 	out_stream.open(fileName.str(), std::fstream::trunc);
 	
 	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
 	{
-		int i = 0;
-		for(auto it_d = (*it_n)->pos.begin(); it_d != (*it_n)->pos.end(); ++it_d)
-				out_stream << *it_d << " ";
-		out_stream << std::endl;
+		if(no_signal || (*it_n)->value)
+		{
+			for(auto it_d = (*it_n)->pos.begin(); it_d != (*it_n)->pos.end(); ++it_d)
+					out_stream << *it_d << " ";
+			out_stream << std::endl;
+		}
 	}
 
 	out_stream.close();

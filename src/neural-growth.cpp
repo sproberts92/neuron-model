@@ -25,7 +25,7 @@ int main()
 
 		std::ostringstream fileName;
 		fileName << "output\\output_"<< it << ".dat";
-		brain.print_network(fileName);
+		brain.print_network(fileName, 1);
 	}
 
 	brain.connect_network();
@@ -34,7 +34,7 @@ int main()
 
 	std::ostringstream fileName;
 	fileName << "output\\finalprint.dat";
-	brain.print_network(fileName);
+	brain.print_network(fileName, 1);
 
 	clock_t end = clock();
 	std::cout << double(end - begin) /CLOCKS_PER_SEC << std::endl;
