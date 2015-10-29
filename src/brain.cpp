@@ -3,6 +3,10 @@
 Brain::Brain(int d, std::vector<double> b, int n, double l) : dim(d), bounds(b), n_neurons(n), schwann_l(l)
 {
 	neurons = new Neuron[n_neurons];
+
+	/* Set up random number generator */
+	if(r_gen.empty())
+		r_gen.push_back(rand_gen(0, 1));
 }
 
 Brain::~Brain(void)
@@ -42,8 +46,8 @@ void Brain::connect_network(void)
 		
 
 			r = sqrt(abs(r));
-
-			if(r != 0)
+		
+			if(r != 0 && r_gen[0].get_rnum() < gaussian(r, 80))
 			{
 				for (int k = 0; k < dim; k++)
 					vec_r[k] /= r;			
@@ -58,6 +62,11 @@ void Brain::connect_network(void)
 			}
 		}
 	}
+}
+
+double Brain::gaussian(double x, double c)
+{
+	return exp(-(x*x)/(2*c*c));
 }
 
 Node *Brain::grow_axon(Node *base, std::vector<double> g_dir)
@@ -130,15 +139,24 @@ void Brain::print_network(std::ostringstream &fileName, bool no_signal)
 
 void Brain::propagate_signal(void)
 {
+	/* Phase 0 - reset all counters */
+	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
+		(*it_n)->num_incoming = 0;
+
 	/* Phase 1 - move to temp variable of next node(s) */
 	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
 		for(auto it_next = (*it_n)->next.begin(); it_next != (*it_n)->next.end(); ++it_next)
+		{
 			(*it_next)->temp_value = (*it_next)->temp_value | (*it_n)->value;
+			(*it_next)->num_incoming += (*it_n)->value;
+		}
 
 	/* Phase 2 - move from temp variable to value variable */
 	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
 	{
-		(*it_n)->value = (*it_n)->temp_value;
+		if(r_gen[0].get_rnum() > 0.05)
+			(*it_n)->value = (*it_n)->temp_value;
+		
 		(*it_n)->temp_value = 0;
 	}
 }

@@ -8,6 +8,7 @@ public:
 	int dim;
 	bool value;
 	bool temp_value;
+	int num_incoming;
 
 	std::vector<double> pos;
 
