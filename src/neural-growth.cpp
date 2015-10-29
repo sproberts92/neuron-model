@@ -30,14 +30,14 @@ int main()
 
 	brain.connect_network();
 
-	std::cout << brain.all_nodes.size() << std::endl;
+	std::cout << "Network size: " << brain.all_nodes.size() << " nodes." << std::endl;
 
 	std::ostringstream fileName;
 	fileName << "output\\finalprint.dat";
 	brain.print_network(fileName, 1);
 
 	clock_t end = clock();
-	std::cout << double(end - begin) /CLOCKS_PER_SEC << std::endl;
+	std::cout << "Runtime: " << double(end - begin) /CLOCKS_PER_SEC << " seconds." << std::endl;
 
 	return 0;
 }
