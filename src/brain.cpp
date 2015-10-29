@@ -122,3 +122,18 @@ void Brain::print_network(std::ostringstream &fileName)
 
 	out_stream.close();
 }
+
+void Brain::propagate_signal(void)
+{
+	/* Phase 1 - move to temp variable of next node(s) */
+	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
+		for(auto it_next = (*it_n)->next.begin(); it_next != (*it_n)->next.end(); ++it_next)
+			(*it_next)->temp_value = (*it_next)->temp_value | (*it_n)->value;
+
+	/* Phase 2 - move from temp variable to value variable */
+	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
+	{
+		(*it_n)->value = (*it_n)->temp_value;
+		(*it_n)->temp_value = 0;
+	}
+}
