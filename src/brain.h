@@ -1,21 +1,25 @@
 #pragma once
 
+#include <fstream>
+#include <sstream>
+
 #include "neuron.h"
 
-class brain
+class Brain
 {
 public:
-	std::vector<node> all_nodes;
-	neuron *neurons;
+	std::vector<Node*> all_nodes;
+	Neuron *neurons;
 
-	brain(int d, std::vector<double> b, int n, double l);
-	~brain(void);
+	Brain(int d, std::vector<double> b, int n, double l);
+	~Brain(void);
 
 	void place_neurons(void);
 	void grow_axons(void);
-	void brain::connect_network(void);
-	node *grow_axon(node *base, std::vector<double> g_dir);
-	node *brain::branch_axon(node *base, std::vector<double> g_dir);
+	void Brain::connect_network(void);
+	void Brain::print_network(std::ostringstream &fileName);
+	Node *grow_axon(Node *base, std::vector<double> g_dir);
+	Node *Brain::branch_axon(Node *base, std::vector<double> g_dir);
 
 private:
 	int n_neurons;

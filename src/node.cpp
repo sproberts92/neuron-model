@@ -1,12 +1,12 @@
 #include "node.h"
 
-node::node(int d, const std::vector<double> p, bool v)
+Node::Node(int d, const std::vector<double> p, bool v)
 	: dim(d), pos(p), value(v) {}
 
-node::node(const node &n)
+Node::Node(const Node &n)
 	: dim(n.dim), pos(n.pos), value(n.value) {}
 
-node& node::operator= (const node &n)
+Node& Node::operator= (const Node &n)
 {
 	dim = n.dim;
 	value = n.value;
@@ -15,4 +15,4 @@ node& node::operator= (const node &n)
 	return *this;
 }
 
-node::~node() {}
+Node::~Node() {}

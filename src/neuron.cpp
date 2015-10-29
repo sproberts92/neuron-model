@@ -1,20 +1,24 @@
 #include "neuron.h"
 
-neuron::neuron() {}
+Neuron::Neuron() {}
 
-neuron::neuron(int d, std::vector<double> box) : dim(d)
+Neuron::Neuron(int d, std::vector<double> box, std::vector<Node*> *an) : dim(d)
 {
+	all_nodes = an;
 	std::vector<double> p_temp = r_vec(d, box);
-	base_soma = new node(d ,p_temp);
+
+	base_soma = new Node(d ,p_temp);
+
+	all_nodes->push_back(base_soma);
 
 	grow_dir = r_u_vec(d);
 	normalise_grow_dir();
 }
 
-neuron::neuron(const neuron &n)
+Neuron::Neuron(const Neuron &n)
 	: dim(n.dim), base_soma(n.base_soma), grow_dir(n.grow_dir) { }
 
-neuron& neuron::operator= (const neuron &n)
+Neuron& Neuron::operator= (const Neuron &n)
 {
 	dim = n.dim;
 	base_soma = n.base_soma;
@@ -23,11 +27,11 @@ neuron& neuron::operator= (const neuron &n)
 	return *this;
 }
 
-neuron::~neuron() {}
+Neuron::~Neuron() {}
 
-std::vector<double> neuron::r_vec(int dim, std::vector<double> b_box)
+std::vector<double> Neuron::r_vec(int dim, std::vector<double> b_box)
 {
-	std::vector<double> pos(2 * dim);
+	std::vector<double> pos(dim);
 	static std::vector<rand_gen> r_gen;
 
 	if(r_gen.empty())
@@ -42,9 +46,9 @@ std::vector<double> neuron::r_vec(int dim, std::vector<double> b_box)
 	return pos;
 }
 
-std::vector<double> neuron::r_u_vec(int dim)
+std::vector<double> Neuron::r_u_vec(int dim)
 {
-	std::vector<double> pos(2 * dim);
+	std::vector<double> pos(dim);
 	static std::vector<rand_gen> r_gen;
 	if(r_gen.empty())
 		r_gen.push_back(rand_gen(-1, 1));	
@@ -55,7 +59,7 @@ std::vector<double> neuron::r_u_vec(int dim)
 	return pos;
 }
 
-void neuron::normalise_grow_dir(void)
+void Neuron::normalise_grow_dir(void)
 {
 	double length = 0.0;
 	for (int i = 0; i < grow_dir.size(); i++)
@@ -65,12 +69,12 @@ void neuron::normalise_grow_dir(void)
 		grow_dir[i] /= sqrt(length);
 }
 
-node *neuron::find_shortest(neuron &target)
+Node *Neuron::find_shortest(Neuron &target)
 {
 	double shortest_r = std::numeric_limits<double>::infinity();
-	node *shortest_ptr;
+	Node *shortest_ptr;
 
-	node *list_ptr;
+	Node *list_ptr;
 	list_ptr = target.base_soma;
 
 	if(list_ptr != 0)
