@@ -3,6 +3,7 @@ using namespace std;
 #include <iostream>
 #include <ctime>
 #include <sstream>
+#include <iomanip>
 
 #include "brain.h"
 
@@ -11,7 +12,7 @@ int main()
 	clock_t begin = clock();
 
 	int dim = 3;
-	int n_neurons = 8;
+	int n_neurons = 20;
 	int growth_iter = 100;
 	int prop_iter = 500;
 	double schwann_l = 1.0;
@@ -20,14 +21,22 @@ int main()
 	Brain brain(dim, bounds, n_neurons, schwann_l);
 	brain.place_neurons();
 
+	std::cout << "Neuron layout complete. Growing axons..." << std::endl;
+
 	for (int it = 0; it < growth_iter; it++)
 	{
+		if(it % (growth_iter / 100) == 0)
+			std::cout << 100 * it / growth_iter << "%\r";
+
 		brain.grow_axons();
 
 		std::ostringstream fileName;
 		fileName << "output\\growth\\growth_"<< it << ".dat";
 		brain.print_network(fileName, 1);
 	}
+	std::cout << "100%\n" << std::endl;
+
+	std::cout << "Axon growth complete. Growing dendrites..." << std::endl;
 
 	brain.connect_network();
 
@@ -38,7 +47,7 @@ int main()
 		brain.propagate_signal();
 
 		std::ostringstream fileName;
-		fileName << "output\\signal\\signal_"<< it << ".dat";
+		fileName << "output\\signal\\signal_" << it << ".dat";
 		brain.print_network(fileName, 0);
 
 		if(brain.neurons[0].base_soma->value == 1){
