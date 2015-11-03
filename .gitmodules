@@ -1,0 +1,4 @@
+[submodule "ext/libconfig"]
+	path = ext/libconfig
+	url = https://github.com/hyperrealm/libconfig.git
+	ignore = dirty
