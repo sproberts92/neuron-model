@@ -1,4 +1,4 @@
-USER_SOURCES = neural-growth.cpp rand_gen.cpp neuron.cpp node.cpp brain.cpp
+USER_SOURCES = neural-growth.cpp rand_gen.cpp neuron.cpp node.cpp brain.cpp config.c
 EXECUTABLE = neural-growth.exe
 ###################################
 SOURCE_DIR = src
@@ -8,14 +8,16 @@ EXTERN_DIR = ext
 ###################################
 CC = cl
 LINK = link
-CFLAGS = /Ox /c /EHsc /W3 /Fo.\$(OBJECT_DIR)\ 
+CFLAGS = /Ox /c /EHsc /W3 /Fo.\$(OBJECT_DIR)\ \
+/I $(EXTERN_DIR)\libconfig\lib
 
-LIBS = 
-DLLS_SRC = 
+LIBS = $(EXTERN_DIR)\libconfig\x64\Release\libconfig.lib
+DLLS_SRC = $(EXTERN_DIR)\libconfig\x64\Release\libconfig.dll
 
 SOURCES = $(SOURCE_DIR)\$(USER_SOURCES: = src\)
-_OBJECTS = $(OBJECT_DIR)\$(USER_SOURCES: = build\)
-OBJECTS = $(_OBJECTS:.cpp=.obj)
+__OBJECTS = $(OBJECT_DIR)\$(USER_SOURCES: = build\)
+_OBJECTS = $(__OBJECTS:.cpp=.obj)
+OBJECTS = $(_OBJECTS:.c=.obj)
 
 BINARY = $(BINARY_DIR)\$(EXECUTABLE)
 
@@ -28,12 +30,15 @@ echo_sources:
 	echo $(SOURCES)
 
 $(BINARY): $(OBJECTS)
-	$(LINK) $(OBJECTS) $(LIBS) /OUT:$(BINARY)
+	$(LINK) $(OBJECTS) $(LIBS) /OUT:$(BINARY)	
 
 $(BINARY_DIR): $(DLLS_SRC)
 	for %n in ($**) do copy /y /v /b %n $@
 
 {$(SOURCE_DIR)\}.cpp{$(OBJECT_DIR)\}.obj::
+	$(CC) $(CFLAGS) $<
+
+{$(SOURCE_DIR)\}.c{$(OBJECT_DIR)\}.obj::
 	$(CC) $(CFLAGS) $<
 
 clean:

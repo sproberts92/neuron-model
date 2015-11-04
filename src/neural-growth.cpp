@@ -7,26 +7,28 @@ using namespace std;
 
 #include "brain.h"
 
+extern "C" {
+	#include "config.h"
+}
+
 int main()
 {
 	clock_t begin = clock();
 
-	int dim = 3;
-	int n_neurons = 20;
-	int growth_iter = 100;
-	int prop_iter = 500;
-	double schwann_l = 1.0;
+	user_config_t config;
+	getConfigInfo(&config);
+
 	std::vector<double> bounds = {-50,50,-50,50,-50,50};
 	
-	Brain brain(dim, bounds, n_neurons, schwann_l);
+	Brain brain(config.dim, bounds, config.n_neurons, config.schwann_l);
 	brain.place_neurons();
 
 	std::cout << "Neuron layout complete. Growing axons..." << std::endl;
 
-	for (int it = 0; it < growth_iter; it++)
+	for (int it = 0; it < config.growth_iter; it++)
 	{
-		if(it % (growth_iter / 100) == 0)
-			std::cout << 100 * it / growth_iter << "%\r";
+		if(it % (config.growth_iter / 100) == 0)
+			std::cout << 100 * it / config.growth_iter << "%\r";
 
 		brain.grow_axons();
 
@@ -42,7 +44,7 @@ int main()
 
 	brain.neurons[0].base_soma->value = 1;
 
-	for (int it = 0; it < prop_iter; it++)
+	for (int it = 0; it < config.prop_iter; it++)
 	{
 		brain.propagate_signal();
 
