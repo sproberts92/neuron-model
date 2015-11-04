@@ -18,6 +18,9 @@ public:
 	Node &operator= (const Node &n);
 	~Node();
 
+	void init_for_prop(void);
+	void push_temp_next(void);
+
 private:
 	int dim;	
 };
