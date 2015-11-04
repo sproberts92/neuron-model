@@ -5,7 +5,6 @@
 class Node
 {
 public:
-	int dim;
 	bool value;
 	bool temp_value;
 	int num_incoming;
@@ -18,4 +17,7 @@ public:
 	Node(const Node &n);
 	Node &operator= (const Node &n);
 	~Node();
+
+private:
+	int dim;	
 };
