@@ -10,20 +10,19 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[      4695,        128]
-NotebookOptionsPosition[      4312,        110]
-NotebookOutlinePosition[      4687,        126]
-CellTagsIndexPosition[      4644,        123]
+NotebookDataLength[      3227,        101]
+NotebookOptionsPosition[      2883,         85]
+NotebookOutlinePosition[      3256,        101]
+CellTagsIndexPosition[      3213,         98]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
 Cell[BoxData[
  RowBox[{
-  RowBox[{"boxSize", "=", "100"}], ";"}]], "Input",
- CellChangeTimes->{{3.6543286194841013`*^9, 3.6543286245518417`*^9}}],
-
-Cell[CellGroupData[{
+  RowBox[{"boxSize", "=", "50"}], ";"}]], "Input",
+ CellChangeTimes->{{3.6543286194841013`*^9, 3.6543286245518417`*^9}, {
+  3.655541583806041*^9, 3.655541583864073*^9}}],
 
 Cell[BoxData[
  RowBox[{"Animate", "[", 
@@ -34,7 +33,7 @@ Cell[BoxData[
       RowBox[{"StringJoin", "[", 
        RowBox[{
         RowBox[{"NotebookDirectory", "[", "]"}], ",", 
-        "\"\<output\\\\output_\>\"", ",", 
+        "\"\<output\\\\signal\\\\signal_\>\"", ",", 
         RowBox[{"ToString", "[", "i", "]"}], ",", "\"\<.dat\>\""}], "]"}], 
       "]"}], ",", 
      RowBox[{"PlotRange", "\[Rule]", 
@@ -56,60 +55,36 @@ Cell[BoxData[
     RowBox[{"i", ",", "0", ",", "50", ",", "1"}], "}"}]}], "]"}]], "Input",
  CellChangeTimes->{{3.6543284056725793`*^9, 3.6543285184354916`*^9}, {
   3.6543285542032375`*^9, 3.6543285740311966`*^9}, {3.6543286332687764`*^9, 
-  3.654328654970555*^9}, {3.654328694931493*^9, 3.6543286992124496`*^9}}],
+  3.654328654970555*^9}, {3.654328694931493*^9, 3.6543286992124496`*^9}, {
+  3.655642980365001*^9, 3.65564298348996*^9}}],
 
 Cell[BoxData[
- TagBox[
-  StyleBox[
-   DynamicModuleBox[{$CellContext`i$$ = 13, Typeset`show$$ = True, 
-    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
-    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
-    "\"untitled\"", Typeset`specs$$ = {{
-      Hold[$CellContext`i$$], 0, 50, 1}}, Typeset`size$$ = {
-    396., {219., 223.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
-    Typeset`skipInitDone$$ = True, $CellContext`i$312096$$ = 0}, 
-    DynamicBox[Manipulate`ManipulateBoxes[
-     1, StandardForm, "Variables" :> {$CellContext`i$$ = 0}, 
-      "ControllerVariables" :> {
-        Hold[$CellContext`i$$, $CellContext`i$312096$$, 0]}, 
-      "OtherVariables" :> {
-       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
-        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
-        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
-         Typeset`skipInitDone$$}, "Body" :> ListPointPlot3D[
-        Import[
-         StringJoin[
-          NotebookDirectory[], "output\\output_", 
-          ToString[$CellContext`i$$], ".dat"]], 
-        PlotRange -> {{-$CellContext`boxSize, $CellContext`boxSize}, \
-{-$CellContext`boxSize, $CellContext`boxSize}, {-$CellContext`boxSize, \
-$CellContext`boxSize}}, BoxRatios -> {1, 1, 1}], 
-      "Specifications" :> {{$CellContext`i$$, 0, 50, 1, 
-         AppearanceElements -> {
-          "ProgressSlider", "PlayPauseButton", "FasterSlowerButtons", 
-           "DirectionButton"}}}, 
-      "Options" :> {
-       ControlType -> Animator, AppearanceElements -> None, DefaultBaseStyle -> 
-        "Animate", DefaultLabelStyle -> "AnimateLabel", SynchronousUpdating -> 
-        True, ShrinkingDelay -> 10.}, "DefaultOptions" :> {}],
-     ImageSizeCache->{451., {261., 268.}},
-     SingleEvaluation->True],
-    Deinitialization:>None,
-    DynamicModuleValues:>{},
-    SynchronousInitialization->True,
-    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
-    UnsavedVariables:>{Typeset`initDone$$},
-    UntrackedVariables:>{Typeset`size$$}], "Animate",
-   Deployed->True,
-   StripOnInput->False],
-  Manipulate`InterpretManipulate[1]]], "Output",
- CellChangeTimes->{{3.654328511551299*^9, 3.654328518881467*^9}, {
-   3.6543285752802544`*^9, 3.654328604017166*^9}, 3.654328655426865*^9, 
-   3.6543287001191034`*^9}]
-}, Open  ]]
+ RowBox[{"ListPointPlot3D", "[", 
+  RowBox[{
+   RowBox[{"Import", "[", 
+    RowBox[{"StringJoin", "[", 
+     RowBox[{
+      RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+      "\"\<output\\\\Complete_Network.dat\>\""}], "]"}], "]"}], ",", 
+   RowBox[{"PlotRange", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"-", "boxSize"}], ",", "boxSize"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"-", "boxSize"}], ",", "boxSize"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"-", "boxSize"}], ",", "boxSize"}], "}"}]}], "}"}]}], ",", 
+   RowBox[{"BoxRatios", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"1", ",", " ", "1", ",", " ", "1"}], "}"}]}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.6555415682543373`*^9, 3.6555415751251936`*^9}}]
 },
-WindowSize->{759, 833},
-WindowMargins->{{Automatic, 572}, {64, Automatic}},
+WindowSize->{958, 988},
+WindowMargins->{{-7, Automatic}, {Automatic, 0}},
 Magnification:>1.1 Inherited,
 FrontEndVersion->"10.3 for Microsoft Windows (64-bit) (October 9, 2015)",
 StyleDefinitions->"Default.nb"
@@ -125,11 +100,9 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[558, 20, 145, 3, 89, "Input"],
-Cell[CellGroupData[{
-Cell[728, 27, 1226, 31, 133, "Input"],
-Cell[1957, 60, 2339, 47, 547, "Output"]
-}, Open  ]]
+Cell[558, 20, 193, 4, 32, "Input"],
+Cell[754, 26, 1284, 32, 93, "Input"],
+Cell[2041, 60, 838, 23, 53, "Input"]
 }
 ]
 *)
