@@ -7,11 +7,7 @@ def read_points(path):
 
     points = []
     for line in f:
-        pos = []
-
-        for val in line.split():
-            pos.append(float(val))
-
+        pos = [float(x) for x in line.split()]
         points.append(pos)
 
     return points
