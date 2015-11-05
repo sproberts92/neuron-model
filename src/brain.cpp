@@ -141,18 +141,11 @@ void Brain::propagate_signal(void)
 {
 	/* Phase 0 - reset all counters */
 	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
-		(*it_n)->num_incoming = 0;
+		(*it_n)->init_for_prop();
 
 	/* Phase 1 - move to temp variable of next node(s) */
 	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
-	{
-		for(auto it_next = (*it_n)->next.begin(); it_next != (*it_n)->next.end(); ++it_next)
-		{
-			(*it_next)->temp_value = (*it_next)->temp_value | (*it_n)->value;
-			(*it_next)->num_incoming += (*it_n)->value;
-		}
-		(*it_n)->value = 0;
-	}
+		(*it_n)->push_temp_next();
 
 	/* Phase 2 - move from temp variable to value variable */
 	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
