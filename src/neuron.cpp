@@ -32,12 +32,12 @@ Neuron::~Neuron() {}
 std::vector<double> Neuron::r_vec(int dim, std::vector<double> b_box)
 {
 	std::vector<double> pos(dim);
-	static std::vector<rand_gen> r_gen;
+	static std::vector<rand_gen <double>> r_gen;
 
 	if(r_gen.empty())
 	{
 		for (int i = 0; i < dim; i++)				
-			r_gen.push_back(rand_gen(b_box[i * 2], b_box[(i * 2) + 1]));
+			r_gen.push_back(rand_gen<double>(b_box[i * 2], b_box[(i * 2) + 1]));
 	}
 
 	for (int i = 0; i < dim; i++)
@@ -49,9 +49,9 @@ std::vector<double> Neuron::r_vec(int dim, std::vector<double> b_box)
 std::vector<double> Neuron::r_u_vec(int dim)
 {
 	std::vector<double> pos(dim);
-	static std::vector<rand_gen> r_gen;
+	static std::vector<rand_gen <double>> r_gen;
 	if(r_gen.empty())
-		r_gen.push_back(rand_gen(-1, 1));	
+		r_gen.push_back(rand_gen<double>(-1, 1));	
 
 	for (int i = 0; i < dim; i++)
 			pos[i] = r_gen[0].get_rnum();

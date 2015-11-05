@@ -6,7 +6,7 @@ Brain::Brain(int d, std::vector<double> b, int n, double l) : dim(d), bounds(b),
 
 	/* Set up random number generator */
 	if(r_gen.empty())
-		r_gen.push_back(rand_gen(0, 1));
+		r_gen.push_back(rand_gen<double>(0, 1));
 }
 
 Brain::~Brain(void)
