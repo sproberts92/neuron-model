@@ -166,3 +166,14 @@ void Brain::propagate_signal(bool noise)
 		(*it_n)->temp_value = 0;
 	}
 }
+
+void Brain::clear_signals(void)
+{
+	/* Phase 0 - reset all counters */
+	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
+	{
+		(*it_n)->value = 0;
+		(*it_n)->num_incoming = 0;
+		(*it_n)->temp_value = 0;
+	}
+}
