@@ -52,11 +52,13 @@ void Brain::connect_network(void)
 				for (int k = 0; k < dim; k++)
 					vec_r[k] /= r;			
 				
-				Node *new_branch = branch_axon(shortest, vec_r);
-				Node *dendrite_end;
+				Node *synapse = branch_axon(shortest, vec_r);
+				all_synapses.push_back(synapse);
+				// all_synapses_on.push_back(1);
 
+				Node *dendrite_end;
 				for (int i = 0; i < (int)(r/schwann_l + 1); i++)
-					dendrite_end = grow_axon(new_branch, vec_r);
+					dendrite_end = grow_axon(synapse, vec_r);
 			
 				dendrite_end->next.push_back(neurons[i].base_soma);
 			}
@@ -137,7 +139,7 @@ void Brain::print_network(std::ostringstream &fileName, bool no_signal)
 	out_stream.close();
 }
 
-void Brain::propagate_signal(void)
+void Brain::propagate_signal(bool noise)
 {
 	/* Phase 0 - reset all counters */
 	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
@@ -157,7 +159,8 @@ void Brain::propagate_signal(void)
 	/* Phase 2 - move from temp variable to value variable */
 	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
 	{
-		if(r_gen[0].get_rnum() > 0.05)
+		// std::cout << (*it_n)->on << std::endl;
+		if((*it_n)->on && (!noise || r_gen[0].get_rnum() > 0.05))
 			(*it_n)->value = (*it_n)->temp_value;
 		
 		(*it_n)->temp_value = 0;

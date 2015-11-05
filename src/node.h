@@ -6,6 +6,7 @@ class Node
 {
 public:
 	bool value;
+	bool on;
 	bool temp_value;
 	int num_incoming;
 

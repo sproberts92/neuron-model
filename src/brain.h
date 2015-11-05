@@ -9,6 +9,7 @@ class Brain
 {
 public:
 	std::vector<Node*> all_nodes;
+	std::vector<Node*> all_synapses;
 	Neuron *neurons;
 
 	Brain(int d, std::vector<double> b, int n, double l);
@@ -18,7 +19,7 @@ public:
 	void grow_axons(void);
 	void Brain::connect_network(void);
 	void Brain::print_network(std::ostringstream &fileName, bool no_signal);
-	void Brain::propagate_signal(void);
+	void Brain::propagate_signal(bool noise);
 
 private:
 	int n_neurons;

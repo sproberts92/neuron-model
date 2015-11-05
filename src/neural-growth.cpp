@@ -25,15 +25,15 @@ int main()
 
 	std::cout << "Neuron layout complete. Growing axons..." << std::endl;
 
-	for (int it = 0; it < config.growth_iter; it++)
+	for (int i = 0; i < config.growth_iter; i++)
 	{
-		if(it % (config.growth_iter / 100) == 0)
-			std::cout << 100 * it / config.growth_iter << "%\r";
+		if(i % (config.growth_iter / 100) == 0)
+			std::cout << 100 * i / config.growth_iter << "%\r";
 
 		brain.grow_axons();
 
 		std::ostringstream fileName;
-		fileName << "output\\growth\\growth_"<< it << ".dat";
+		fileName << "output\\growth\\growth_"<< i << ".dat";
 		brain.print_network(fileName, 1);
 	}
 	std::cout << "100%\n" << std::endl;
@@ -44,21 +44,36 @@ int main()
 
 	brain.neurons[0].base_soma->value = 1;
 
-	for (int it = 0; it < config.prop_iter; it++)
+	int first_target_loop = config.prop_iter;
+	for (int i = 0; i < config.prop_iter; i++)
 	{
-		brain.propagate_signal();
+		brain.propagate_signal(1);
 
 		std::ostringstream fileName;
-		fileName << "output\\signal\\signal_" << it << ".dat";
+		fileName << "output\\signal\\signal_" << i << ".dat";
 		brain.print_network(fileName, 0);
 
-		if(brain.neurons[0].base_soma->value == 1){
-			std::cout << "Loop found! Length: " << it << ", degeneracy: " <<brain.neurons[0].base_soma->num_incoming<< std::endl;
+		if(	brain.neurons[0].base_soma->value == 1
+			&& brain.neurons[0].base_soma->num_incoming >= 3
+			&& i < first_target_loop)
+		{
+			std::cout << "Loop found! Length: " << i << ", degeneracy: " <<brain.neurons[0].base_soma->num_incoming<< std::endl;
+			first_target_loop = i;
 			brain.neurons[0].base_soma->value = 0;
+			break;
 		}
+		else if(brain.neurons[0].base_soma->value == 1){
+			std::cout << "Loop found! Length: " << i << ", degeneracy: " <<brain.neurons[0].base_soma->num_incoming<< std::endl;
+			brain.neurons[0].base_soma->value = 0;
+		}		
 	}
+	if(first_target_loop == config.prop_iter)
+		std::cout << "No loops of target degeneracy found." << std::endl;
+	else
+		std::cout << "First loop of target degeneracy found with length " << first_target_loop << std::endl;
 
 	std::cout << "Network size: " << brain.all_nodes.size() << " nodes." << std::endl;
+	std::cout << "Connections: " << brain.all_synapses.size() << " synapses." << std::endl << std::endl;
 
 	std::ostringstream fileName;
 	fileName << "output\\Complete_Network.dat";
