@@ -21,3 +21,18 @@ Node& Node::operator= (const Node &n)
 }
 
 Node::~Node() {}
+
+void Node::init_for_prop(void)
+{
+	num_incoming = 0;
+}
+
+void Node::push_temp_next(void)
+{
+	for(auto it_next = next.begin(); it_next != next.end(); ++it_next)
+	{
+		(*it_next)->temp_value = (*it_next)->temp_value | value;
+		(*it_next)->num_incoming += value;
+	}
+	value = 0;
+}
