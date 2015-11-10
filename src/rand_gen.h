@@ -30,6 +30,7 @@ private:
 	typedef std::mt19937 rType;
 	rType generator;
 	typename Distribution<T>::type udist;
+	void seed_gen(void);
 
 public:
 	rand_gen(T rMin = 0, T rMax = 100) : udist(rMin, rMax)
@@ -37,7 +38,6 @@ public:
 		this->seed_gen(); 
 	}
 
-	void seed_gen(void);
 	T get_rnum(void);
 };
 
