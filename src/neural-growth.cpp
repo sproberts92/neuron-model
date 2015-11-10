@@ -75,51 +75,82 @@ int main()
 	else
 		std::cout << "First loop of target degeneracy found with length " << first_target_loop << std::endl;
 
-
+	/************ Naive pruning algorithm ************/
 	/* Possibly remove this later for speed increase */
-	first_target_loop = config.prop_iter;
+	std::cout << first_target_loop << std::endl;
+	// first_target_loop = config.prop_iter;
+	first_target_loop += 5;
 
-	brain.clear_signals();
-	brain.neurons[0].base_soma->value = 1;
 
+	/* a: attempt number */
+	bool found = false;
+	for (int prune = 0; prune < 20; prune++)
+	{
+		
 	for (int a = 0; a < brain.all_synapses.size(); a++)
 	{
-		std::cout << "activations: " << a << std::endl;
 		static rand_gen<int> r_gen(0, (int)brain.all_synapses.size());
-		
-		/* First turn off all synapses */
-		for(auto it_s = brain.all_synapses.begin(); it_s != brain.all_synapses.end(); ++it_s)
-			(*it_s)->on = 0;
-		
-		int activations = 0;
-		while(activations < a)
-		{
-			int s_ind = r_gen.get_rnum();
-			if(!brain.all_synapses[s_ind]->on)
-			{
-				brain.all_synapses[s_ind]->on = 1;
-				activations++;
-			}	
-		}
 
+		std::cout << "a = " << a << std::endl;
+		
+		/* Reset newtwork */
+		brain.clear_signals();
+		brain.neurons[0].base_soma->value = 1;
+
+		/* Reset synapses */
+		for(auto it_s = brain.synapses.begin(); it_s != brain.synapses.end(); ++it_s)
+			it_s->second = 0;
+
+		found = false;
 		for (int i = 0; i < first_target_loop; i++)
 		{
-			brain.propagate_signal(0);
+			brain.check_path(0.0);
 
 			if(	brain.neurons[0].base_soma->value == 1
-				&& brain.neurons[0].base_soma->num_incoming >= 3
-				&& i < first_target_loop)
+				&& brain.neurons[0].base_soma->num_incoming >= 3)
 			{
 				std::cout << "Loop found! Length: " << i << ", degeneracy: " <<brain.neurons[0].base_soma->num_incoming<< std::endl;
-				first_target_loop = i;
 				brain.neurons[0].base_soma->value = 0;
+				found = true;
 				break;
 			}
 			else if(brain.neurons[0].base_soma->value == 1){
-				std::cout << "Loop found! Length: " << i << ", degeneracy: " <<brain.neurons[0].base_soma->num_incoming<< std::endl;
 				brain.neurons[0].base_soma->value = 0;
 			}
 		}
+
+		if(found) break;
+	}
+	}
+
+	if(!found)
+	{
+		std::cout << "Did not find loop!" << std::endl;
+		exit(EXIT_FAILURE);
+	}
+
+	for(auto it_s = brain.synapses.begin(); it_s != brain.synapses.end(); ++it_s)
+	{
+		if(it_s->second == 1)
+			it_s->first->on = true;
+		else if(it_s->second == -1)
+			it_s->first->on = false;
+		else
+			std::cout << "Synapse error!" << std::endl;
+	}
+
+	/* Reset newtwork */
+	brain.clear_signals();
+	brain.neurons[0].base_soma->value = 1;
+	/*********End naive pruning algorithm ************/
+
+	for (int i = 0; i < config.prop_iter; i++)
+	{
+		brain.propagate_signal(0.0);
+
+		std::ostringstream fileName;
+		fileName << "output\\signal\\signal_" << i << ".dat";
+		brain.print_network(fileName, 0);	
 	}
 
 
