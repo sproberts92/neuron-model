@@ -6,6 +6,9 @@
 template<class T>
 struct Distribution{};
 
+/* Need to specialise becuase we use different distributions for ints
+ * and floats/doubles. This could probably also be generalised for 
+ * different distributions entirely, eg gaussian. */
 template<>
 struct Distribution<int>{
 	typedef std::uniform_int_distribution<int> type;
