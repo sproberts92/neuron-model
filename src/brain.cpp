@@ -47,7 +47,7 @@ void Brain::connect_network(void)
 
 			r = sqrt(abs(r));
 		
-			if(r != 0 && r_gen.get_rnum() < gaussian(r, 60))
+			if(r != 0)// && r_gen.get_rnum() < gaussian(r, 60))
 			{
 				for (int k = 0; k < dim; k++)
 					vec_r[k] /= r;			
@@ -157,4 +157,26 @@ void Brain::clear_signals(void)
 	/* Phase 0 - reset all counters */
 	for(auto it_n : all_nodes)
 		it_n->clear_signal();
+}
+
+void Brain::depth_first_path_search(Node *node, Node *root, std::vector<Node*> path)
+{
+	path.push_back(node);
+
+	for(auto it_n : node->next)
+	{
+		if(it_n == root){
+			std::cout << "Loop found, length: " << path.size() - 1 << std::endl;
+			return;
+		}
+		else if(!(std::find(path.begin(), path.end(), it_n) != path.end()))
+			depth_first_path_search(it_n, root, path);
+	}
+
+	path.pop_back();
+
+	/* Possible optimisation: only add nodes that have branches multiple paths incoming
+	 * to the path. This would require an extra varaible storing the number of incoming
+	 * paths and for this to be calculated by filling the whole network with 1s and 
+	 * running one propagation step */
 }

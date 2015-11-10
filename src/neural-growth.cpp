@@ -43,6 +43,10 @@ int main()
 	std::ostringstream fileName;
 	fileName << "output\\Complete_Network.dat";
 	brain.print_network(fileName, 1);
+	
+	std::vector<Node*> path;
+	brain.depth_first_path_search(brain.neurons[0].base_soma, brain.neurons[0].base_soma, path);
+	std::cout << std::endl;
 
 	// Reset newtwork
 	brain.clear_signals();
