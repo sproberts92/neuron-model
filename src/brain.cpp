@@ -143,10 +143,6 @@ void Brain::print_network(std::ostringstream &fileName, bool no_signal)
 
 void Brain::propagate_signal(double thresh)
 {
-	/* Phase 0 - reset all counters */
-	for(auto it_n : all_nodes)
-		it_n->init_for_prop();
-
 	/* Phase 1 - move to temp variable of next node(s) */
 	for(auto it_n : all_nodes)
 		it_n->push_temp_next();
@@ -165,10 +161,6 @@ void Brain::clear_signals(void)
 
 void Brain::check_path(double thresh)
 {
-	/* Phase 0 - reset all counters */
-	for(auto it_n : all_nodes)
-		it_n->init_for_prop();
-
 	/* Phase 1 - move to temp variable of next node(s) */
 	for(auto it_n : all_nodes)
 		it_n->push_temp_next();

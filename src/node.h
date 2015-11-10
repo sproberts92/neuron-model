@@ -8,7 +8,6 @@ class Node
 public:
 	bool value;
 	bool on;
-	int num_incoming;
 
 	std::vector<double> pos;
 
@@ -19,7 +18,6 @@ public:
 	Node &operator= (const Node &n);
 	~Node();
 
-	void init_for_prop(void);
 	void clear_signal(void);
 	void push_temp_next(void);
 	bool pop_temp(double noise);
