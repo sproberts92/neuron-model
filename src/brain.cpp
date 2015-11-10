@@ -30,6 +30,8 @@ void Brain::connect_network(void)
 {
 	for (int i = 0; i < n_neurons; i++)
 	{
+		std::cout << 100 * i / n_neurons << "%\r";
+
 		for (int j = 0; j < n_neurons; j++)
 		{
 			if(i == j) continue;
@@ -64,6 +66,7 @@ void Brain::connect_network(void)
 			}
 		}
 	}
+	std::cout << "100%\n" << std::endl;
 }
 
 double Brain::gaussian(double x, double c)
