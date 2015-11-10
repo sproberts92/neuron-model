@@ -29,8 +29,9 @@ echo_objects:
 echo_sources:
 	echo $(SOURCES)
 
+# Stack size is set to 8 Mb
 $(BINARY): $(OBJECTS)
-	$(LINK) $(OBJECTS) $(LIBS) /OUT:$(BINARY)	
+	$(LINK) $(OBJECTS) $(LIBS) /STACK:8388608 /OUT:$(BINARY)	
 
 $(BINARY_DIR): $(DLLS_SRC)
 	for %n in ($**) do copy /y /v /b %n $@
