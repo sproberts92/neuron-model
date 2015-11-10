@@ -43,3 +43,17 @@ void Node::push_temp_next(void)
 	}
 	value = 0;
 }
+
+bool Node::pop_temp(double thresh)
+{
+	bool success = false;
+	if(on && (thresh == 0.0 || (thresh != 1.0 && r_gen.get_rnum() > thresh)))
+	{
+		value = temp_value;
+		success = true;
+	}
+
+	temp_value = 0;
+
+	return success;
+}

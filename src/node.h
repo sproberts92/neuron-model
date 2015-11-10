@@ -22,6 +22,7 @@ public:
 	void init_for_prop(void);
 	void clear_signal(void);
 	void push_temp_next(void);
+	bool pop_temp(double noise);
 
 private:
 	int dim;	
