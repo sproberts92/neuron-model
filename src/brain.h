@@ -2,6 +2,8 @@
 
 #include <fstream>
 #include <sstream>
+#include <algorithm>
+#include <map>
 
 #include "neuron.h"
 #include "rand_gen.h"
@@ -10,6 +12,8 @@ class Brain
 public:
 	std::vector<Node*> all_nodes;
 	std::vector<Node*> all_synapses;
+	std::vector<bool> all_synapses_state;
+	std::map<Node*, int> synapses;
 	Neuron *neurons;
 
 	Brain(int d, std::vector<double> b, int n, double l);
@@ -21,6 +25,7 @@ public:
 	void Brain::print_network(std::ostringstream &fileName, bool no_signal);
 	void Brain::propagate_signal(double noise);
 	void Brain::clear_signals(void);
+	void check_path(double thresh);
 
 private:
 	int n_neurons;

@@ -54,7 +54,8 @@ void Brain::connect_network(void)
 				
 				Node *synapse = branch_axon(shortest, vec_r);
 				all_synapses.push_back(synapse);
-				// all_synapses_on.push_back(1);
+				all_synapses_state.push_back(1);
+				synapses.insert(std::map<Node*, int>::value_type(synapse, 0));
 
 				Node *dendrite_end;
 				for (int i = 0; i < (int)(r/schwann_l + 1); i++)
@@ -160,9 +161,39 @@ void Brain::clear_signals(void)
 	/* Phase 0 - reset all counters */
 	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
 		(*it_n)->clear_signal();
+}
+
+void Brain::check_path(double thresh)
+{
+	/* Phase 0 - reset all counters */
+	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
+		(*it_n)->init_for_prop();
+
+	/* Phase 1 - move to temp variable of next node(s) */
+	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
+		(*it_n)->push_temp_next();
+
+	/* Phase 2 - move from temp variable to value variable */
+	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
 	{
-		(*it_n)->value = 0;
-		(*it_n)->num_incoming = 0;
-		(*it_n)->temp_value = 0;
+		if(synapses.find(*it_n) == synapses.end()){
+			(*it_n)->pop_temp(0.0);
+		}
+		else if (synapses[*it_n] == 1){
+			// std::cout << "synapse == 1" << std::endl;
+			(*it_n)->pop_temp(0.0);
+		}
+		else if (synapses[*it_n] == -1) {
+			// std::cout << "synapse == -1" << std::endl;
+			(*it_n)->pop_temp(1.0);
+		}
+		else
+		{
+			// std::cout << "setting synapse" << std::endl;
+			if((*it_n)->pop_temp(0.5))
+				synapses[*it_n] = 1;
+			else
+				synapses[*it_n] = -1;
+		}
 	}
 }
