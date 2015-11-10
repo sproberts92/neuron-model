@@ -39,11 +39,9 @@ void Node::clear_signal(void)
 
 void Node::push_temp_next(void)
 {
-	for(auto it_next = next.begin(); it_next != next.end(); ++it_next)
-	{
-		(*it_next)->temp_value = (*it_next)->temp_value | value;
-		(*it_next)->num_incoming += value;
-	}
+	for(auto it_next : next)
+		it_next->temp_value = it_next->temp_value | value;
+
 	value = 0;
 }
 

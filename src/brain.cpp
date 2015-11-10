@@ -128,12 +128,12 @@ void Brain::print_network(std::ostringstream &fileName, bool no_signal)
 	std::ofstream out_stream;
 	out_stream.open(fileName.str(), std::fstream::trunc);
 	
-	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
+	for(auto it_n : all_nodes)
 	{
-		if(no_signal || (*it_n)->value)
+		if(no_signal || it_n->value)
 		{
-			for(auto it_d = (*it_n)->pos.begin(); it_d != (*it_n)->pos.end(); ++it_d)
-					out_stream << *it_d << " ";
+			for(auto it_d : it_n->pos)
+					out_stream << it_d << " ";
 			out_stream << std::endl;
 		}
 	}
@@ -144,56 +144,56 @@ void Brain::print_network(std::ostringstream &fileName, bool no_signal)
 void Brain::propagate_signal(double thresh)
 {
 	/* Phase 0 - reset all counters */
-	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
-		(*it_n)->init_for_prop();
+	for(auto it_n : all_nodes)
+		it_n->init_for_prop();
 
 	/* Phase 1 - move to temp variable of next node(s) */
-	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
-		(*it_n)->push_temp_next();
+	for(auto it_n : all_nodes)
+		it_n->push_temp_next();
 
 	/* Phase 2 - move from temp variable to value variable */
-	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
-		(*it_n)->pop_temp(thresh);
+	for(auto it_n : all_nodes)
+		it_n->pop_temp(thresh);
 }
 
 void Brain::clear_signals(void)
 {
 	/* Phase 0 - reset all counters */
-	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
-		(*it_n)->clear_signal();
+	for(auto it_n : all_nodes)
+		it_n->clear_signal();
 }
 
 void Brain::check_path(double thresh)
 {
 	/* Phase 0 - reset all counters */
-	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
-		(*it_n)->init_for_prop();
+	for(auto it_n : all_nodes)
+		it_n->init_for_prop();
 
 	/* Phase 1 - move to temp variable of next node(s) */
-	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
-		(*it_n)->push_temp_next();
+	for(auto it_n : all_nodes)
+		it_n->push_temp_next();
 
 	/* Phase 2 - move from temp variable to value variable */
-	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
+	for(auto it_n : all_nodes)
 	{
-		if(synapses.find(*it_n) == synapses.end()){
-			(*it_n)->pop_temp(0.0);
+		if(synapses.find(it_n) == synapses.end()){
+			it_n->pop_temp(0.0);
 		}
-		else if (synapses[*it_n] == 1){
+		else if (synapses[it_n] == 1){
 			// std::cout << "synapse == 1" << std::endl;
-			(*it_n)->pop_temp(0.0);
+			it_n->pop_temp(0.0);
 		}
-		else if (synapses[*it_n] == -1) {
+		else if (synapses[it_n] == -1) {
 			// std::cout << "synapse == -1" << std::endl;
-			(*it_n)->pop_temp(1.0);
+			it_n->pop_temp(1.0);
 		}
 		else
 		{
 			// std::cout << "setting synapse" << std::endl;
-			if((*it_n)->pop_temp(0.5))
-				synapses[*it_n] = 1;
+			if(it_n->pop_temp(0.5))
+				synapses[it_n] = 1;
 			else
-				synapses[*it_n] = -1;
+				synapses[it_n] = -1;
 		}
 	}
 }
