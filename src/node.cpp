@@ -27,6 +27,13 @@ void Node::init_for_prop(void)
 	num_incoming = 0;
 }
 
+void Node::clear_signal(void)
+{
+	value = 0;
+	num_incoming = 0;
+	temp_value = 0;
+}
+
 void Node::push_temp_next(void)
 {
 	for(auto it_next = next.begin(); it_next != next.end(); ++it_next)
