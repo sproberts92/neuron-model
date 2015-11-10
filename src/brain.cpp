@@ -158,34 +158,3 @@ void Brain::clear_signals(void)
 	for(auto it_n : all_nodes)
 		it_n->clear_signal();
 }
-
-void Brain::check_path(double thresh)
-{
-	/* Phase 1 - move to temp variable of next node(s) */
-	for(auto it_n : all_nodes)
-		it_n->push_temp_next();
-
-	/* Phase 2 - move from temp variable to value variable */
-	for(auto it_n : all_nodes)
-	{
-		if(synapses.find(it_n) == synapses.end()){
-			it_n->pop_temp(0.0);
-		}
-		else if (synapses[it_n] == 1){
-			// std::cout << "synapse == 1" << std::endl;
-			it_n->pop_temp(0.0);
-		}
-		else if (synapses[it_n] == -1) {
-			// std::cout << "synapse == -1" << std::endl;
-			it_n->pop_temp(1.0);
-		}
-		else
-		{
-			// std::cout << "setting synapse" << std::endl;
-			if(it_n->pop_temp(0.5))
-				synapses[it_n] = 1;
-			else
-				synapses[it_n] = -1;
-		}
-	}
-}

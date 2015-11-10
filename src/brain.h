@@ -25,7 +25,6 @@ public:
 	void print_network(std::ostringstream &fileName, bool no_signal);
 	void propagate_signal(double noise);
 	void clear_signals(void);
-	void check_path(double thresh);
 
 private:
 	int n_neurons;
