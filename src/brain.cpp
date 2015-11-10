@@ -4,9 +4,7 @@ Brain::Brain(int d, std::vector<double> b, int n, double l) : dim(d), bounds(b),
 {
 	neurons = new Neuron[n_neurons];
 
-	/* Set up random number generator */
-	if(r_gen.empty())
-		r_gen.push_back(rand_gen<double>(0, 1));
+	r_gen = rand_gen<double>(0, 1);
 }
 
 Brain::~Brain(void)
@@ -49,7 +47,7 @@ void Brain::connect_network(void)
 
 			r = sqrt(abs(r));
 		
-			if(r != 0 && r_gen[0].get_rnum() < gaussian(r, 80))
+			if(r != 0 && r_gen.get_rnum() < gaussian(r, 60))
 			{
 				for (int k = 0; k < dim; k++)
 					vec_r[k] /= r;			

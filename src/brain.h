@@ -26,7 +26,7 @@ private:
 	int n_neurons;
 	int dim;
 	std::vector<double> bounds;
-	std::vector<rand_gen <double>> r_gen;
+	rand_gen<double> r_gen;
 
 	double schwann_l;
 
