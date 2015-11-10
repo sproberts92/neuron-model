@@ -130,7 +130,7 @@ void Brain::print_network(std::ostringstream &fileName, bool no_signal)
 	
 	for(auto it_n : all_nodes)
 	{
-		if(no_signal || it_n->value)
+		if(no_signal || it_n->get_value())
 		{
 			for(auto it_d : it_n->pos)
 					out_stream << it_d << " ";

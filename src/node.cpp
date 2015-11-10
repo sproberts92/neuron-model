@@ -6,6 +6,9 @@ Node::Node(int d, const std::vector<double> p)
 // Initialise static random generator object
 rand_gen<double> Node::r_gen = rand_gen<double>(0.0, 1.0);
 
+bool Node::get_value(void) { return value; }
+void Node::set_value(bool v) { value = v; }
+
 void Node::clear_signal(void)
 {
 	value = 0;

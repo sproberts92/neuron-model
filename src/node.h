@@ -6,7 +6,6 @@
 class Node
 {
 public:
-	bool value;
 
 	std::vector<double> pos;
 
@@ -14,11 +13,15 @@ public:
 
 	Node(int d, const std::vector<double> p);
 
+	bool get_value(void);
+	void set_value(bool v);
+
 	void clear_signal(void);
 	void push_temp_next(void);
 	bool pop_temp(double noise);
 
 private:
+	bool value;
 	int dim;
 	bool on;
 	bool temp_value;

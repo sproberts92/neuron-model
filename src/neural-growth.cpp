@@ -50,7 +50,7 @@ int main()
 
 	// Reset newtwork
 	brain.clear_signals();
-	brain.neurons[0].base_soma->value = 1;
+	brain.neurons[0].base_soma->set_value(1);
 
 	std::cout << "Writing signal propagation frames..." << std::endl;
 
@@ -65,8 +65,8 @@ int main()
 		brain.print_network(fileName, 0);
 
 		// Kill the signal
-		if(brain.neurons[0].base_soma->value == 1)
-			brain.neurons[0].base_soma->value = 0;
+		if(brain.neurons[0].base_soma->get_value() == 1)
+			brain.neurons[0].base_soma->set_value(0);
 	}
 
 	std::cout << "100%\n" << std::endl;
