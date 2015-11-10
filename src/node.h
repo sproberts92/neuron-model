@@ -7,7 +7,6 @@ class Node
 {
 public:
 	bool value;
-	bool on;
 
 	std::vector<double> pos;
 
@@ -21,6 +20,7 @@ public:
 
 private:
 	int dim;
+	bool on;
 	bool temp_value;
 	static rand_gen<double> r_gen;
 };
