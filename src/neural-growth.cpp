@@ -3,7 +3,6 @@ using namespace std;
 #include <iostream>
 #include <ctime>
 #include <sstream>
-#include <iomanip>
 
 #include "brain.h"
 
