@@ -19,7 +19,7 @@ public:
 	void grow_axons(void);
 	void Brain::connect_network(void);
 	void Brain::print_network(std::ostringstream &fileName, bool no_signal);
-	void Brain::propagate_signal(bool noise);
+	void Brain::propagate_signal(double noise);
 	void Brain::clear_signals(void);
 
 private:

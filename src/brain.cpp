@@ -140,7 +140,7 @@ void Brain::print_network(std::ostringstream &fileName, bool no_signal)
 	out_stream.close();
 }
 
-void Brain::propagate_signal(bool noise)
+void Brain::propagate_signal(double thresh)
 {
 	/* Phase 0 - reset all counters */
 	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
@@ -152,13 +152,7 @@ void Brain::propagate_signal(bool noise)
 
 	/* Phase 2 - move from temp variable to value variable */
 	for(auto it_n = all_nodes.begin(); it_n != all_nodes.end(); ++it_n)
-	{
-		// std::cout << (*it_n)->on << std::endl;
-		if((*it_n)->on && (!noise || r_gen[0].get_rnum() > 0.05))
-			(*it_n)->value = (*it_n)->temp_value;
-		
-		(*it_n)->temp_value = 0;
-	}
+		(*it_n)->pop_temp(thresh);
 }
 
 void Brain::clear_signals(void)
