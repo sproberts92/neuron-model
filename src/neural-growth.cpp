@@ -26,8 +26,7 @@ int main()
 
 	for (int i = 0; i < config.growth_iter; i++)
 	{
-		if(i % (config.growth_iter / 100) == 0)
-			std::cout << 100 * i / config.growth_iter << "%\r";
+		std::cout << 100 * i / config.growth_iter << "%\r";
 
 		brain.grow_axons();
 
