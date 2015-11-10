@@ -21,10 +21,10 @@ public:
 
 	void place_neurons(void);
 	void grow_axons(void);
-	void Brain::connect_network(void);
-	void Brain::print_network(std::ostringstream &fileName, bool no_signal);
-	void Brain::propagate_signal(double noise);
-	void Brain::clear_signals(void);
+	void connect_network(void);
+	void print_network(std::ostringstream &fileName, bool no_signal);
+	void propagate_signal(double noise);
+	void clear_signals(void);
 	void check_path(double thresh);
 
 private:
