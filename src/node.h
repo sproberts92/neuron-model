@@ -27,5 +27,5 @@ public:
 
 private:
 	int dim;
-	rand_gen<static double> r_gen;
+	static rand_gen<double> r_gen;
 };
