@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include "rand_gen.h"
 
 class Node
 {
@@ -25,5 +26,6 @@ public:
 	bool pop_temp(double noise);
 
 private:
-	int dim;	
+	int dim;
+	rand_gen<static double> r_gen;
 };

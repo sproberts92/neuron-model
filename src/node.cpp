@@ -1,7 +1,10 @@
 #include "node.h"
 
 Node::Node(int d, const std::vector<double> p)
-	: dim(d), pos(p), value(0), on(1), temp_value(0), num_incoming(0) {}
+	: dim(d), pos(p), value(0), on(1), temp_value(0), num_incoming(0)
+	{
+		r_gen = rand_gen<double>(0.0, 1.0);
+	}
 
 Node::Node(const Node &n)
 	: dim(n.dim), pos(n.pos), value(n.value), on(n.on), temp_value(0), num_incoming(0) {}
