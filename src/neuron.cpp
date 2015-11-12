@@ -77,6 +77,9 @@ Node *Neuron::find_shortest(Neuron &target)
 	Node *list_ptr;
 	list_ptr = target.base_soma;
 
+	// for (int i = 0; i < 5; i++)
+		// if(!list_ptr->next.empty()) list_ptr = list_ptr->next[0];
+
 	if(list_ptr != 0)
 		while(!list_ptr->next.empty())
 		{
