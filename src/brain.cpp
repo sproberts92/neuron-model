@@ -40,7 +40,7 @@ void Brain::connect_network(void)
 			std::vector<double> vec_r;
 			for (int k = 0; k < dim; k++)
 			{
-				vec_r.push_back(-shortest->pos[k] + neurons[i].base_soma->pos[k]);
+				vec_r.push_back(-shortest->get_pos()[k] + neurons[i].base_soma->get_pos()[k]);
 				r += vec_r[k] * vec_r[k];
 			}
 		
@@ -61,7 +61,7 @@ void Brain::connect_network(void)
 				for (int i = 0; i < (int)(r/schwann_l + 1); i++)
 					dendrite_end = grow_axon(synapse, vec_r);
 			
-				dendrite_end->next.push_back(neurons[i].base_soma);
+				dendrite_end->push_next(neurons[i].base_soma);
 			}
 		}
 	}
@@ -79,12 +79,12 @@ Node *Brain::grow_axon(Node *base, std::vector<double> g_dir)
 	list_ptr = base;
 
 	if(list_ptr != 0)
-		while(!list_ptr->next.empty())
-			list_ptr = list_ptr->next[0];
+		while(!list_ptr->get_next().empty())
+			list_ptr = list_ptr->get_next()[0];
 
 	std::vector<double> new_pos = g_dir;
 	for (int i = 0; i < new_pos.size(); i++){
-		new_pos[i] = g_dir[i] * schwann_l + list_ptr->pos[i];
+		new_pos[i] = g_dir[i] * schwann_l + list_ptr->get_pos()[i];
 
 		// Impose periodic boundary conditions
 		if(new_pos[i] < bounds[i * 2]) new_pos[i] += (bounds[i * 2 + 1] - bounds[i * 2]);
@@ -93,7 +93,7 @@ Node *Brain::grow_axon(Node *base, std::vector<double> g_dir)
 
 	Node *new_axon = new Node(dim, new_pos);
 	all_nodes.push_back(new_axon);
-	list_ptr->next.push_back(new_axon);
+	list_ptr->push_next(new_axon);
 
 	return new_axon;
 }
@@ -106,7 +106,7 @@ Node *Brain::branch_axon(Node *base, std::vector<double> g_dir)
 	std::vector<double> new_pos = g_dir;
 	for (int i = 0; i < new_pos.size(); i++)
 	{
-		new_pos[i] = g_dir[i] * schwann_l + list_ptr->pos[i];
+		new_pos[i] = g_dir[i] * schwann_l + list_ptr->get_pos()[i];
 
 		// Impose periodic boundary conditions
 		if(new_pos[i] < bounds[i * 2]) new_pos[i] += (bounds[i * 2 + 1] - bounds[i * 2]);
@@ -115,7 +115,7 @@ Node *Brain::branch_axon(Node *base, std::vector<double> g_dir)
 
 	Node *new_axon = new Node(dim, new_pos);
 	all_nodes.push_back(new_axon);
-	list_ptr->next.push_back(new_axon);
+	list_ptr->push_next(new_axon);
 
 	return new_axon;
 }
@@ -132,7 +132,7 @@ void Brain::print_network(std::ostringstream &fileName, bool no_signal)
 	{
 		if(no_signal || it_n->get_value())
 		{
-			for(auto it_d : it_n->pos)
+			for(auto it_d : it_n->get_pos())
 					out_stream << it_d << " ";
 			out_stream << std::endl;
 		}
@@ -163,7 +163,7 @@ void Brain::depth_first_path_search(Node *node, Node *root, std::vector<Node*> p
 {
 	path.push_back(node);
 
-	for(auto it_n : node->next)
+	for(auto it_n : node->get_next())
 	{
 		if(it_n == root){
 			std::cout << "Loop found, length: " << path.size() - 1 << std::endl;

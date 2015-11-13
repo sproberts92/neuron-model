@@ -81,18 +81,18 @@ Node *Neuron::find_shortest(Neuron &target)
 		// if(!list_ptr->next.empty()) list_ptr = list_ptr->next[0];
 
 	if(list_ptr != 0)
-		while(!list_ptr->next.empty())
+		while(!list_ptr->get_next().empty())
 		{
 			double r = 0.0;
 			for (int i = 0; i < dim; i++)
-				r += (list_ptr->pos[i] - this->base_soma->pos[i])*(list_ptr->pos[i] - this->base_soma->pos[i]);
+				r += (list_ptr->get_pos()[i] - this->base_soma->get_pos()[i])*(list_ptr->get_pos()[i] - this->base_soma->get_pos()[i]);
 
 			if(abs(r) < shortest_r)
 			{
 				shortest_r = abs(r);
 				shortest_ptr = list_ptr;
 			}
-			list_ptr = list_ptr->next[0];
+			list_ptr = list_ptr->get_next()[0];
 		}
 
 	/* CHECK UP ON BOUNDARY CONDITIONS*/
