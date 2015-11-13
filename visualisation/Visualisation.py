@@ -17,13 +17,17 @@ def f(i, fig, ax):
 
     points = read_points(sigpath)
 
-    lines = ax.scatter(*zip(*points), c='r')
     ax.view_init(30, 0.3 * i)
-    fig.canvas.draw()
+    
+    if points:
+        lines = ax.scatter(*zip(*points), c='r')
+        fig.canvas.draw()
 
-    plt.savefig("output\\frames\\frame" + str(i) + ".png", format='png')
-    lines.remove()
-
+        plt.savefig("output\\frames\\frame" + str(i) + ".png", format='png')
+        lines.remove()
+    else:
+        plt.savefig("output\\frames\\frame" + str(i) + ".png", format='png')
+    
     print("Finished processing frame {0}".format(i))
 
 def main():
