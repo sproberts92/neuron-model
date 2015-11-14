@@ -1,5 +1,3 @@
-using namespace std;
-
 #include <iostream>
 #include <ctime>
 #include <sstream>
@@ -36,6 +34,7 @@ int main()
 	}
 	std::cout << "100%\n" << std::endl;
 
+
 	std::cout << "Axon growth complete. Growing dendrites..." << std::endl;
 
 	brain.connect_network();
@@ -45,7 +44,7 @@ int main()
 	brain.print_network(fileName, 1);
 	
 	std::vector<Node*> path;
-	brain.depth_first_path_search(brain.neurons[0].base_soma, brain.neurons[0].base_soma, path);
+	brain.depth_first_path_search(*brain.neurons[0].base_soma, *brain.neurons[0].base_soma, path);
 	std::cout << std::endl;
 
 	// Reset newtwork

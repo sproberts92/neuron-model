@@ -10,20 +10,17 @@
 class Neuron
 {
 public:
-	int dim;
 	Node *base_soma;
 	std::vector<double> grow_dir;
 	std::vector<Node*> *all_nodes;
 
 	Neuron();
-	Neuron(int d, std::vector<double> box, std::vector<Node*> *an);
-	Neuron(const Neuron &n);
-	Neuron &operator= (const Neuron &n);
-	~Neuron();
+	Neuron(int d, std::vector<double> box, std::vector<Node*> &an);
 
 	Node *Neuron::find_shortest(Neuron &target);
 
 private:
+	int dim;
 	std::vector<double> Neuron::r_vec(int dim, std::vector<double> b_box);
 	std::vector<double> Neuron::r_u_vec(int dim);
 	void normalise_grow_dir(void);

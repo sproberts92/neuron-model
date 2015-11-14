@@ -1,33 +1,15 @@
 #include "neuron.h"
 
-Neuron::Neuron() {}
-
-Neuron::Neuron(int d, std::vector<double> box, std::vector<Node*> *an) : dim(d)
+Neuron::Neuron(int d, std::vector<double> box, std::vector<Node*> &an) : dim(d)
 {
-	all_nodes = an;
 	std::vector<double> p_temp = r_vec(d, box);
-
 	base_soma = new Node(d ,p_temp);
 
-	all_nodes->push_back(base_soma);
+	an.push_back(base_soma);
 
 	grow_dir = r_u_vec(d);
 	normalise_grow_dir();
 }
-
-Neuron::Neuron(const Neuron &n)
-	: dim(n.dim), base_soma(n.base_soma), grow_dir(n.grow_dir) { }
-
-Neuron& Neuron::operator= (const Neuron &n)
-{
-	dim = n.dim;
-	base_soma = n.base_soma;
-	grow_dir = n.grow_dir;
-
-	return *this;
-}
-
-Neuron::~Neuron() {}
 
 std::vector<double> Neuron::r_vec(int dim, std::vector<double> b_box)
 {
@@ -35,10 +17,8 @@ std::vector<double> Neuron::r_vec(int dim, std::vector<double> b_box)
 	static std::vector<rand_gen <double>> r_gen;
 
 	if(r_gen.empty())
-	{
 		for (int i = 0; i < dim; i++)				
 			r_gen.push_back(rand_gen<double>(b_box[i * 2], b_box[(i * 2) + 1]));
-	}
 
 	for (int i = 0; i < dim; i++)
 		pos[i] = r_gen[i].get_rnum();

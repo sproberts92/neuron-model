@@ -6,23 +6,24 @@
 class Node
 {
 public:
+	Node();
 	Node(int d, const std::vector<double> p);
 
-	const bool get_value(void);
+	bool get_value(void);
 	void set_value(const bool v);
 
-	const std::vector<double> get_pos(void);
-	const std::vector<Node*> get_next(void);
-	void push_next(Node *n);
+	std::vector<double> get_pos(void);
+	std::vector<Node*> get_next(void);
+	void push_next(Node &n);
 
 	void clear_signal(void);
 	void push_temp_next(void);
 	bool pop_temp(double noise);
+	bool value;
 
 private:
 	const int dim;
 	
-	bool value;
 	bool on;
 	bool temp_value;
 	
