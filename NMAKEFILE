@@ -1,4 +1,4 @@
-USER_SOURCES = neural-growth.cpp neuron.cpp node.cpp brain.cpp config.c
+USER_SOURCES = neural-growth.cpp brain.cpp tree.cpp node.cpp config.c
 EXECUTABLE = neural-growth.exe
 ###################################
 SOURCE_DIR = src
