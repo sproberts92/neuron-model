@@ -55,7 +55,7 @@ int main()
 
 	for (int i = 0; i < config.prop_iter; i++)
 	{
-		std::cout << 100 * i / config.growth_iter << "%\r";
+		std::cout << 100 * i / config.prop_iter << "%\r";
 
 		brain.propagate_signal(0.0);
 
