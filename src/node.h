@@ -19,15 +19,14 @@ public:
 	void clear_signal(void);
 	void push_temp_next(void);
 	bool pop_temp(double noise);
-	bool value;
 
 private:
 	const int dim;
 	
+	bool value;
 	bool on;
-	bool temp_value;
+	bool buffer;
 	
-	static rand_gen<double> r_gen;
 	const std::vector<double> pos;
 	std::vector<Node*> next;
 };
