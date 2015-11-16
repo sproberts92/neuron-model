@@ -7,21 +7,22 @@
 #include "rand_gen.h"
 #include "node.h"
 
-class Neuron
+class Tree
 {
 public:
-	Node *base_soma;
-	std::vector<double> grow_dir;
-	std::vector<Node*> *all_nodes;
+	Tree();
+	Tree(int d, std::vector<double> box, std::vector<Node*> &an);
 
-	Neuron();
-	Neuron(int d, std::vector<double> box, std::vector<Node*> &an);
-
-	Node *Neuron::find_shortest(Neuron &target);
+	Node *get_root(void);
+	std::vector<double> get_grow_dir(void);
+	
+	Node *find_shortest(Tree &target);
 
 private:
-	int dim;
-	std::vector<double> Neuron::r_vec(int dim, std::vector<double> b_box);
-	std::vector<double> Neuron::r_u_vec(int dim);
-	void normalise_grow_dir(void);
+	Node *root;
+	std::vector<double> grow_dir;
+
+	std::vector<double> r_vec(std::vector<double> b_box);
+	std::vector<double> unit_box(int d);
+	void normalise(std::vector<double> &v);
 };

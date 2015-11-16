@@ -42,14 +42,14 @@ int main()
 	std::ostringstream fileName;
 	fileName << "output\\Complete_Network.dat";
 	brain.print_network(fileName, 1);
-	
+
 	std::vector<Node*> path;
-	brain.depth_first_path_search(*brain.neurons[0].base_soma, *brain.neurons[0].base_soma, path);
+	brain.depth_first_path_search(*brain.neurons[0].get_root(), *brain.neurons[0].get_root(), path);
 	std::cout << std::endl;
 
 	// Reset newtwork
 	brain.clear_signals();
-	brain.neurons[0].base_soma->set_value(1);
+	brain.neurons[0].get_root()->set_value(1);
 
 	std::cout << "Writing signal propagation frames..." << std::endl;
 
@@ -64,8 +64,8 @@ int main()
 		brain.print_network(fileName, 0);
 
 		// Kill the signal
-		if(brain.neurons[0].base_soma->get_value() == 1)
-			brain.neurons[0].base_soma->set_value(0);
+		if(brain.neurons[0].get_root()->get_value() == 1)
+			brain.neurons[0].get_root()->set_value(0);
 	}
 
 	std::cout << "100%\n" << std::endl;

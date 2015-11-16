@@ -8,15 +8,13 @@ Brain::Brain(int d, std::vector<double> b, int n, double l) : dim(d), bounds(b),
 void Brain::place_neurons(void)
 {
 	for (int i = 0; i < n_neurons; i++)
-	{
-		neurons.push_back(Neuron(dim, bounds, all_nodes));
-	}
+		neurons.push_back(Tree(dim, bounds, all_nodes));
 }
 
 void Brain::grow_axons(void)
 {
 	for (int i = 0; i < n_neurons; i++)
-		grow_axon(*neurons[i].base_soma, neurons[i].grow_dir);
+		grow_axon(*neurons[i].get_root(), neurons[i].get_grow_dir());
 }
 
 void Brain::connect_network(void)
@@ -35,7 +33,7 @@ void Brain::connect_network(void)
 			std::vector<double> vec_r;
 			for (int k = 0; k < dim; k++)
 			{
-				vec_r.push_back(-shortest->get_pos()[k] + neurons[i].base_soma->get_pos()[k]);
+				vec_r.push_back(-shortest->get_pos()[k] + neurons[i].get_root()->get_pos()[k]);
 				r += vec_r[k] * vec_r[k];
 			}
 		
@@ -56,7 +54,7 @@ void Brain::connect_network(void)
 				for (int i = 0; i < (int)(r/schwann_l + 1); i++)
 					dendrite_end = grow_axon(*synapse, vec_r);
 			
-				dendrite_end->push_next(*neurons[i].base_soma);
+				dendrite_end->push_next(*neurons[i].get_root());
 			}
 		}
 	}

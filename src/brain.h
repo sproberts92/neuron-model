@@ -6,12 +6,12 @@
 #include <algorithm>
 #include <map>
 
-#include "neuron.h"
+#include "tree.h"
 #include "rand_gen.h"
 class Brain
 {
 public:
-	std::vector<Neuron> neurons;
+	std::vector<Tree> neurons;
 	std::vector<Node*> all_nodes;
 	std::vector<Node*> all_synapses;
 	std::vector<bool> all_synapses_state;

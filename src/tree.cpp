@@ -1,72 +1,70 @@
-#include "neuron.h"
+#include "tree.h"
 
-Neuron::Neuron(int d, std::vector<double> box, std::vector<Node*> &an) : dim(d)
+Tree::Tree(int d, std::vector<double> box, std::vector<Node*> &all)
 {
-	std::vector<double> p_temp = r_vec(d, box);
-	base_soma = new Node(d ,p_temp);
+	root = new Node(d , r_vec(box));
+	all.push_back(root);
 
-	an.push_back(base_soma);
-
-	grow_dir = r_u_vec(d);
-	normalise_grow_dir();
+	grow_dir = r_vec(unit_box(d));
+	normalise(grow_dir);
 }
 
-std::vector<double> Neuron::r_vec(int dim, std::vector<double> b_box)
+Node *Tree::get_root(void) { return root; }
+
+std::vector<double> Tree::get_grow_dir(void) { return grow_dir; }
+
+
+std::vector<double> Tree::r_vec(std::vector<double> b_box)
 {
-	std::vector<double> pos(dim);
-	static std::vector<rand_gen <double>> r_gen;
+	std::vector<double> vec;
+	static rand_gen <double> r_gen(0, 1);
 
-	if(r_gen.empty())
-		for (int i = 0; i < dim; i++)				
-			r_gen.push_back(rand_gen<double>(b_box[i * 2], b_box[(i * 2) + 1]));
-
-	for (int i = 0; i < dim; i++)
-		pos[i] = r_gen[i].get_rnum();
-
-	return pos;
+	for(auto it = b_box.begin(); it != b_box.end(); ++it)
+	{
+		auto min = it++;
+		vec.push_back((*it - *min) * r_gen.get_rnum() + *min);
+	}
+	
+	return vec;
 }
 
-std::vector<double> Neuron::r_u_vec(int dim)
-{
-	std::vector<double> pos(dim);
-	static std::vector<rand_gen <double>> r_gen;
-	if(r_gen.empty())
-		r_gen.push_back(rand_gen<double>(-1, 1));	
-
-	for (int i = 0; i < dim; i++)
-			pos[i] = r_gen[0].get_rnum();
-
-	return pos;
-}
-
-void Neuron::normalise_grow_dir(void)
+void Tree::normalise(std::vector<double> &v)
 {
 	double length = 0.0;
-	for (int i = 0; i < grow_dir.size(); i++)
-		length += grow_dir[i] * grow_dir[i];
+	for (auto x : v)
+		length += x * x ;
 
-	for (int i = 0; i < grow_dir.size(); i++)
-		grow_dir[i] /= sqrt(length);
+	for (auto &x : v)
+		x /= sqrt(length);
 }
 
-Node *Neuron::find_shortest(Neuron &target)
+std::vector<double> Tree::unit_box(int d)
+{
+	std::vector<double> box;
+	for (int i = 0; i < d; ++i) { box.push_back(-1); box.push_back(1); }
+	return box;
+}
+
+Node *Tree::find_shortest(Tree &target)
 {
 	double shortest_r = std::numeric_limits<double>::infinity();
-	Node *shortest_ptr;
+	Node *shortest_ptr = nullptr;
 
 	Node *list_ptr;
-	list_ptr = target.base_soma;
+	list_ptr = target.root;
 
-	// for (int i = 0; i < 5; i++)
-		// if(!list_ptr->next.empty()) list_ptr = list_ptr->next[0];
+	// for (int i = 0; i < 80; i++)
+		// if(!list_ptr->get_next().empty()) list_ptr = list_ptr->get_next()[0];
 
-	if(list_ptr != 0)
+	if(list_ptr != nullptr)
 		while(!list_ptr->get_next().empty())
 		{
 			double r = 0.0;
+			int dim = (int)list_ptr->get_pos().size();
 			for (int i = 0; i < dim; i++)
-				r += (list_ptr->get_pos()[i] - this->base_soma->get_pos()[i])*(list_ptr->get_pos()[i] - this->base_soma->get_pos()[i]);
+				r += (list_ptr->get_pos()[i] - this->root->get_pos()[i])*(list_ptr->get_pos()[i] - this->root->get_pos()[i]);
 
+			/* Compare r^2 values, don't need to waste time with sqrt */
 			if(abs(r) < shortest_r)
 			{
 				shortest_r = abs(r);
