@@ -15,7 +15,7 @@ std::valarray<double> Tree::get_grow_dir(void) { return grow_dir; }
 std::valarray<double> Tree::r_vec(std::vector<double> b_box)
 {
 	std::valarray<double> vec(b_box.size() / 2);
-	static rand_gen <double> r_gen(0, 1);
+	static rand_gen<double> r_gen(0, 1);
 
 	for (int i = 0; i < vec.size(); ++i)
 		vec[i] = ((b_box[2 * i + 1] - b_box[2 * i]) * r_gen.get_rnum() + b_box[2 * i]);		
