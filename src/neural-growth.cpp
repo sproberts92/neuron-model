@@ -71,7 +71,7 @@ int main()
 	std::cout << "100%\n" << std::endl;
 
 	std::cout << "Network size: " << brain.all_nodes.size() << " nodes." << std::endl;
-	std::cout << "Connections: " << brain.all_synapses.size() << " synapses." << std::endl << std::endl;
+	// std::cout << "Connections: " << brain.all_synapses.size() << " synapses." << std::endl << std::endl;
 
 	clock_t end = clock();
 	std::cout << "Runtime: " << double(end - begin) /CLOCKS_PER_SEC << " seconds." << std::endl;

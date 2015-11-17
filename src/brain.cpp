@@ -46,9 +46,9 @@ void Brain::connect_network(void)
 					vec_r[k] /= r;			
 				
 				Node *synapse = branch_axon(*shortest, vec_r);
-				all_synapses.push_back(synapse);
-				all_synapses_state.push_back(1);
-				synapses.insert(std::map<Node*, int>::value_type(synapse, 0));
+				// all_synapses.push_back(synapse);
+				// all_synapses_state.push_back(1);
+				// synapses.insert(std::map<Node*, int>::value_type(synapse, 0));
 
 				Node *dendrite_end;
 				for (int i = 0; i < (int)(r/schwann_l + 1); i++)

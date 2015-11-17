@@ -13,9 +13,6 @@ class Brain
 public:
 	std::vector<Tree> neurons;
 	std::vector<Node*> all_nodes;
-	std::vector<Node*> all_synapses;
-	std::vector<bool> all_synapses_state;
-	std::map<Node*, int> synapses;
 
 	Brain(int d, std::vector<double> b, int n, double l);
 
@@ -40,3 +37,7 @@ private:
 	Node *Brain::branch_axon(Node &base, std::valarray<double> g_dir);
 	double gaussian(double x, double c);
 };
+
+// std::vector<Node*> all_synapses;
+// std::vector<bool> all_synapses_state;
+// std::map<Node*, int> synapses;
