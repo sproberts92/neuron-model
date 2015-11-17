@@ -52,7 +52,7 @@ Node *Tree::find_shortest(Tree &target)
 			shortest_ptr = list_ptr;
 		}
 
-		list_ptr = list_ptr->get_next()[0];
+		list_ptr = list_ptr->get_next().front();
 	}
 
 	/* CHECK UP ON BOUNDARY CONDITIONS*/
