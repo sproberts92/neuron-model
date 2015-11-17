@@ -14,15 +14,15 @@ public:
 	Tree(int d, std::vector<double> box, std::vector<Node*> &an);
 
 	Node *get_root(void);
-	std::vector<double> get_grow_dir(void);
+	std::valarray<double> get_grow_dir(void);
 	
 	Node *find_shortest(Tree &target);
 
 private:
 	Node *root;
-	std::vector<double> grow_dir;
+	std::valarray<double> grow_dir;
 
-	std::vector<double> r_vec(std::vector<double> b_box);
+	std::valarray<double> r_vec(std::vector<double> b_box);
 	std::vector<double> unit_box(int d);
-	void normalise(std::vector<double> &v);
+	void normalise(std::valarray<double> &v);
 };

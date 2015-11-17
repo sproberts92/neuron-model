@@ -30,10 +30,10 @@ void Brain::connect_network(void)
 			Node *shortest = neurons[i].find_shortest(neurons[j]);
 
 			double r = 0.0;
-			std::vector<double> vec_r;
+			std::valarray<double> vec_r(dim);
 			for (int k = 0; k < dim; k++)
 			{
-				vec_r.push_back(-shortest->get_pos()[k] + neurons[i].get_root()->get_pos()[k]);
+				vec_r[k] = (-shortest->get_pos()[k] + neurons[i].get_root()->get_pos()[k]);
 				r += vec_r[k] * vec_r[k];
 			}
 		
@@ -66,7 +66,7 @@ double Brain::gaussian(double x, double c)
 	return exp(-(x*x)/(2*c*c));
 }
 
-Node *Brain::grow_axon(Node &base, std::vector<double> g_dir)
+Node *Brain::grow_axon(Node &base, std::valarray<double> g_dir)
 {
 	Node *list_ptr;
 	list_ptr = &base;
@@ -75,7 +75,7 @@ Node *Brain::grow_axon(Node &base, std::vector<double> g_dir)
 		while(!list_ptr->get_next().empty())
 			list_ptr = list_ptr->get_next()[0];
 
-	std::vector<double> new_pos = g_dir;
+	std::valarray<double> new_pos = g_dir;
 	for (int i = 0; i < new_pos.size(); i++){
 		new_pos[i] = g_dir[i] * schwann_l + list_ptr->get_pos()[i];
 
@@ -91,12 +91,12 @@ Node *Brain::grow_axon(Node &base, std::vector<double> g_dir)
 	return new_axon;
 }
 
-Node *Brain::branch_axon(Node &base, std::vector<double> g_dir)
+Node *Brain::branch_axon(Node &base, std::valarray<double> g_dir)
 {
 	Node *list_ptr;
 	list_ptr = &base;
 
-	std::vector<double> new_pos = g_dir;
+	std::valarray<double> new_pos = g_dir;
 	for (int i = 0; i < new_pos.size(); i++)
 	{
 		new_pos[i] = g_dir[i] * schwann_l + list_ptr->get_pos()[i];

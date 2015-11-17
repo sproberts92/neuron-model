@@ -36,7 +36,7 @@ private:
 
 	double schwann_l;
 
-	Node *grow_axon(Node &base, std::vector<double> g_dir);
-	Node *Brain::branch_axon(Node &base, std::vector<double> g_dir);
+	Node *grow_axon(Node &base, std::valarray<double> g_dir);
+	Node *Brain::branch_axon(Node &base, std::valarray<double> g_dir);
 	double gaussian(double x, double c);
 };

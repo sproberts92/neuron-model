@@ -11,24 +11,26 @@ Tree::Tree(int d, std::vector<double> box, std::vector<Node*> &all)
 
 Node *Tree::get_root(void) { return root; }
 
-std::vector<double> Tree::get_grow_dir(void) { return grow_dir; }
+std::valarray<double> Tree::get_grow_dir(void) { return grow_dir; }
 
-
-std::vector<double> Tree::r_vec(std::vector<double> b_box)
+std::valarray<double> Tree::r_vec(std::vector<double> b_box)
 {
-	std::vector<double> vec;
+	std::valarray<double> vec(b_box.size() / 2);
 	static rand_gen <double> r_gen(0, 1);
 
-	for(auto it = b_box.begin(); it != b_box.end(); ++it)
+	for (int i = 0; i < vec.size(); ++i)
+		vec[i] = ((b_box[2 * i + 1] - b_box[2 * i]) * r_gen.get_rnum() + b_box[2 * i]);		
+
+/*	for(auto it = b_box.begin(); it != b_box.end(); ++it)
 	{
 		auto min = it++;
 		vec.push_back((*it - *min) * r_gen.get_rnum() + *min);
 	}
-	
+*/	
 	return vec;
 }
 
-void Tree::normalise(std::vector<double> &v)
+void Tree::normalise(std::valarray<double> &v)
 {
 	double length = 0.0;
 	for (auto x : v)

@@ -1,18 +1,19 @@
 #pragma once
 
 #include <vector>
+#include <valarray>
 #include "rand_gen.h"
 
 class Node
 {
 public:
 	Node();
-	Node(int d, const std::vector<double> p);
+	Node(int d, const std::valarray<double> p);
 
 	bool get_value(void);
 	void set_value(const bool v);
 
-	std::vector<double> get_pos(void);
+	std::valarray<double> get_pos(void);
 	std::vector<Node*> get_next(void);
 	void push_next(Node &n);
 
@@ -27,6 +28,6 @@ private:
 	bool on;
 	bool buffer;
 	
-	const std::vector<double> pos;
+	const std::valarray<double> pos;
 	std::vector<Node*> next;
 };

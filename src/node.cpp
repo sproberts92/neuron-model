@@ -1,12 +1,12 @@
 #include "node.h"
 
-Node::Node(int d, const std::vector<double> p)
+Node::Node(int d, const std::valarray<double> p)
 	: dim(d), pos(p), value(0), on(1), buffer(0) {}
 
 bool Node::get_value(void) { return value; }
 void Node::set_value(const bool v) { value = v; }
 
-std::vector<double> Node::get_pos(void) { return pos; }
+std::valarray<double> Node::get_pos(void) { return pos; }
 
 std::vector<Node*> Node::get_next(void) { return next; }
 void Node::push_next(Node &n) { next.push_back(&n); }
