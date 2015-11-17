@@ -70,7 +70,7 @@ int main()
 
 	std::cout << "100%\n" << std::endl;
 
-	std::cout << "Network size: " << brain.all_nodes.size() << " nodes." << std::endl;
+	std::cout << "Network size: " << brain.network_size() << " nodes." << std::endl;
 	// std::cout << "Connections: " << brain.all_synapses.size() << " synapses." << std::endl << std::endl;
 
 	clock_t end = clock();

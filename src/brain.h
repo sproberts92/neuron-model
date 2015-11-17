@@ -12,10 +12,10 @@ class Brain
 {
 public:
 	std::vector<Tree> neurons;
-	std::vector<Node*> all_nodes;
 
 	Brain(int d, std::vector<double> b, int n, double l);
 
+	int network_size(void);
 	void place_neurons(void);
 	void grow_axons(void);
 	void connect_network(void);
@@ -26,6 +26,7 @@ public:
 	void depth_first_path_search(Node &node, Node &root, std::vector<Node*> path);
 
 private:
+	std::vector<Node*> all_nodes;
 	int n_neurons;
 	int dim;
 	std::vector<double> bounds;

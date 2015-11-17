@@ -61,6 +61,12 @@ void Brain::connect_network(void)
 	std::cout << "100%\n" << std::endl;
 }
 
+int Brain::network_size(void)
+{
+	return static_cast<int>(all_nodes.size());
+}
+
+
 double Brain::gaussian(double x, double c)
 {
 	return exp(-(x*x)/(2*c*c));
