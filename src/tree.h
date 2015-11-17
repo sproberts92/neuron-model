@@ -19,10 +19,10 @@ public:
 	Node *find_shortest(Tree &target);
 
 private:
-	Node *root;
-	std::valarray<double> grow_dir;
-
 	std::valarray<double> r_vec(std::vector<double> b_box);
 	std::vector<double> unit_box(int d);
 	void normalise(std::valarray<double> &v);
+	
+	Node *root;
+	std::valarray<double> grow_dir;
 };

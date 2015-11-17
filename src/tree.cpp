@@ -9,30 +9,14 @@ Tree::Tree(int d, std::vector<double> box, std::vector<Node*> &all)
 	normalise(grow_dir);
 }
 
-Node *Tree::get_root(void) { return root; }
-std::valarray<double> Tree::get_grow_dir(void) { return grow_dir; }
-
-std::valarray<double> Tree::r_vec(std::vector<double> b_box)
+Node *Tree::get_root(void)
 {
-	std::valarray<double> vec(b_box.size() / 2);
-	static rand_gen<double> r_gen(0, 1);
-
-	for (int i = 0; i < vec.size(); ++i)
-		vec[i] = ((b_box[2 * i + 1] - b_box[2 * i]) * r_gen.get_rnum() + b_box[2 * i]);		
-
-	return vec;
+	return root;
 }
 
-void Tree::normalise(std::valarray<double> &v)
+std::valarray<double> Tree::get_grow_dir(void)
 {
-	v /= sqrt((v * v).sum());
-}
-
-std::vector<double> Tree::unit_box(int d)
-{
-	std::vector<double> box;
-	for (int i = 0; i < d; ++i) { box.push_back(-1); box.push_back(1); }
-	return box;
+	return grow_dir;
 }
 
 Node *Tree::find_shortest(Tree &target)
@@ -58,4 +42,33 @@ Node *Tree::find_shortest(Tree &target)
 	/* CHECK UP ON BOUNDARY CONDITIONS*/
 
 	return shortest_ptr;
+}
+
+std::valarray<double> Tree::r_vec(std::vector<double> b_box)
+{
+	std::valarray<double> vec(b_box.size() / 2);
+	static rand_gen<double> r_gen(0, 1);
+
+	for (int i = 0; i < vec.size(); ++i)
+		vec[i] = ((b_box[2 * i + 1] - b_box[2 * i]) * r_gen.get_rnum() + b_box[2 * i]);		
+
+	return vec;
+}
+
+std::vector<double> Tree::unit_box(int d)
+{
+	std::vector<double> box;
+
+	for (int i = 0; i < d; ++i)
+	{ 
+		box.push_back(-1);
+		box.push_back(1);
+	}
+	
+	return box;
+}
+
+void Tree::normalise(std::valarray<double> &v)
+{
+	v /= sqrt((v * v).sum());
 }
