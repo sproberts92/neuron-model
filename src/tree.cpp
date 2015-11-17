@@ -42,7 +42,7 @@ Node *Tree::find_shortest(Tree &target)
 
 	while(!list_ptr->get_next().empty())
 	{
-		std::valarray<double> temp = list_ptr->get_pos() - root->get_pos();
+		auto temp = list_ptr->get_pos() - root->get_pos();
 		double r = (temp * temp).sum();
 
 		/* Compare r^2 values, don't need to waste time with sqrt */
