@@ -8,6 +8,8 @@ extern "C" {
 	#include "config.h"
 }
 
+std::ostringstream iter_filename(path_t &path, int it);
+
 int main()
 {
 	clock_t begin = clock();
@@ -27,10 +29,7 @@ int main()
 		std::cout << 100 * i / config.growth_iter << "%\r";
 
 		brain.grow_axons();
-
-		std::ostringstream fileName;
-		fileName << "output\\growth\\growth_"<< i << ".dat";
-		brain.print_network(fileName, 1);
+		brain.print_network(iter_filename(config.growth, i), 1);
 	}
 	std::cout << "100%\n" << std::endl;
 
@@ -39,7 +38,7 @@ int main()
 	brain.connect_network();
 
 	std::ostringstream fileName;
-	fileName << "output\\Complete_Network.dat";
+	fileName << config.network.dir << "\\" << config.network.name << "." << config.network.ext;
 	brain.print_network(fileName, 1);
 
 	brain.find_loops();
@@ -55,10 +54,7 @@ int main()
 		std::cout << 100 * i / config.prop_iter << "%\r";
 
 		brain.propagate_signal(0.0);
-
-		std::ostringstream fileName;
-		fileName << "output\\signal\\signal_" << i << ".dat";
-		brain.print_network(fileName, 0);
+		brain.print_network(iter_filename(config.signal_prop, i), 0);
 
 		// Kill the signal
 		// if(brain.neurons.front().get_root()->get_value() == 1)
@@ -76,3 +72,9 @@ int main()
 	return 0;
 }
 
+std::ostringstream iter_filename(path_t &path, int it)
+{
+	std::ostringstream fileName;
+	fileName << path.dir << "\\" << path.name << it << "." << path.ext;
+	return fileName;	
+}
