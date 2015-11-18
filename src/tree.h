@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <limits>
+#include <utility>
 
 #include "rand_gen.h"
 #include "node.h"
@@ -11,18 +12,25 @@ class Tree
 {
 public:
 	Tree();
-	Tree(int d, std::vector<double> box, std::vector<Node*> &an);
+	Tree(std::valarray<std::pair<double, double>> b, std::vector<Node*> &all);
 
 	Node *get_root(void);
 	std::valarray<double> get_grow_dir(void);
 	
-	Node *find_shortest(Tree &target);
+	void grow_axon(double l);
+	void grow_branch(Tree &target, double l);
 
 private:
-	std::valarray<double> r_vec(std::vector<double> b_box);
-	std::vector<double> unit_box(int d);
+	std::valarray<std::pair<double, double>> unit_box(size_t d);
+	std::valarray<double> r_vec(std::valarray<std::pair<double, double>> box);
 	void normalise(std::valarray<double> &v);
 	
+	double find_shortest(const Tree &target, Node **shortest_ptr);
+	Node *add_node(Node *add_at, std::valarray<double> g_dir);
+	void impose_bc(std::valarray<double> &p);
+
 	Node *root;
+	std::vector<Node*> *all;
 	std::valarray<double> grow_dir;
+	std::valarray<std::pair<double, double>> bounds;
 };

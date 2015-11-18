@@ -1,63 +1,35 @@
 #include "brain.h"
 
-Brain::Brain(int d, std::vector<double> b, int n, double l) : dim(d), bounds(b), n_neurons(n), schwann_l(l)
+Brain::Brain(int d, int n, double l) : dim(d), n_neurons(n), schwann_l(l)
 {
 	r_gen = rand_gen<double>(0, 1);
 }
 
-void Brain::place_neurons(void)
+void Brain::place_neurons(std::valarray<std::pair<double, double>> b)
 {
 	for (int i = 0; i < n_neurons; i++)
-		neurons.push_back(Tree(dim, bounds, all_nodes));
+		neurons.push_back(Tree::Tree(b,all_nodes));
 }
 
 void Brain::grow_axons(void)
 {
-	for (int i = 0; i < n_neurons; i++)
-		grow_axon(*neurons[i].get_root(), neurons[i].get_grow_dir());
+	for(auto i : neurons)
+		i.grow_axon(schwann_l);
 }
 
 void Brain::connect_network(void)
 {
-	for (int i = 0; i < n_neurons; i++)
+	int p = 0;
+	for(auto i : neurons)
 	{
-		std::cout << 100 * i / n_neurons << "%\r";
-
-		for (int j = 0; j < n_neurons; j++)
-		{
-			if(i == j) continue;
-					
-			Node *shortest = neurons[i].find_shortest(neurons[j]);
-
-			double r = 0.0;
-			std::valarray<double> vec_r(dim);
-			for (int k = 0; k < dim; k++)
-			{
-				vec_r[k] = (-shortest->get_pos()[k] + neurons[i].get_root()->get_pos()[k]);
-				r += vec_r[k] * vec_r[k];
-			}
+		std::cout << 100 * p++ / n_neurons << "%\r";
 		
+		for(auto j : neurons)
+			if(i.get_root() == j.get_root()) continue;
+			else if(1)// && r_gen.get_rnum() < gaussian(r, 60))
+				i.grow_branch(j, schwann_l);
+	}	
 
-			r = sqrt(abs(r));
-		
-			if(r != 0)// && r_gen.get_rnum() < gaussian(r, 60))
-			{
-				for (int k = 0; k < dim; k++)
-					vec_r[k] /= r;			
-				
-				Node *synapse = branch_axon(*shortest, vec_r);
-				// all_synapses.push_back(synapse);
-				// all_synapses_state.push_back(1);
-				// synapses.insert(std::map<Node*, int>::value_type(synapse, 0));
-
-				Node *dendrite_end;
-				for (int i = 0; i < (int)(r/schwann_l + 1); i++)
-					dendrite_end = grow_axon(*synapse, vec_r);
-			
-				dendrite_end->push_next(*neurons[i].get_root());
-			}
-		}
-	}
 	std::cout << "100%\n" << std::endl;
 }
 
@@ -66,57 +38,9 @@ int Brain::network_size(void)
 	return static_cast<int>(all_nodes.size());
 }
 
-
 double Brain::gaussian(double x, double c)
 {
-	return exp(-(x*x)/(2*c*c));
-}
-
-Node *Brain::grow_axon(Node &base, std::valarray<double> g_dir)
-{
-	Node *list_ptr;
-	list_ptr = &base;
-
-	if(list_ptr != 0)
-		while(!list_ptr->get_next().empty())
-			list_ptr = list_ptr->get_next()[0];
-
-	std::valarray<double> new_pos = g_dir;
-	for (int i = 0; i < new_pos.size(); i++){
-		new_pos[i] = g_dir[i] * schwann_l + list_ptr->get_pos()[i];
-
-		// Impose periodic boundary conditions
-		if(new_pos[i] < bounds[i * 2]) new_pos[i] += (bounds[i * 2 + 1] - bounds[i * 2]);
-		if(new_pos[i] >= bounds[i * 2 + 1]) new_pos[i] -= (bounds[i * 2 + 1] - bounds[i * 2]);
-	}
-
-	Node *new_axon = new Node(dim, new_pos);
-	all_nodes.push_back(new_axon);
-	list_ptr->push_next(*new_axon);
-
-	return new_axon;
-}
-
-Node *Brain::branch_axon(Node &base, std::valarray<double> g_dir)
-{
-	Node *list_ptr;
-	list_ptr = &base;
-
-	std::valarray<double> new_pos = g_dir;
-	for (int i = 0; i < new_pos.size(); i++)
-	{
-		new_pos[i] = g_dir[i] * schwann_l + list_ptr->get_pos()[i];
-
-		// Impose periodic boundary conditions
-		if(new_pos[i] < bounds[i * 2]) new_pos[i] += (bounds[i * 2 + 1] - bounds[i * 2]);
-		if(new_pos[i] >= bounds[i * 2 + 1]) new_pos[i] -= (bounds[i * 2 + 1] - bounds[i * 2]);
-	}
-
-	Node *new_axon = new Node(dim, new_pos);
-	all_nodes.push_back(new_axon);
-	list_ptr->push_next(*new_axon);
-
-	return new_axon;
+	return exp(-(x * x)/(2 * c * c));
 }
 
 void Brain::print_network(std::ostringstream &fileName, bool no_signal)

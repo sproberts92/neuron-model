@@ -8,7 +8,7 @@ class Node
 {
 public:
 	Node();
-	Node(int d, const std::valarray<double> p);
+	Node(const std::valarray<double> p);
 
 	bool get_value(void);
 	void set_value(const bool v);
@@ -22,8 +22,6 @@ public:
 	bool pop_temp(double noise);
 
 private:
-	const int dim;
-	
 	bool value;
 	bool on;
 	bool buffer;

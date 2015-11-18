@@ -1,7 +1,7 @@
 #include "node.h"
 
-Node::Node(int d, const std::valarray<double> p)
-	: dim(d), pos(p), value(0), on(1), buffer(0) {}
+Node::Node(const std::valarray<double> p)
+	: pos(p), value(0), on(1), buffer(0) {}
 
 bool Node::get_value(void) { return value; }
 void Node::set_value(const bool v) { value = v; }

@@ -1,11 +1,12 @@
 #include "tree.h"
 
-Tree::Tree(int d, std::vector<double> box, std::vector<Node*> &all)
+Tree::Tree(std::valarray<std::pair<double, double>> b, std::vector<Node*> &a)
+	: bounds(b), all(&a)
 {
-	root = new Node(d , r_vec(box));
-	all.push_back(root);
+	root = new Node(r_vec(bounds));
+	all->push_back(root);
 
-	grow_dir = r_vec(unit_box(d));
+	grow_dir = r_vec(unit_box(bounds.size()));
 	normalise(grow_dir);
 }
 
@@ -19,9 +20,9 @@ std::valarray<double> Tree::get_grow_dir(void)
 	return grow_dir;
 }
 
-Node *Tree::find_shortest(Tree &target)
+double Tree::find_shortest(const Tree &target, Node **shortest_ptr)
 {
-	Node *list_ptr = target.root, *shortest_ptr = nullptr;
+	Node *list_ptr = target.root;	
 	double shortest_r = std::numeric_limits<double>::infinity();
 
 	while(!list_ptr->get_next().empty())
@@ -33,37 +34,31 @@ Node *Tree::find_shortest(Tree &target)
 		if(r < shortest_r)
 		{
 			shortest_r = r;
-			shortest_ptr = list_ptr;
+			*shortest_ptr = list_ptr;
 		}
 
 		list_ptr = list_ptr->get_next().front();
 	}
 
 	/* CHECK UP ON BOUNDARY CONDITIONS*/
-
-	return shortest_ptr;
+	return sqrt(shortest_r);
 }
 
-std::valarray<double> Tree::r_vec(std::vector<double> b_box)
+std::valarray<double> Tree::r_vec(std::valarray<std::pair<double, double>> box)
 {
-	std::valarray<double> vec(b_box.size() / 2);
+	std::valarray<double> vec(box.size());
 	static rand_gen<double> r_gen(0, 1);
 
 	for (int i = 0; i < vec.size(); ++i)
-		vec[i] = ((b_box[2 * i + 1] - b_box[2 * i]) * r_gen.get_rnum() + b_box[2 * i]);		
-
+		vec[i] = ((box[i].second - box[i].first) * r_gen.get_rnum() + box[i].first);		
+	
 	return vec;
 }
 
-std::vector<double> Tree::unit_box(int d)
+std::valarray<std::pair<double, double>> Tree::unit_box(size_t d)
 {
-	std::vector<double> box;
-
-	for (int i = 0; i < d; ++i)
-	{ 
-		box.push_back(-1);
-		box.push_back(1);
-	}
+	std::valarray<std::pair<double, double>> box(d);
+	box = std::make_pair(-1, 1);
 	
 	return box;
 }
@@ -71,4 +66,55 @@ std::vector<double> Tree::unit_box(int d)
 void Tree::normalise(std::valarray<double> &v)
 {
 	v /= sqrt((v * v).sum());
+}
+
+Node *Tree::add_node(Node *add_at, std::valarray<double> rel_pos)
+{
+	auto new_pos = rel_pos + add_at->get_pos();
+
+	// impose_bc(new_pos);
+
+	Node *new_axon = new Node(new_pos);
+	add_at->push_next(*new_axon);
+	all->push_back(new_axon);
+
+	return new_axon;
+}
+
+void Tree::grow_axon(double l)
+{
+	Node *list_ptr = root;
+
+	while(!list_ptr->get_next().empty())
+		list_ptr = list_ptr->get_next().front();
+
+	add_node(list_ptr, l * grow_dir);
+}
+
+void Tree::impose_bc(std::valarray<double> &p)
+{
+	for (int i = 0; i < p.size(); i++)
+	{
+		// Impose periodic boundary conditions
+		if(p[i] < bounds[i].first) p[i] += (bounds[i].second - bounds[i].first);
+		if(p[i] >= bounds[i].second) p[i] -= (bounds[i].second - bounds[i].first);
+	}
+}
+
+void Tree::grow_branch(Tree &target, double l)
+{
+	Node *shortest = nullptr;
+	double r = find_shortest(target, &shortest);
+
+	if(r != 0)
+	{
+		auto vec_r = l * (root->get_pos() - shortest->get_pos()) / r;
+		Node *synapse = add_node(shortest, vec_r);
+
+		for (int i = 0; i < (int)(r / l + 1); ++i)
+			synapse = add_node(synapse, vec_r);
+
+		synapse->push_next(*root);
+	}
+
 }
