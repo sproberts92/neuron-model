@@ -15,7 +15,6 @@ void getConfigInfo(user_config_t *config)
 	}
 
 	setting = config_lookup(&cfg, "application.settings");
-	check_lookup(setting);
 	
 	int lookup_success = 1;
 	lookup_success &= config_setting_lookup_int(setting, "dim", &(config->dim));
@@ -24,6 +23,15 @@ void getConfigInfo(user_config_t *config)
 	lookup_success &= config_setting_lookup_int(setting, "prop_iter", &(config->prop_iter));
 	lookup_success &= config_setting_lookup_float(setting, "schwann_l", &(config->schwann_l));
 	check_val_lookup(lookup_success);
+
+	setting = config_lookup(&cfg, "application.settings.bounds");
+	check_lookup(setting);
+	int count = config_setting_length(setting);
+
+	config->bounds = malloc(count * sizeof(double));
+
+	for (int i = 0; i < count; ++i)
+		config->bounds[i] = config_setting_get_float_elem(setting, i);
 
 	setting = config_lookup(&cfg, "application.paths.growth");
 	check_lookup(setting);
@@ -55,11 +63,6 @@ void getConfigInfo(user_config_t *config)
 	/* Would be nice to break the above out into a function to avoid repetition */
 
 	printf("Success.\n");
-
-	// TODO: Add support for bounds
-	// setting = config_lookup(&cfg, "application.settings.bounds");
-	// int count = config_setting_length(setting);
-	// printf("Count: %d\n", count);
 }
 
 void check_lookup(config_setting_t *setting)
