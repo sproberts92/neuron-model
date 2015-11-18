@@ -17,8 +17,8 @@ int main()
 
 	std::valarray<std::pair<double, double>> bounds = {{-50, 50}, {-50, 50}, {-50, 50}};
 
-	Brain brain(config.dim, config.n_neurons, config.schwann_l);
-	brain.place_neurons(bounds);
+	Brain brain(config.schwann_l);
+	brain.place_neurons(config.n_neurons, bounds);
 
 	std::cout << "Neuron layout complete. Growing axons..." << std::endl;
 
@@ -42,13 +42,11 @@ int main()
 	fileName << "output\\Complete_Network.dat";
 	brain.print_network(fileName, 1);
 
-	std::vector<Node*> path;
-	brain.depth_first_path_search(*brain.neurons.front().get_root(), *brain.neurons.front().get_root(), path);
+	brain.find_loops();
 	std::cout << std::endl;
 
-	// Reset newtwork
 	brain.clear_signals();
-	brain.neurons.front().get_root()->set_value(1);
+	brain.insert_signal(0);
 
 	std::cout << "Writing signal propagation frames..." << std::endl;
 

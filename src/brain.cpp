@@ -1,14 +1,14 @@
 #include "brain.h"
 
-Brain::Brain(int d, int n, double l) : dim(d), n_neurons(n), schwann_l(l)
+Brain::Brain(double l) : schwann_l(l)
 {
 	r_gen = rand_gen<double>(0, 1);
 }
 
-void Brain::place_neurons(std::valarray<std::pair<double, double>> b)
+void Brain::place_neurons(int n, std::valarray<std::pair<double, double>> bounds)
 {
-	for (int i = 0; i < n_neurons; i++)
-		neurons.push_back(Tree::Tree(b,all_nodes));
+	for (int i = 0; i < n; i++)
+		neurons.push_back(Tree::Tree(bounds, all_nodes));
 }
 
 void Brain::grow_axons(void)
@@ -17,12 +17,17 @@ void Brain::grow_axons(void)
 		i.grow_axon(schwann_l);
 }
 
+void Brain::insert_signal(int neuron_index)
+{
+	neurons[neuron_index].get_root()->set_value(1);
+}
+
 void Brain::connect_network(void)
 {
 	int p = 0;
 	for(auto i : neurons)
 	{
-		std::cout << 100 * p++ / n_neurons << "%\r";
+		std::cout << 100 * p++ / neurons.size() << "%\r";
 		
 		for(auto j : neurons)
 			if(i.get_root() == j.get_root()) continue;
@@ -99,4 +104,10 @@ void Brain::depth_first_path_search(Node &node, Node &root, std::vector<Node*> p
 	 * to the path. This would require an extra varaible storing the number of incoming
 	 * paths and for this to be calculated by filling the whole network with 1s and 
 	 * running one propagation step */
+}
+
+void Brain::find_loops(void)
+{
+	std::vector<Node*> path;
+	depth_first_path_search(*neurons.front().get_root(), *neurons.front().get_root(), path);
 }

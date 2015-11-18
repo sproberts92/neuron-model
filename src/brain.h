@@ -13,30 +13,28 @@
 class Brain
 {
 public:
-	std::vector<Tree> neurons;
-
-	Brain(int d, int n, double l);
+	Brain(double l);
 
 	int network_size(void);
-	void place_neurons(std::valarray<std::pair<double, double>> b);
+	void place_neurons(int n, std::valarray<std::pair<double, double>> b);
 	void grow_axons(void);
 	void connect_network(void);
 	void print_network(std::ostringstream &fileName, bool no_signal);
 	void propagate_signal(double noise);
 	void clear_signals(void);
-	void check_path(double thresh);
-	void depth_first_path_search(Node &node, Node &root, std::vector<Node*> path);
+	void find_loops(void);
+	void insert_signal(int neuron_index);
 
 private:
-	std::vector<Node*> all_nodes;
-	int n_neurons;
-	int dim;
-	rand_gen<double> r_gen;
+	double gaussian(double x, double c);
+	void depth_first_path_search(Node &node, Node &root, std::vector<Node*> path);
 
 	double schwann_l;
 
-	Node *Brain::branch_axon(Node &base, std::valarray<double> g_dir);
-	double gaussian(double x, double c);
+	rand_gen<double> r_gen;
+
+	std::vector<Tree> neurons;
+	std::vector<Node*> all_nodes;
 };
 
 // std::vector<Node*> all_synapses;
