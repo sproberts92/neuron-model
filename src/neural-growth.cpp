@@ -28,7 +28,7 @@ int main()
 	{
 		std::cout << 100 * i / config.growth_iter << "%\r";
 
-		brain.grow_axons();
+		brain.grow_axons();	
 		brain.print_network(iter_filename(config.growth, i), 1);
 	}
 	std::cout << "100%\n" << std::endl;
@@ -53,7 +53,7 @@ int main()
 	{
 		std::cout << 100 * i / config.prop_iter << "%\r";
 
-		brain.propagate_signal(0.0);
+		brain.propagate_signal(0.0);	
 		brain.print_network(iter_filename(config.signal_prop, i), 0);
 
 		// Kill the signal
@@ -66,8 +66,7 @@ int main()
 	std::cout << "Network size: " << brain.network_size() << " nodes." << std::endl;
 	// std::cout << "Connections: " << brain.all_synapses.size() << " synapses." << std::endl << std::endl;
 
-	clock_t end = clock();
-	std::cout << "Runtime: " << double(end - begin) /CLOCKS_PER_SEC << " seconds." << std::endl;
+	std::cout << "Runtime: " << double(clock() - begin) /CLOCKS_PER_SEC << " seconds." << std::endl;
 
 	return 0;
 }
