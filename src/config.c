@@ -15,7 +15,7 @@ void getConfigInfo(user_config_t *config)
 	}
 
 	setting = config_lookup(&cfg, "application.settings");
-	
+
 	int lookup_success = 1;
 	lookup_success &= config_setting_lookup_int(setting, "dim", &(config->dim));
 	lookup_success &= config_setting_lookup_int(setting, "n_neurons", &(config->n_neurons));
@@ -35,7 +35,7 @@ void getConfigInfo(user_config_t *config)
 
 	setting = config_lookup(&cfg, "application.paths.growth");
 	check_lookup(setting);
-	
+
 	lookup_success = 1;
 	lookup_success &= config_setting_lookup_string(setting, "dir", &(config->growth.dir));
 	lookup_success &= config_setting_lookup_string(setting, "name", &(config->growth.name));

@@ -22,7 +22,7 @@ std::valarray<double> Tree::get_grow_dir(void)
 
 double Tree::find_shortest(const Tree &target, Node **shortest_ptr)
 {
-	Node *list_ptr = target.root;	
+	Node *list_ptr = target.root;
 	double shortest_r = std::numeric_limits<double>::infinity();
 
 	while(!list_ptr->get_next().empty())
@@ -50,8 +50,8 @@ std::valarray<double> Tree::r_vec(std::valarray<std::pair<double, double>> box)
 	static rand_gen<double> r_gen(0, 1);
 
 	for (int i = 0; i < vec.size(); ++i)
-		vec[i] = ((box[i].second - box[i].first) * r_gen.get_rnum() + box[i].first);		
-	
+		vec[i] = ((box[i].second - box[i].first) * r_gen.get_rnum() + box[i].first);
+
 	return vec;
 }
 
@@ -59,7 +59,7 @@ std::valarray<std::pair<double, double>> Tree::unit_box(size_t d)
 {
 	std::valarray<std::pair<double, double>> box(d);
 	box = std::make_pair(-1, 1);
-	
+
 	return box;
 }
 

@@ -25,7 +25,7 @@ private:
 	bool value;
 	bool on;
 	bool buffer;
-	
+
 	const std::valarray<double> pos;
 	std::vector<Node*> next;
 };

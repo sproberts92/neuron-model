@@ -11,7 +11,7 @@ void Brain::create_network(user_config_t &config)
 	{
 		std::cout << 100 * i / config.growth_iter << "%\r";
 
-		grow_axons(config.schwann_l);	
+		grow_axons(config.schwann_l);
 		print_network(file_name(config.growth, i), 1);
 	}
 	std::cout << "100%\n" << std::endl;
@@ -96,7 +96,7 @@ void Brain::connect_network(double l)
 	for(auto i : neurons)
 	{
 		std::cout << 100 * p++ / neurons.size() << "%\r";
-		
+
 		for(auto j : neurons)
 			if(i.get_root() == j.get_root())
 				continue;

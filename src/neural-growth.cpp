@@ -26,7 +26,7 @@ int main()
 	{
 		std::cout << 100 * i / config.prop_iter << "%\r";
 
-		brain.propagate_signal(0.0);	
+		brain.propagate_signal(0.0);
 		brain.print_network(file_name(config.signal_prop, i), 0);
 
 		// Kill the signal

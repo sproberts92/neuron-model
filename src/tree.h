@@ -16,7 +16,7 @@ public:
 
 	Node *get_root(void);
 	std::valarray<double> get_grow_dir(void);
-	
+
 	void grow_axon(double l);
 	Node *grow_branch(Tree &target, double l);
 
@@ -24,7 +24,7 @@ private:
 	std::valarray<std::pair<double, double>> unit_box(size_t d);
 	std::valarray<double> r_vec(std::valarray<std::pair<double, double>> box);
 	void normalise(std::valarray<double> &v);
-	
+
 	double find_shortest(const Tree &target, Node **shortest_ptr);
 	Node *add_node(Node *add_at, std::valarray<double> g_dir);
 	void impose_bc(std::valarray<double> &p);

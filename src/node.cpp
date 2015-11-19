@@ -28,7 +28,7 @@ void Node::push_temp_next(void)
 bool Node::pop_temp(double thresh)
 {
 	auto r_gen = rand_gen<double>(0.0, 1.0);
-	
+
 	bool success = false;
 	if(on && (thresh == 0.0 || (thresh != 1.0 && r_gen.get_rnum() > thresh)))
 	{
