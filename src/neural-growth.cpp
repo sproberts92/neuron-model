@@ -10,7 +10,7 @@ int main()
 	user_config_t config;
 	getConfigInfo(&config);
 
-	Brain brain(config.schwann_l);
+	Brain brain;
 	brain.create_network(config);
 
 	brain.print_network(file_name(config.network), 1);

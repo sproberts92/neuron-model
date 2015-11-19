@@ -14,8 +14,6 @@
 class Brain
 {
 public:
-	Brain(double l);
-
 	void create_network(user_config_t &config);
 	
 	void find_loops(void);
@@ -29,16 +27,12 @@ public:
 
 private:
 	void place_neurons(int n, std::valarray<std::pair<double, double>> b);
-	void grow_axons(void);
-	void connect_network(void);
+	void grow_axons(double l);
+	void connect_network(double l);
 	
 	void depth_first_path_search(Node &node, Node &root, std::vector<Node*> path);
 	
 	double gaussian(double x, double c);
-
-	double schwann_l;
-
-	rand_gen<double> r_gen;
 
 	std::vector<Tree> neurons;
 	std::vector<Node*> all_nodes;

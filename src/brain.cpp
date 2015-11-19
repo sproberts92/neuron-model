@@ -1,10 +1,5 @@
 #include "brain.h"
 
-Brain::Brain(double l) : schwann_l(l)
-{
-	r_gen = rand_gen<double>(0, 1);
-}
-
 void Brain::create_network(user_config_t &config)
 {
 	auto bounds = convert_bounds(config);
@@ -16,13 +11,13 @@ void Brain::create_network(user_config_t &config)
 	{
 		std::cout << 100 * i / config.growth_iter << "%\r";
 
-		grow_axons();	
+		grow_axons(config.schwann_l);	
 		print_network(file_name(config.growth, i), 1);
 	}
 	std::cout << "100%\n" << std::endl;
 
 	std::cout << "Axon growth complete. Growing dendrites..." << std::endl;
-	connect_network();
+	connect_network(config.schwann_l);
 }
 
 void Brain::find_loops(void)
@@ -83,15 +78,17 @@ void Brain::place_neurons(int n, std::valarray<std::pair<double, double>> bounds
 		neurons.push_back(Tree::Tree(bounds, all_nodes));
 }
 
-void Brain::grow_axons(void)
+void Brain::grow_axons(double l)
 {
 	for(auto i : neurons)
-		i.grow_axon(schwann_l);
+		i.grow_axon(l);
 }
 
 
-void Brain::connect_network(void)
+void Brain::connect_network(double l)
 {
+	// rand_gen<double> r_gen = rand_gen<double>(0, 1);
+
 	int p = 0;
 	for(auto i : neurons)
 	{
@@ -100,7 +97,7 @@ void Brain::connect_network(void)
 		for(auto j : neurons)
 			if(i.get_root() == j.get_root()) continue;
 			else if(1)// && r_gen.get_rnum() < gaussian(r, 60))
-				i.grow_branch(j, schwann_l);
+				i.grow_branch(j, l);
 	}	
 
 	std::cout << "100%\n" << std::endl;
