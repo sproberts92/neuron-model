@@ -1,15 +1,7 @@
 #include <iostream>
 #include <ctime>
-#include <sstream>
 
 #include "brain.h"
-
-extern "C" {
-	#include "config.h"
-}
-
-std::ostringstream file_name(path_t &path);
-std::ostringstream file_name(path_t &path, int it);
 
 int main()
 {
@@ -21,26 +13,12 @@ int main()
 	std::valarray<std::pair<double, double>> bounds = {{-50, 50}, {-50, 50}, {-50, 50}};
 
 	Brain brain(config.schwann_l);
-	brain.place_neurons(config.n_neurons, bounds);
 
-	std::cout << "Neuron layout complete. Growing axons..." << std::endl;
+	brain.create_network(config, bounds);
 
-	for (int i = 0; i < config.growth_iter; i++)
-	{
-		std::cout << 100 * i / config.growth_iter << "%\r";
-
-		brain.grow_axons();	
-		brain.print_network(file_name(config.growth, i), 1);
-	}
-	std::cout << "100%\n" << std::endl;
-
-	std::cout << "Axon growth complete. Growing dendrites..." << std::endl;
-
-	brain.connect_network();
 	brain.print_network(file_name(config.network), 1);
 
 	brain.find_loops();
-	std::cout << std::endl;
 
 	brain.clear_signals();
 	brain.insert_signal(0);
@@ -67,18 +45,4 @@ int main()
 	std::cout << "Runtime: " << double(clock() - begin) /CLOCKS_PER_SEC << " seconds." << std::endl;
 
 	return 0;
-}
-
-std::ostringstream file_name(path_t &path)
-{
-	std::ostringstream fileName;
-	fileName << path.dir << "\\" << path.name << "." << path.ext;
-	return fileName;	
-}
-
-std::ostringstream file_name(path_t &path, int it)
-{
-	std::ostringstream fileName;
-	fileName << path.dir << "\\" << path.name << it << "." << path.ext;
-	return fileName;	
 }

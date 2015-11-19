@@ -7,6 +7,7 @@
 #include <map>
 #include <utility>
 
+#include "utility.h"
 #include "rand_gen.h"
 #include "tree.h"
 
@@ -15,6 +16,7 @@ class Brain
 public:
 	Brain(double l);
 
+	void create_network(user_config_t &config, std::valarray<std::pair<double, double>> bounds);
 	int network_size(void);
 	void place_neurons(int n, std::valarray<std::pair<double, double>> b);
 	void grow_axons(void);

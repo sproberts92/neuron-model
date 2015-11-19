@@ -5,6 +5,25 @@ Brain::Brain(double l) : schwann_l(l)
 	r_gen = rand_gen<double>(0, 1);
 }
 
+void Brain::create_network(user_config_t &config, std::valarray<std::pair<double, double>> bounds)
+{
+	place_neurons(config.n_neurons, bounds);
+
+	std::cout << "Neuron layout complete. Growing axons..." << std::endl;
+
+	for (int i = 0; i < config.growth_iter; i++)
+	{
+		std::cout << 100 * i / config.growth_iter << "%\r";
+
+		grow_axons();	
+		print_network(file_name(config.growth, i), 1);
+	}
+	std::cout << "100%\n" << std::endl;
+
+	std::cout << "Axon growth complete. Growing dendrites..." << std::endl;
+	connect_network();
+}
+
 void Brain::place_neurons(int n, std::valarray<std::pair<double, double>> bounds)
 {
 	for (int i = 0; i < n; i++)
