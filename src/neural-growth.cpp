@@ -15,7 +15,8 @@ int main()
 
 	brain.print_network(file_name(config.network), 1);
 
-	brain.find_loops();
+	std::cout << "Searching for loops..." << std::endl;
+	brain.find_loops(3);
 
 	brain.clear_signals();
 	brain.insert_signal(0);

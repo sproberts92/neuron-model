@@ -35,3 +35,11 @@ private:
 	std::valarray<double> grow_dir;
 	std::valarray<std::pair<double, double>> bounds;
 };
+
+struct TreeRootComp
+{
+ 	explicit TreeRootComp(Node *n) : node(n) { }
+ 	inline const bool operator()(Tree & m) const { return m.get_root() == node; }
+private:
+ 	Node *node;
+};

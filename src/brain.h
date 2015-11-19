@@ -16,7 +16,7 @@ class Brain
 public:
 	void create_network(user_config_t &config);
 
-	void find_loops(void);
+	void find_loops(int n);
 
 	void clear_signals(void);
 	void insert_signal(int neuron_index);
@@ -32,8 +32,10 @@ private:
 	void grow_axons(double l);
 	void connect_network(double l);
 
-	void depth_first_path_search(Node &node, Node &root, std::vector<Node*> path);
-
+	void turn_off_synapses(std::vector<Node*> path_s);
+	bool depth_first_path_search(int &ln, int &loop_length, Node &node, Node &root, std::vector<Node*> &r_path, std::vector<Node*> &s_path);
+	bool set_root_flag(Node &node, std::vector<Node*> &path);
+	bool set_synapse_flag(Node &node, std::vector<Node*> &path);
 	std::vector<Tree> neurons;
 	std::vector<Node*> all_nodes;
 	std::vector<Node*> synapses;

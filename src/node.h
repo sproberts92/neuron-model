@@ -13,6 +13,9 @@ public:
 	bool get_value(void);
 	void set_value(const bool v);
 
+	void turn_on(void);
+	void turn_off(void);
+	
 	std::valarray<double> get_pos(void);
 	std::vector<Node*> get_next(void);
 	void push_next(Node &n);

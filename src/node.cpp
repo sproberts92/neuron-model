@@ -1,10 +1,13 @@
 #include "node.h"
 
 Node::Node(const std::valarray<double> p)
-	: pos(p), value(0), on(1), buffer(0) {}
+	: pos(p), value(0), on(true), buffer(0) {}
 
 bool Node::get_value(void) { return value; }
 void Node::set_value(const bool v) { value = v; }
+
+void Node::turn_on(void) { on = true; }
+void Node::turn_off(void) { on = false; }
 
 std::valarray<double> Node::get_pos(void) { return pos; }
 
