@@ -24,16 +24,17 @@ void Brain::create_network(user_config_t &config, std::valarray<std::pair<double
 	connect_network();
 }
 
-void Brain::place_neurons(int n, std::valarray<std::pair<double, double>> bounds)
+void Brain::find_loops(void)
 {
-	for (int i = 0; i < n; i++)
-		neurons.push_back(Tree::Tree(bounds, all_nodes));
+	std::vector<Node*> path;
+	depth_first_path_search(*neurons.front().get_root(), *neurons.front().get_root(), path);
 }
 
-void Brain::grow_axons(void)
+void Brain::clear_signals(void)
 {
-	for(auto i : neurons)
-		i.grow_axon(schwann_l);
+	/* Phase 0 - reset all counters */
+	for(auto it_n : all_nodes)
+		it_n->clear_signal();
 }
 
 void Brain::insert_signal(int neuron_index)
@@ -41,30 +42,15 @@ void Brain::insert_signal(int neuron_index)
 	neurons[neuron_index].get_root()->set_value(1);
 }
 
-void Brain::connect_network(void)
+void Brain::propagate_signal(double thresh)
 {
-	int p = 0;
-	for(auto i : neurons)
-	{
-		std::cout << 100 * p++ / neurons.size() << "%\r";
-		
-		for(auto j : neurons)
-			if(i.get_root() == j.get_root()) continue;
-			else if(1)// && r_gen.get_rnum() < gaussian(r, 60))
-				i.grow_branch(j, schwann_l);
-	}	
+	/* Phase 1 - move to temp variable of next node(s) */
+	for(auto it_n : all_nodes)
+		it_n->push_temp_next();
 
-	std::cout << "100%\n" << std::endl;
-}
-
-int Brain::network_size(void)
-{
-	return static_cast<int>(all_nodes.size());
-}
-
-double Brain::gaussian(double x, double c)
-{
-	return exp(-(x * x)/(2 * c * c));
+	/* Phase 2 - move from temp variable to value variable */
+	for(auto it_n : all_nodes)
+		it_n->pop_temp(thresh);
 }
 
 void Brain::print_network(std::ostringstream &fileName, bool no_signal)
@@ -85,22 +71,38 @@ void Brain::print_network(std::ostringstream &fileName, bool no_signal)
 	out_stream.close();
 }
 
-void Brain::propagate_signal(double thresh)
+int Brain::network_size(void)
 {
-	/* Phase 1 - move to temp variable of next node(s) */
-	for(auto it_n : all_nodes)
-		it_n->push_temp_next();
-
-	/* Phase 2 - move from temp variable to value variable */
-	for(auto it_n : all_nodes)
-		it_n->pop_temp(thresh);
+	return static_cast<int>(all_nodes.size());
 }
 
-void Brain::clear_signals(void)
+void Brain::place_neurons(int n, std::valarray<std::pair<double, double>> bounds)
 {
-	/* Phase 0 - reset all counters */
-	for(auto it_n : all_nodes)
-		it_n->clear_signal();
+	for (int i = 0; i < n; i++)
+		neurons.push_back(Tree::Tree(bounds, all_nodes));
+}
+
+void Brain::grow_axons(void)
+{
+	for(auto i : neurons)
+		i.grow_axon(schwann_l);
+}
+
+
+void Brain::connect_network(void)
+{
+	int p = 0;
+	for(auto i : neurons)
+	{
+		std::cout << 100 * p++ / neurons.size() << "%\r";
+		
+		for(auto j : neurons)
+			if(i.get_root() == j.get_root()) continue;
+			else if(1)// && r_gen.get_rnum() < gaussian(r, 60))
+				i.grow_branch(j, schwann_l);
+	}	
+
+	std::cout << "100%\n" << std::endl;
 }
 
 void Brain::depth_first_path_search(Node &node, Node &root, std::vector<Node*> path)
@@ -125,8 +127,7 @@ void Brain::depth_first_path_search(Node &node, Node &root, std::vector<Node*> p
 	 * running one propagation step */
 }
 
-void Brain::find_loops(void)
+double Brain::gaussian(double x, double c)
 {
-	std::vector<Node*> path;
-	depth_first_path_search(*neurons.front().get_root(), *neurons.front().get_root(), path);
+	return exp(-(x * x)/(2 * c * c));
 }
