@@ -105,8 +105,11 @@ Node *Tree::grow_branch(Tree &target, double l)
 {
 	Node *shortest = nullptr;
 	double r = find_shortest(target, &shortest);
+	// static rand_gen<double> r_gen = rand_gen<double>(0, 1);
+	/* TO DO: replace static with smart-pointer that can be gc'd later*/
+	/* TO DO: read constants in gaussian from config.cfg */
 
-	if(r != 0)
+	if(r != 0)// && r_gen.get_rnum() < gaussian(r, 25))
 	{
 		auto vec_r = l * (root->get_pos() - shortest->get_pos()) / r;
 		Node *synapse = add_node(shortest, vec_r);
@@ -122,4 +125,7 @@ Node *Tree::grow_branch(Tree &target, double l)
 	else return nullptr;
 }
 
+double Tree::gaussian(double x, double c)
+{
+	return exp(-(x * x)/(2 * c * c));
 }

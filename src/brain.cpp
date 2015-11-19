@@ -92,8 +92,6 @@ void Brain::grow_axons(double l)
 
 void Brain::connect_network(double l)
 {
-	// rand_gen<double> r_gen = rand_gen<double>(0, 1);
-
 	int p = 0;
 	for(auto i : neurons)
 	{
@@ -131,7 +129,3 @@ void Brain::depth_first_path_search(Node &node, Node &root, std::vector<Node*> p
 	 * running one propagation step */
 }
 
-double Brain::gaussian(double x, double c)
-{
-	return exp(-(x * x)/(2 * c * c));
-}

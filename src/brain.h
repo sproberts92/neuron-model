@@ -32,8 +32,6 @@ private:
 	void connect_network(double l);
 	
 	void depth_first_path_search(Node &node, Node &root, std::vector<Node*> path);
-	
-	double gaussian(double x, double c);
 
 	std::vector<Tree> neurons;
 	std::vector<Node*> all_nodes;
