@@ -10,11 +10,8 @@ int main()
 	user_config_t config;
 	getConfigInfo(&config);
 
-	std::valarray<std::pair<double, double>> bounds = {{-50, 50}, {-50, 50}, {-50, 50}};
-
 	Brain brain(config.schwann_l);
-
-	brain.create_network(config, bounds);
+	brain.create_network(config);
 
 	brain.print_network(file_name(config.network), 1);
 

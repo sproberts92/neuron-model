@@ -16,7 +16,7 @@ class Brain
 public:
 	Brain(double l);
 
-	void create_network(user_config_t &config, std::valarray<std::pair<double, double>> bounds);
+	void create_network(user_config_t &config);
 	
 	void find_loops(void);
 	

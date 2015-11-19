@@ -5,8 +5,9 @@ Brain::Brain(double l) : schwann_l(l)
 	r_gen = rand_gen<double>(0, 1);
 }
 
-void Brain::create_network(user_config_t &config, std::valarray<std::pair<double, double>> bounds)
+void Brain::create_network(user_config_t &config)
 {
+	auto bounds = convert_bounds(config);
 	place_neurons(config.n_neurons, bounds);
 
 	std::cout << "Neuron layout complete. Growing axons..." << std::endl;

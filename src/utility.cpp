@@ -13,3 +13,16 @@ std::ostringstream file_name(path_t &path, int it)
 	fileName << path.dir << "\\" << path.name << it << "." << path.ext;
 	return fileName;	
 }
+
+std::valarray<std::pair<double, double>> convert_bounds(user_config_t &config)
+{
+	std::valarray<std::pair<double, double>> bounds(config.dim);
+
+	for (int i = 0; i < config.dim; ++i)
+	{
+		bounds[i].first  = config.bounds[2 * i];
+		bounds[i].second = config.bounds[2 * i + 1];
+	}	
+
+	return bounds;
+}
