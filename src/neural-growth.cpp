@@ -30,7 +30,7 @@ int main()
 		brain.print_network(file_name(config.signal_prop, i), 0);
 
 		// Kill the signal
-		// if(brain.neurons.front().get_root()->get_value() == 1)
+		// if(brain.read_signal(0) == 1)
 			// brain.neurons.front().get_root()->set_value(0);
 	}
 

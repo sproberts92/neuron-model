@@ -38,6 +38,11 @@ void Brain::insert_signal(int neuron_index)
 	neurons[neuron_index].get_root()->set_value(1);
 }
 
+bool Brain::read_signal(int neuron_index)
+{
+	return neurons[neuron_index].get_root()->get_value();
+}
+
 void Brain::propagate_signal(double thresh)
 {
 	/* Phase 1 - move to temp variable of next node(s) */

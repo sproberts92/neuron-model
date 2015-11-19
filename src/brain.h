@@ -20,6 +20,7 @@ public:
 
 	void clear_signals(void);
 	void insert_signal(int neuron_index);
+	bool read_signal(int neuron_index);
 	void propagate_signal(double noise);
 
 	void print_network(std::ostringstream &fileName, bool no_signal);
