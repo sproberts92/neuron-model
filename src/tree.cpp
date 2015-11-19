@@ -101,7 +101,7 @@ void Tree::impose_bc(std::valarray<double> &p)
 	}
 }
 
-void Tree::grow_branch(Tree &target, double l)
+Node *Tree::grow_branch(Tree &target, double l)
 {
 	Node *shortest = nullptr;
 	double r = find_shortest(target, &shortest);
@@ -111,10 +111,15 @@ void Tree::grow_branch(Tree &target, double l)
 		auto vec_r = l * (root->get_pos() - shortest->get_pos()) / r;
 		Node *synapse = add_node(shortest, vec_r);
 
+		Node *dendrite_head = synapse;
 		for (int i = 0; i < (int)(r / l + 1); ++i)
-			synapse = add_node(synapse, vec_r);
+			dendrite_head = add_node(dendrite_head, vec_r);
 
-		synapse->push_next(*root);
+		dendrite_head->push_next(*root);
+
+		return synapse;
 	}
+	else return nullptr;
+}
 
 }

@@ -24,6 +24,7 @@ public:
 	
 	void print_network(std::ostringstream &fileName, bool no_signal);
 	int network_size(void);
+	int connections(void);
 
 private:
 	void place_neurons(int n, std::valarray<std::pair<double, double>> b);
@@ -36,6 +37,7 @@ private:
 
 	std::vector<Tree> neurons;
 	std::vector<Node*> all_nodes;
+	std::vector<Node*> synapses;
 };
 
 // std::vector<Node*> all_synapses;

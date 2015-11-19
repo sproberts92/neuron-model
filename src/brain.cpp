@@ -72,6 +72,11 @@ int Brain::network_size(void)
 	return static_cast<int>(all_nodes.size());
 }
 
+int Brain::connections(void)
+{
+	return static_cast<int>(synapses.size());
+}
+
 void Brain::place_neurons(int n, std::valarray<std::pair<double, double>> bounds)
 {
 	for (int i = 0; i < n; i++)
@@ -95,10 +100,11 @@ void Brain::connect_network(double l)
 		std::cout << 100 * p++ / neurons.size() << "%\r";
 		
 		for(auto j : neurons)
-			if(i.get_root() == j.get_root()) continue;
-			else if(1)// && r_gen.get_rnum() < gaussian(r, 60))
-				i.grow_branch(j, l);
-	}	
+			if(i.get_root() == j.get_root())
+				continue;
+			else if(Node *synapse = i.grow_branch(j, l))
+				synapses.push_back(synapse);
+	}
 
 	std::cout << "100%\n" << std::endl;
 }
