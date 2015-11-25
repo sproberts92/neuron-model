@@ -5,7 +5,6 @@
 #include <iostream>
 #include <algorithm>
 #include <map>
-#include <utility>
 
 #include "utility.h"
 #include "rand_gen.h"
