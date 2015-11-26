@@ -2,6 +2,7 @@
 #include <ctime>
 
 #include "brain.h"
+#include "interface.h"
 
 int main()
 {
