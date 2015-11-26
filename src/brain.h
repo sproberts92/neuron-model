@@ -38,6 +38,7 @@ private:
 	std::vector<Tree> neurons;
 	std::vector<Node*> all_nodes;
 	std::vector<Node*> synapses;
+	std::valarray<std::valarray<bool>> neuron_adjacency;
 };
 
 // std::vector<Node*> all_synapses;

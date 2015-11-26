@@ -95,6 +95,8 @@ void Brain::place_neurons(int n, std::valarray<std::pair<double, double>> bounds
 {
 	for (int i = 0; i < n; i++)
 		neurons.push_back(Tree::Tree(bounds, all_nodes));
+
+	neuron_adjacency.resize(n, std::valarray<bool>(false, n));
 }
 
 void Brain::grow_axons(double l)
@@ -106,18 +108,21 @@ void Brain::grow_axons(double l)
 
 void Brain::connect_network(double l)
 {
-	int p = 0;
-	for(auto i : neurons)
+	for (int i = 0; i < neurons.size(); ++i)
 	{
-		std::cout << 100 * p++ / neurons.size() << "%\r";
-
-		for(auto j : neurons)
-			if(i.get_root() == j.get_root())
+		std::cout << 100 * i / neurons.size() << "%\r";
+		for (int j = 0; j < neurons.size(); ++j)
+		{
+			if(neurons[i].get_root() == neurons[j].get_root())
 				continue;
-			else if(Node *synapse = i.grow_branch(j, l))
+			else if(Node *synapse = neurons[i].grow_branch(neurons[j], l))
+			{
+				neuron_adjacency[i][j] = true;
 				synapses.push_back(synapse);
+			}
+		}
 	}
-
+	
 	std::cout << "100%\n" << std::endl;
 }
 
