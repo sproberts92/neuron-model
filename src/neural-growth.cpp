@@ -14,7 +14,9 @@ int main()
 	Brain brain;
 	brain.create_network(config);
 
+	std::cout << "Printing network. ";
 	brain.print_network(file_name(config.network), 1);
+	std::cout << "Done." << std::endl;
 
 	std::cout << "Searching for loops..." << std::endl;
 	brain.find_loops(3);
