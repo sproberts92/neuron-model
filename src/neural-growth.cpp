@@ -1,4 +1,5 @@
 #include <iostream>
+#include <queue>
 #include <ctime>
 
 #include "brain.h"
@@ -32,10 +33,30 @@ int main()
 
 	key_state_t key_state;
 
+	std::queue<bool> queue;
 	while(!key_state.esc)
 	{
 		read_key_state(key_state);
-		std::cout << key_state.a << key_state.l << key_state.g << key_state.b << std::endl;
+		
+		std::vector<bool> message;
+		if(key_state.a && key_state.g)
+			message = {1,0,1,0,0,0,1,1};
+		else if(key_state.a)
+			message = {1,0,1,0,0,0,0,1};
+
+		if(!queue.size())
+			for(auto it : message)
+				queue.push(it);
+		std::cout << queue.size() << std::endl;
+
+		if(queue.size())
+		{
+			if(queue.front()) brain.insert_signal(0);
+			queue.pop();
+		}
+		static int i = 0;
+
+		brain.print_network(file_name(config.signal_prop, i++), 0);
 		brain.propagate_signal(0.0);
 	}
 
