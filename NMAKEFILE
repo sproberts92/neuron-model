@@ -1,4 +1,4 @@
-USER_SOURCES = neural-growth.cpp brain.cpp tree.cpp node.cpp config.c utility.cpp
+USER_SOURCES = neural-growth.cpp brain.cpp tree.cpp node.cpp config.c utility.cpp interface_win.cpp
 EXECUTABLE = neural-growth.exe
 ###################################
 SOURCE_DIR = src
@@ -11,7 +11,7 @@ LINK = link
 CFLAGS = /Ox /c /EHsc /W3 /Fo.\$(OBJECT_DIR)\ \
 /I $(EXTERN_DIR)\libconfig\lib
 
-LIBS = $(EXTERN_DIR)\libconfig\x64\Release\libconfig.lib
+LIBS = $(EXTERN_DIR)\libconfig\x64\Release\libconfig.lib "C:\Program Files (x86)\Windows Kits\10\Lib\10.0.10240.0\um\x64\User32.lib"
 DLLS_SRC = $(EXTERN_DIR)\libconfig\x64\Release\libconfig.dll
 
 SOURCES = $(SOURCE_DIR)\$(USER_SOURCES: = src\)
