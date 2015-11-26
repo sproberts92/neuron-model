@@ -23,12 +23,21 @@ int main()
 	std::cout << "Searching for loops..." << std::endl;
 	brain.find_loops(3);
 
-	write_propagation_loop_frames(brain, config);
+	// write_propagation_loop_frames(brain, config);
 
 	std::cout << "Network size: " << brain.network_size() << " nodes." << std::endl;
 	std::cout << "Connections: " << brain.connections() << " synapses." << std::endl << std::endl;
 
 	std::cout << "Runtime: " << double(clock() - begin) /CLOCKS_PER_SEC << " seconds." << std::endl;
+
+	key_state_t key_state;
+
+	while(!key_state.esc)
+	{
+		read_key_state(key_state);
+		std::cout << key_state.a << key_state.l << key_state.g << key_state.b << std::endl;
+		brain.propagate_signal(0.0);
+	}
 
 	return 0;
 }
