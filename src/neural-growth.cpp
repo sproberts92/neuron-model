@@ -34,6 +34,8 @@ int main()
 	key_state_t key_state;
 
 	std::queue<bool> queue;
+	
+	int i = 0;
 	while(!key_state.esc)
 	{
 		read_key_state(key_state);
@@ -54,7 +56,6 @@ int main()
 			if(queue.front()) brain.insert_signal(0);
 			queue.pop();
 		}
-		static int i = 0;
 
 		brain.print_network(file_name(config.signal_prop, i++), 0);
 		brain.propagate_signal(0.0);
