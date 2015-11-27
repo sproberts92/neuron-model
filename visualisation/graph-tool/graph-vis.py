@@ -7,9 +7,9 @@ g = Graph()
 g.add_vertex(adj.shape[0])
 
 for i, vv in enumerate(adj):
-	for j, v in enumerate(vv):
-		if v == 1 and i > j:
-			g.add_edge(i, j)
+    for j, v in enumerate(vv):
+        if v == 1 and i > j:
+            g.add_edge(i, j)
 
 # g = collection.data["celegansneural"]
 state = minimize_nested_blockmodel_dl(g, deg_corr=True)
