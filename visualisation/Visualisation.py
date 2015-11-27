@@ -18,7 +18,7 @@ def f(i, fig, ax):
     points = read_points(sigpath)
 
     ax.view_init(30, 0.3 * i)
-    
+
     if points:
         lines = ax.scatter(*zip(*points), c='r')
         fig.canvas.draw()
@@ -47,8 +47,8 @@ def main():
 
     args = [(i, fig, ax) for i in range(500)]
     
-    p = Pool(4)
-    p.starmap(f, args, 16)
+    p = Pool(8)
+    p.starmap(f, args, 1)
 
 if __name__ == '__main__':
     main()
