@@ -1,7 +1,7 @@
 from graph_tool.all import *
 import numpy as np
 
-adj = np.loadtxt('adj_300_12_5.dat')
+adj = np.loadtxt('input/adj_300_12_5.dat')
 
 g = Graph()
 g.add_vertex(adj.shape[0])
@@ -14,4 +14,4 @@ for i, vv in enumerate(adj):
 # g = collection.data["celegansneural"]
 state = minimize_nested_blockmodel_dl(g, deg_corr=True)
 # draw_hierarchy(state, output="celegans_nested_mdl.pdf")
-draw_hierarchy(state, output="model_nested_mdl.pdf")
+draw_hierarchy(state, output="output/model_nested_mdl.pdf")
