@@ -72,7 +72,7 @@ Node *Tree::add_node(Node *add_at, std::valarray<double> rel_pos)
 {
 	auto new_pos = rel_pos + add_at->get_pos();
 
-	// impose_bc(new_pos);
+	impose_bc(new_pos);
 
 	Node *new_axon = new Node(new_pos);
 	add_at->push_next(*new_axon);
