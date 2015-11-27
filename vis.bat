@@ -1,2 +1,2 @@
 @echo off
-start cmd /C .\visualisation\make_vis.bat;
+start cmd /C .\visualisation\frame-processing\make_vis.bat;
