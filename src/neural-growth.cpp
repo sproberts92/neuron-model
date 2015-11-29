@@ -19,7 +19,7 @@ int main()
 
 	std::cout << "Printing network. ";
 	brain.print_network(file_name(config.network), 1);
-	brain.print_neuron_adj(file_name(config.neuron_adj));
+	brain.print_neuron_adj(file_name(config.neuron_adj, {config.n_neurons, (int)config.link_fwhm_param}));
 	std::cout << "Done." << std::endl;
 
 	std::cout << "Searching for loops..." << std::endl;
