@@ -40,7 +40,3 @@ private:
 	std::vector<Node*> synapses;
 	std::valarray<std::valarray<bool>> neuron_adjacency;
 };
-
-// std::vector<Node*> all_synapses;
-// std::vector<bool> all_synapses_state;
-// std::map<Node*, int> synapses;
