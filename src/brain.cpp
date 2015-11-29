@@ -81,6 +81,20 @@ void Brain::print_network(std::ostringstream &fileName, bool no_signal)
 	out_stream.close();
 }
 
+void Brain::print_neuron_adj(std::ostringstream &fileName)
+{
+	std::ofstream out_stream;
+	out_stream.open(fileName.str(), std::fstream::trunc);
+
+	for(auto i : neuron_adjacency)
+	{
+		for(auto j : i)
+			out_stream << j << " ";
+		out_stream << std::endl;
+	}
+
+}
+
 int Brain::network_size(void)
 {
 	return static_cast<int>(all_nodes.size());

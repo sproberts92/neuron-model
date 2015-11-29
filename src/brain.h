@@ -23,6 +23,7 @@ public:
 	void propagate_signal(double noise);
 
 	void print_network(std::ostringstream &fileName, bool no_signal);
+	void print_neuron_adj(std::ostringstream &fileName);
 	int network_size(void);
 	int connections(void);
 

@@ -60,6 +60,15 @@ void getConfigInfo(user_config_t *config)
 	lookup_success &= config_setting_lookup_string(setting, "ext", &(config->signal_prop.ext));
 	check_val_lookup(lookup_success);
 
+	setting = config_lookup(&cfg, "application.paths.neuron_adj");
+	check_lookup(setting);
+
+	lookup_success = 1;
+	lookup_success &= config_setting_lookup_string(setting, "dir", &(config->neuron_adj.dir));
+	lookup_success &= config_setting_lookup_string(setting, "name", &(config->neuron_adj.name));
+	lookup_success &= config_setting_lookup_string(setting, "ext", &(config->neuron_adj.ext));
+	check_val_lookup(lookup_success);
+
 	/* Would be nice to break the above out into a function to avoid repetition */
 
 	printf("Success.\n");
