@@ -22,6 +22,7 @@ void getConfigInfo(user_config_t *config)
 	lookup_success &= config_setting_lookup_int(setting, "growth_iter", &(config->growth_iter));
 	lookup_success &= config_setting_lookup_int(setting, "prop_iter", &(config->prop_iter));
 	lookup_success &= config_setting_lookup_float(setting, "schwann_l", &(config->schwann_l));
+	lookup_success &= config_setting_lookup_float(setting, "link_fwhm_param", &(config->link_fwhm_param));
 	check_val_lookup(lookup_success);
 
 	setting = config_lookup(&cfg, "application.settings.bounds");

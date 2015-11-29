@@ -30,7 +30,7 @@ public:
 private:
 	void place_neurons(int n, std::valarray<std::pair<double, double>> b);
 	void grow_axons(double l);
-	void connect_network(double l);
+	void connect_network(double l, double fwhm);
 
 	void turn_off_synapses(std::vector<Node*> path_s);
 	bool depth_first_path_search(int &ln, int &loop_length, Node &node, Node &root, std::vector<Node*> &r_path, std::vector<Node*> &s_path);

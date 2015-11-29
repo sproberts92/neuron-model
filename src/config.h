@@ -10,7 +10,7 @@ typedef struct{
 
 typedef struct{
 	int dim, n_neurons, growth_iter, prop_iter;
-	double schwann_l, *bounds;
+	double schwann_l, link_fwhm_param, *bounds;
 	path_t growth, network, signal_prop, neuron_adj;
 }user_config_t;
 

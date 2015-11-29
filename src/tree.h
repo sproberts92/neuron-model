@@ -18,7 +18,7 @@ public:
 	std::valarray<double> get_grow_dir(void);
 
 	void grow_axon(double l);
-	Node *grow_branch(Tree &target, double l);
+	Node *grow_branch(Tree &target, double l, double c);
 
 private:
 	std::valarray<std::pair<double, double>> unit_box(size_t d);
