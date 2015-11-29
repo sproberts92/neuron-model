@@ -33,6 +33,8 @@ void Brain::find_loops(int n)
 	depth_first_path_search(loop_num, loop_length, *loop_root, *loop_root, r_path, s_path);
 	std::cout << loop_length << std::endl;
 	turn_off_synapses(s_path);
+
+	std::cout << "Path nodes: " << path_nodes.size() << std::endl;
 }
 
 void Brain::clear_signals(void)
@@ -55,11 +57,11 @@ bool Brain::read_signal(int neuron_index)
 void Brain::propagate_signal(double thresh)
 {
 	/* Phase 1 - move to temp variable of next node(s) */
-	for(auto it_n : all_nodes)
+	for(auto it_n : path_nodes)
 		it_n->push_temp_next();
 
 	/* Phase 2 - move from temp variable to value variable */
-	for(auto it_n : all_nodes)
+	for(auto it_n : path_nodes)
 		it_n->pop_temp(thresh);
 }
 
@@ -151,6 +153,7 @@ bool Brain::depth_first_path_search(int &ln, int &loop_length, Node &node, Node 
 	loop_length++;
 	bool is_root = set_root_flag(node, r_path);
 	bool is_synapse = set_synapse_flag(node, s_path);
+	bool is_u_node = set_u_node_flag(node);
 
 	for(auto it_n : node.get_next())
 	{
@@ -177,6 +180,7 @@ bool Brain::depth_first_path_search(int &ln, int &loop_length, Node &node, Node 
 	loop_length--;
 	if(is_root)	r_path.pop_back();
 	if(is_synapse) s_path.pop_back();
+	if(is_u_node) path_nodes.pop_back();
 
 	return false;
 }
@@ -203,6 +207,16 @@ bool Brain::set_synapse_flag(Node &node, std::vector<Node*> &path)
 	if(std::find(synapses.begin(), synapses.end(), &node) != synapses.end())
 	{
 		path.push_back(&node);
+		return true;
+	}
+	else return false;
+}
+
+bool Brain::set_u_node_flag(Node &node)
+{
+	if(!(std::find(path_nodes.begin(), path_nodes.end(), &node) != path_nodes.end()))
+	{
+		path_nodes.push_back(&node);
 		return true;
 	}
 	else return false;

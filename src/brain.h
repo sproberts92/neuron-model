@@ -36,8 +36,10 @@ private:
 	bool depth_first_path_search(int &ln, int &loop_length, Node &node, Node &root, std::vector<Node*> &r_path, std::vector<Node*> &s_path);
 	bool set_root_flag(Node &node, std::vector<Node*> &path);
 	bool set_synapse_flag(Node &node, std::vector<Node*> &path);
+	bool Brain::set_u_node_flag(Node &node);
 	std::vector<Tree> neurons;
 	std::vector<Node*> all_nodes;
+	std::vector<Node*> path_nodes;
 	std::vector<Node*> synapses;
 	std::valarray<std::valarray<bool>> neuron_adjacency;
 };
