@@ -116,7 +116,7 @@ Node *Tree::grow_branch(Tree &target, double l, double c)
 		Node *synapse = add_node(shortest, vec_r);
 
 		Node *dendrite_head = synapse;
-		for (int i = 0; i < (int)(r / l + 1); ++i)
+		for (int i = 0; i < (int)(r / l - 1); ++i)
 			dendrite_head = add_node(dendrite_head, vec_r);
 
 		dendrite_head->push_next(*root);
