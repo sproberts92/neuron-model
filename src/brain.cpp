@@ -159,14 +159,14 @@ bool Brain::depth_first_path_search(int &ln, int &loop_length, Node &node, Node 
 	{
 		if(it_n == &loop_root && loop_c == 0)
 		{
-			loop_l = loop_length - 1;
+			loop_l = loop_length;
 			loop_c++;
 
 			std::cout << "Loop found, length: " << loop_l << " nodes, " << r_path.size() << " neurons." << std::endl;
 			if(depth_first_path_search(ln, loop_length, *it_n, loop_root, r_path, s_path))
 				return true;
 		}
-		else if(it_n == &loop_root && loop_length - (loop_l*loop_c) - 1 == loop_l)
+		else if(it_n == &loop_root && loop_length - (loop_l*loop_c) == loop_l)
 		{
 			std::cout << "Degenerate loop found, " << loop_length - 1 << " " << r_path.size() << " neurons." << std::endl;
 			if(++loop_c == ln || depth_first_path_search(ln, loop_length, *it_n, loop_root, r_path, s_path))
