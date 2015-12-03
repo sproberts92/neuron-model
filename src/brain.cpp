@@ -12,7 +12,7 @@ void Brain::create_network(user_config_t &config)
 		std::cout << 100 * i / config.growth_iter << "%\r";
 
 		grow_axons(config.schwann_l);
-		print_network(file_name(config.growth, i), 1);
+		print_network(file_name(config.growth, i), 0, 0);
 	}
 	std::cout << "100%\n" << std::endl;
 
@@ -65,15 +65,20 @@ void Brain::propagate_signal(double thresh)
 		it_n->pop_temp(thresh);
 }
 
-void Brain::print_network(std::ostringstream &fileName, bool no_signal)
+void Brain::print_network(std::ostringstream &fileName, bool isolate_path, bool isolate_signal)
 {
-	/* If no_signal == 1 then nodes which have no signal (value = 0) are
-	 * printed also */
+	/* If isolate_signal == 1 then nodes which have no signal (value = 0) are
+	 * not printed.
+	 * If isolate_path == 1 then nodes which are not on the signal path are
+	 * not printed. */
 	std::ofstream out_stream;
 	out_stream.open(fileName.str(), std::fstream::trunc);
 
-	for(auto it_n : all_nodes)
-		if(no_signal || it_n->get_value())
+	auto nodes = path_nodes;
+	if(!isolate_path) nodes = all_nodes;
+
+	for(auto it_n : nodes)
+		if(!isolate_signal || it_n->get_value())
 		{
 			for(auto it_d : it_n->get_pos())
 				out_stream << it_d << " ";

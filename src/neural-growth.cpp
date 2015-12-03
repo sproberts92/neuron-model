@@ -18,12 +18,13 @@ int main()
 	brain.create_network(config);
 
 	std::cout << "Printing network. ";
-	brain.print_network(file_name(config.network), 1);
+	brain.print_network(file_name(config.network), 0, 0);
 	brain.print_neuron_adj(file_name(config.neuron_adj, {config.n_neurons, (int)config.link_fwhm_param}));
 	std::cout << "Done." << std::endl;
 
 	std::cout << "Searching for loops..." << std::endl;
 	brain.find_loops(3);
+	brain.print_network(file_name(config.network), 1, 0);
 
 	// write_propagation_loop_frames(brain, config);
 
@@ -58,7 +59,7 @@ int main()
 			queue.pop();
 		}
 
-		brain.print_network(file_name(config.signal_prop, i++), 0);
+		brain.print_network(file_name(config.signal_prop, i++), 1, 1);
 		brain.propagate_signal(0.0);
 	}
 
@@ -77,7 +78,7 @@ void write_propagation_loop_frames(Brain &brain, user_config_t &config)
 		std::cout << 100 * i / config.prop_iter << "%\r";
 
 		brain.propagate_signal(0.0);
-		brain.print_network(file_name(config.signal_prop, i), 0);
+		brain.print_network(file_name(config.signal_prop, i), 1, 1);
 	}
 
 	brain.clear_signals();
