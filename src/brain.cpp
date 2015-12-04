@@ -18,6 +18,8 @@ void Brain::create_network(user_config_t &config)
 
 	std::cout << "Axon growth complete. Growing dendrites..." << std::endl;
 	connect_network(config.schwann_l, config.link_fwhm_param);
+
+	grow_read_assembly(0);
 }
 
 void Brain::find_loops(int n)
@@ -145,6 +147,34 @@ void Brain::connect_network(double l, double fwhm)
 	}
 	
 	std::cout << "100%\n" << std::endl;
+}
+
+void Brain::grow_read_assembly(int neuron_index)
+{
+	Node *attach = neurons[neuron_index].get_root()->get_next()[0];
+
+	int message_length = 8; // TO DO: read from config?
+
+	for (int i = 0; i < message_length; ++i)
+	{
+		Node *new_node = new Node(attach->get_pos());
+		attach->push_next(*new_node);
+
+		all_nodes.push_back(new_node);
+		path_nodes.push_back(new_node);
+
+		for (int j = i; j < message_length; ++j)
+		{
+			auto attach_temp = new_node;
+			new_node = new Node(attach_temp->get_pos());
+			attach_temp->push_next(*new_node);
+
+			all_nodes.push_back(new_node);
+			path_nodes.push_back(new_node);
+		}
+
+		read_nodes.push_back(new_node);
+	}
 }
 
 bool Brain::depth_first_path_search(int &ln, int &loop_length, Node &node, Node &loop_root, std::vector<Node*> &r_path, std::vector<Node*> &s_path)

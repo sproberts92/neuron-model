@@ -31,6 +31,7 @@ private:
 	void place_neurons(int n, std::valarray<std::pair<double, double>> b);
 	void grow_axons(double l);
 	void connect_network(double l, double fwhm);
+	void grow_read_assembly(int neuron_index);
 
 	void turn_off_synapses(std::vector<Node*> path_s);
 	bool depth_first_path_search(int &ln, int &loop_length, Node &node, Node &root, std::vector<Node*> &r_path, std::vector<Node*> &s_path);
@@ -40,6 +41,7 @@ private:
 	std::vector<Tree> neurons;
 	std::vector<Node*> all_nodes;
 	std::vector<Node*> path_nodes;
+	std::vector<Node*> read_nodes;
 	std::vector<Node*> synapses;
 	std::valarray<std::valarray<bool>> neuron_adjacency;
 };
