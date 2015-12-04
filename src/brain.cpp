@@ -177,6 +177,13 @@ void Brain::grow_read_assembly(int neuron_index)
 	}
 }
 
+void Brain::read_message(std::vector<bool> &message)
+{
+	message.clear();
+	for(auto node : read_nodes)
+		message.push_back(node->get_value());
+}
+
 bool Brain::depth_first_path_search(int &ln, int &loop_length, Node &node, Node &loop_root, std::vector<Node*> &r_path, std::vector<Node*> &s_path)
 {
 	static int loop_c = 0;	

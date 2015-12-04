@@ -43,15 +43,35 @@ int main()
 		read_key_state(key_state);
 		
 		std::vector<bool> message;
+		
 		if(key_state.a && key_state.g)
-			message = {1,0,1,0,0,0,1,1};
+			message = {1,0,1,0,0,1,1,1};
 		else if(key_state.a)
 			message = {1,0,1,0,0,0,0,1};
+		
+		std::vector<bool> message_r;
+		brain.read_message(message_r);
 
-		if(!queue.size())
+		for(auto s : message_r)
+			std::cout << s;
+
+		std::cout << " ";
+		if(message.size())
+			for(auto s : message)
+				std::cout << s;
+
+		if(		message.size()	
+			&&	message[0] == message_r[0]
+			&&	message[1] == message_r[1]
+			&&	message[2] == message_r[2]
+			&&	message[7] == message_r[7])	std::cout << "A is good!" << std::endl;
+		std::cout << std::endl;
+
+		if(!queue.size() && message.size() && message[6])
 			for(auto it : message)
 				queue.push(it);
-		std::cout << queue.size() << std::endl;
+
+		message.clear();
 
 		if(queue.size())
 		{

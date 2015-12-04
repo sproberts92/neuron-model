@@ -26,6 +26,7 @@ public:
 	void print_neuron_adj(std::ostringstream &fileName);
 	int network_size(void);
 	int connections(void);
+	void read_message(std::vector<bool> &message);
 
 private:
 	void place_neurons(int n, std::valarray<std::pair<double, double>> b);
