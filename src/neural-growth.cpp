@@ -6,6 +6,7 @@
 #include "interface.h"
 
 void write_propagation_loop_frames(Brain &brain, user_config_t &config);
+bool compare_messages(std::vector<bool> message_1, std::vector<bool> message_2);
 
 int main()
 {
@@ -60,11 +61,7 @@ int main()
 			for(auto s : message)
 				std::cout << s;
 
-		if(		message.size()	
-			&&	message[0] == message_r[0]
-			&&	message[1] == message_r[1]
-			&&	message[2] == message_r[2]
-			&&	message[7] == message_r[7])	std::cout << "A is good!" << std::endl;
+		if(compare_messages(message, message_r)) std::cout << "A is good!" << std::endl;
 		std::cout << std::endl;
 
 		if(!queue.size() && message.size() && message[6])
@@ -84,6 +81,23 @@ int main()
 	}
 
 	return 0;
+}
+
+bool compare_messages(std::vector<bool> message_1, std::vector<bool> message_2)
+{
+	std::vector<bool> mask = {1, 1, 1, 1, 0, 0, 0, 1};
+
+	if(message_1.size() && message_2.size())
+	{
+		bool match = true;
+		for (int i = 0; i < mask.size(); ++i)
+			if(mask[i] && message_1[i] != message_2[i])
+				match = false;
+
+		return match;
+	}
+
+	else return false;
 }
 
 void write_propagation_loop_frames(Brain &brain, user_config_t &config)
