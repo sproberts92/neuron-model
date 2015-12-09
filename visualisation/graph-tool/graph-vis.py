@@ -16,6 +16,7 @@ def main():
 
     if args.celeg:
         g = collection.data["celegansneural"]
+        np.savetxt("output/celegans_adj.dat", adjacency(g).todense(), delimiter=" ", fmt="%d")
         outpath = "output/celegans.pdf"
     else:
         tail = os.path.split(args.path)[-1]
