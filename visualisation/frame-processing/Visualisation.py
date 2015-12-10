@@ -3,12 +3,17 @@ from mpl_toolkits.mplot3d import Axes3D
 from multiprocessing import Pool
 
 def read_points(path):
-    f = open(path, 'r')
-
+    f = None
+    try:
+        f = open(path, 'r')
+    except:
+        pass
+    
     points = []
-    for line in f:
-        pos = [float(x) for x in line.split()]
-        points.append(pos)
+    if f:
+        for line in f:
+            pos = [float(x) for x in line.split()]
+            points.append(pos)
 
     return points
 
@@ -45,7 +50,7 @@ def main():
 
     ax.view_init(30,0)
 
-    args = [(i, fig, ax) for i in range(500)]
+    args = [(i, fig, ax) for i in range(250)]
     
     p = Pool(8)
     p.starmap(f, args, 1)
