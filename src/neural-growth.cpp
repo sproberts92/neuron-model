@@ -22,16 +22,8 @@ int main()
 	Brain brain;
 	brain.create_network(config);
 
-	std::cout << "Printing network. ";
-	brain.print_network(file_name(config.network), 0, 0);
-	brain.print_neuron_adj(file_name(config.neuron_adj, {config.n_neurons, (int)config.link_fwhm_param}));
-	std::cout << "Done." << std::endl;
-
 	std::cout << "Searching for loops..." << std::endl;
 	brain.find_loops(3);
-	brain.print_network(file_name(config.network), 1, 0);
-
-	// write_propagation_loop_frames(brain, config);
 
 	std::cout << "Network size: " << brain.network_size() << " nodes." << std::endl;
 	std::cout << "Connections: " << brain.connections() << " synapses." << std::endl << std::endl;
@@ -73,24 +65,22 @@ int main()
 		std::vector<bool> message_r;
 		brain.read_message(message_r);
 
-		// for(auto s : message_r)
-		// 	std::cout << s;
+		for(auto s : message_r)
+			std::cout << s;
 
-		// std::cout << " ";
-		// if(message.size())
-		// 	for(auto s : message)
-		// 		std::cout << s;
-
-		if(!key_state.key) std::cout << "\r          \r";
+		std::cout << " ";
+		if(message.size())
+			for(auto s : message)
+				std::cout << s;
 
 		if(compare_messages(message, message_r))
-			if(key_state.a && !message[6] && message_r[5]) std::cout << "A is good!\r";
-			else if(key_state.s && !message[6] && message_r[5]) std::cout << "S is good!\r";
-			else if(key_state.d && !message[6] && message_r[5]) std::cout << "D is good!\r";
-			else if(key_state.a && !message[6] && message_r[4]) std::cout << "A is bad!\r";
-			else if(key_state.s && !message[6] && message_r[4]) std::cout << "S is bad!\r";
-			else if(key_state.d && !message[6] && message_r[4]) std::cout << "D is bad!\r";
-		// std::cout << std::endl;
+			if(key_state.a && !message[6] && message_r[5]) std::cout << "A is good!";
+			else if(key_state.s && !message[6] && message_r[5]) std::cout << "S is good!";
+			else if(key_state.d && !message[6] && message_r[5]) std::cout << "D is good!";
+			else if(key_state.a && !message[6] && message_r[4]) std::cout << "A is bad!";
+			else if(key_state.s && !message[6] && message_r[4]) std::cout << "S is bad!";
+			else if(key_state.d && !message[6] && message_r[4]) std::cout << "D is bad!";
+		std::cout << std::endl;
 
 		if(pressed_flag && sent_flag && key_state.key) {}
 		else if(key_state.key)
@@ -114,10 +104,9 @@ int main()
 			queue.pop();
 		}
 
-		brain.print_network(file_name(config.signal_prop, i++), 1, 1);
 		brain.propagate_signal(0.0);
 	
-		// std::this_thread::sleep_for(std::chrono::milliseconds(5));
+		std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}
 
 	return 0;
