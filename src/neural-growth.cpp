@@ -48,12 +48,16 @@ int main()
 		
 		if(key_state.a && key_state.g)
 			message = messages["ag"];
-		else if(key_state.r && key_state.g)
-			message = messages["rg"];
+		else if(key_state.s && key_state.g)
+			message = messages["sg"];
+		else if(key_state.d && key_state.g)
+			message = messages["dg"];
 		else if(key_state.a)
 			message = messages["a"];
-		else if(key_state.r)
-			message = messages["r"];
+		else if(key_state.s)
+			message = messages["s"];
+		else if(key_state.d)
+			message = messages["d"];
 		
 		std::vector<bool> message_r;
 		brain.read_message(message_r);
@@ -66,7 +70,10 @@ int main()
 			for(auto s : message)
 				std::cout << s;
 
-		if(compare_messages(message, message_r)) std::cout << "A is good!" << std::endl;
+		if(compare_messages(message, message_r))
+			if(key_state.a) std::cout << "A is good!" << std::endl;
+			else if(key_state.s) std::cout << "S is good!" << std::endl;
+			else if(key_state.d) std::cout << "D is good!" << std::endl;
 		std::cout << std::endl;
 
 		if(!queue.size() && message.size() && message[6])
