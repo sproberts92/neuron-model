@@ -73,14 +73,6 @@ int main()
 		std::vector<bool> message_r;
 		brain.read_message(message_r);
 
-		// for(auto s : message_r)
-		// 	std::cout << s;
-
-		// std::cout << " ";
-		// if(message.size())
-		// 	for(auto s : message)
-		// 		std::cout << s;
-
 		if(!key_state.key) std::cout << "\r          \r";
 
 		if(compare_messages(message, message_r))
@@ -90,7 +82,6 @@ int main()
 			else if(key_state.a && !message[6] && message_r[4]) std::cout << "A is bad!\r";
 			else if(key_state.s && !message[6] && message_r[4]) std::cout << "S is bad!\r";
 			else if(key_state.d && !message[6] && message_r[4]) std::cout << "D is bad!\r";
-		// std::cout << std::endl;
 
 		if(pressed_flag && sent_flag && key_state.key) {}
 		else if(key_state.key)
@@ -116,8 +107,6 @@ int main()
 
 		brain.print_network(file_name(config.signal_prop, i++), 1, 1);
 		brain.propagate_signal(0.0);
-	
-		// std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}
 
 	return 0;
