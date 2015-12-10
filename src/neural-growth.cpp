@@ -4,6 +4,7 @@
 
 #include "brain.h"
 #include "interface.h"
+#include "messages.h"
 
 void write_propagation_loop_frames(Brain &brain, user_config_t &config);
 bool compare_messages(std::vector<bool> message_1, std::vector<bool> message_2);
@@ -46,9 +47,13 @@ int main()
 		std::vector<bool> message;
 		
 		if(key_state.a && key_state.g)
-			message = {1,0,1,0,0,1,1,1};
+			message = messages["ag"];
+		else if(key_state.r && key_state.g)
+			message = messages["rg"];
 		else if(key_state.a)
-			message = {1,0,1,0,0,0,0,1};
+			message = messages["a"];
+		else if(key_state.r)
+			message = messages["r"];
 		
 		std::vector<bool> message_r;
 		brain.read_message(message_r);

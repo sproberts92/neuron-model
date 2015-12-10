@@ -2,7 +2,7 @@
 
 struct key_state_t{
 	bool a = false;
-	bool l = false;
+	bool r = false;
 	
 	bool g = false;
 	bool b = false;
