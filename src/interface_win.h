@@ -4,3 +4,4 @@
 #include "interface_type.h"
 
 void read_key_state(struct key_state_t &key_state);
+bool pressed(struct key_state_t &key_state);

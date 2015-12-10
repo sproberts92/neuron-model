@@ -9,4 +9,5 @@ struct key_state_t{
 	bool b = false;
 	
 	bool esc = false;
+	bool key = false;
 };

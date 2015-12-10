@@ -2,6 +2,9 @@
 #include <queue>
 #include <ctime>
 
+#include <chrono>
+#include <thread>
+
 #include "brain.h"
 #include "interface.h"
 #include "messages.h"
@@ -40,10 +43,12 @@ int main()
 	std::queue<bool> queue;
 	
 	int i = 0;
+	bool sent_flag = false;
+	bool pressed_flag = false;
 	while(!key_state.esc)
 	{
 		read_key_state(key_state);
-		
+
 		std::vector<bool> message;
 		
 		if(key_state.a && key_state.g)
@@ -52,6 +57,12 @@ int main()
 			message = messages["sg"];
 		else if(key_state.d && key_state.g)
 			message = messages["dg"];
+		else if(key_state.a && key_state.b)
+			message = messages["ab"];
+		else if(key_state.s && key_state.b)
+			message = messages["sb"];
+		else if(key_state.d && key_state.b)
+			message = messages["db"];
 		else if(key_state.a)
 			message = messages["a"];
 		else if(key_state.s)
@@ -62,24 +73,39 @@ int main()
 		std::vector<bool> message_r;
 		brain.read_message(message_r);
 
-		for(auto s : message_r)
-			std::cout << s;
+		// for(auto s : message_r)
+		// 	std::cout << s;
 
-		std::cout << " ";
-		if(message.size())
-			for(auto s : message)
-				std::cout << s;
+		// std::cout << " ";
+		// if(message.size())
+		// 	for(auto s : message)
+		// 		std::cout << s;
+
+		if(!key_state.key) std::cout << "\r          \r";
 
 		if(compare_messages(message, message_r))
-			if(key_state.a) std::cout << "A is good!" << std::endl;
-			else if(key_state.s) std::cout << "S is good!" << std::endl;
-			else if(key_state.d) std::cout << "D is good!" << std::endl;
-		std::cout << std::endl;
+			if(key_state.a && !message[6] && message_r[5]) std::cout << "A is good!\r";
+			else if(key_state.s && !message[6] && message_r[5]) std::cout << "S is good!\r";
+			else if(key_state.d && !message[6] && message_r[5]) std::cout << "D is good!\r";
+			else if(key_state.a && !message[6] && message_r[4]) std::cout << "A is bad!\r";
+			else if(key_state.s && !message[6] && message_r[4]) std::cout << "S is bad!\r";
+			else if(key_state.d && !message[6] && message_r[4]) std::cout << "D is bad!\r";
+		// std::cout << std::endl;
 
-		if(!queue.size() && message.size() && message[6])
-			for(auto it : message)
-				queue.push(it);
-
+		if(pressed_flag && sent_flag && key_state.key) {}
+		else if(key_state.key)
+		{
+			pressed_flag = true;
+			if(queue.empty() && message.size() && message[6])
+			{
+				sent_flag = true;
+				for(auto it : message)
+					queue.push(it);
+			}
+			else sent_flag = false;
+		}
+		else pressed_flag = false;
+		
 		message.clear();
 
 		if(queue.size())
@@ -90,6 +116,8 @@ int main()
 
 		brain.print_network(file_name(config.signal_prop, i++), 1, 1);
 		brain.propagate_signal(0.0);
+	
+		// std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}
 
 	return 0;
