@@ -6,9 +6,9 @@
 #include <algorithm>
 #include <map>
 
-#include "utility.h"
-#include "rand_gen.h"
-#include "tree.h"
+#include "utility.hpp"
+#include "rand_gen.hpp"
+#include "tree.hpp"
 
 class Brain
 {

@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <valarray>
-#include "rand_gen.h"
+#include "rand_gen.hpp"
 
 class Node
 {

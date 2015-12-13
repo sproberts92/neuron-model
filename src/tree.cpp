@@ -1,4 +1,4 @@
-#include "tree.h"
+#include "tree.hpp"
 
 Tree::Tree(std::valarray<std::pair<double, double>> b, std::vector<Node*> &a)
 	: bounds(b), all(&a)

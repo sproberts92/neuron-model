@@ -1,4 +1,4 @@
-#include "brain.h"
+#include "brain.hpp"
 
 void Brain::create_network(user_config_t &config)
 {

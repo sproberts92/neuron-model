@@ -5,8 +5,8 @@
 #include <limits>
 #include <tuple>
 
-#include "rand_gen.h"
-#include "node.h"
+#include "rand_gen.hpp"
+#include "node.hpp"
 
 class Tree
 {

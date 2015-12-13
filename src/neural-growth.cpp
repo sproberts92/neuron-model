@@ -5,9 +5,9 @@
 #include <chrono>
 #include <thread>
 
-#include "brain.h"
-#include "interface.h"
-#include "messages.h"
+#include "brain.hpp"
+#include "interface.hpp"
+#include "messages.hpp"
 
 void write_propagation_loop_frames(Brain &brain, user_config_t &config);
 bool compare_messages(std::vector<bool> message_1, std::vector<bool> message_2);

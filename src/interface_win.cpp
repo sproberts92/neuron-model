@@ -1,4 +1,4 @@
-#include "interface_win.h"
+#include "interface_win.hpp"
 
 void read_key_state(struct key_state_t &key_state)
 {

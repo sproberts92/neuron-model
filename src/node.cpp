@@ -1,4 +1,4 @@
-#include "node.h"
+#include "node.hpp"
 
 Node::Node(const std::valarray<double> p)
 	: pos(p), value(0), on(true), buffer(0) {}
