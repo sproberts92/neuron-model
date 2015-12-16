@@ -43,13 +43,22 @@ void getConfigInfo(user_config_t *config)
 	lookup_success &= config_setting_lookup_string(setting, "ext", &(config->growth.ext));
 	check_val_lookup(lookup_success);
 
-	setting = config_lookup(&cfg, "application.paths.network");
+	setting = config_lookup(&cfg, "application.paths.network_c");
 	check_lookup(setting);
 
 	lookup_success = 1;
-	lookup_success &= config_setting_lookup_string(setting, "dir", &(config->network.dir));
-	lookup_success &= config_setting_lookup_string(setting, "name", &(config->network.name));
-	lookup_success &= config_setting_lookup_string(setting, "ext", &(config->network.ext));
+	lookup_success &= config_setting_lookup_string(setting, "dir", &(config->network_c.dir));
+	lookup_success &= config_setting_lookup_string(setting, "name", &(config->network_c.name));
+	lookup_success &= config_setting_lookup_string(setting, "ext", &(config->network_c.ext));
+	check_val_lookup(lookup_success);
+
+	setting = config_lookup(&cfg, "application.paths.network_r");
+	check_lookup(setting);
+
+	lookup_success = 1;
+	lookup_success &= config_setting_lookup_string(setting, "dir", &(config->network_r.dir));
+	lookup_success &= config_setting_lookup_string(setting, "name", &(config->network_r.name));
+	lookup_success &= config_setting_lookup_string(setting, "ext", &(config->network_r.ext));
 	check_val_lookup(lookup_success);
 
 	setting = config_lookup(&cfg, "application.paths.signal_prop");

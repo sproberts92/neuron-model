@@ -23,13 +23,13 @@ int main()
 	brain.create_network(config);
 
 	std::cout << "Printing network. ";
-	brain.print_network(file_name(config.network), 0, 0);
+	brain.print_network(file_name(config.network_c), 0, 0);
 	brain.print_neuron_adj(file_name(config.neuron_adj, {config.n_neurons, (int)config.link_fwhm_param}));
 	std::cout << "Done." << std::endl;
 
 	std::cout << "Searching for loops..." << std::endl;
 	brain.find_loops(3);
-	brain.print_network(file_name(config.network), 1, 0);
+	brain.print_network(file_name(config.network_r), 1, 0);
 
 	// write_propagation_loop_frames(brain, config);
 
