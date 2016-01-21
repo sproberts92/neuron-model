@@ -22,8 +22,8 @@ public:
 	bool read_signal(int neuron_index);
 	void propagate_signal(double noise);
 
-	void print_network(std::ostringstream &fileName, bool isolate_path, bool isolate_signal);
-	void print_neuron_adj(std::ostringstream &fileName);
+	void print_network(const std::ostringstream &fileName, bool isolate_path, bool isolate_signal);
+	void print_neuron_adj(const std::ostringstream &fileName);
 	int network_size(void);
 	int connections(void);
 	void read_message(std::vector<bool> &message);

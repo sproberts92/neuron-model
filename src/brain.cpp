@@ -67,7 +67,7 @@ void Brain::propagate_signal(double thresh)
 		it_n->pop_temp(thresh);
 }
 
-void Brain::print_network(std::ostringstream &fileName, bool isolate_path, bool isolate_signal)
+void Brain::print_network(const std::ostringstream &fileName, bool isolate_path, bool isolate_signal)
 {
 	/* If isolate_signal == 1 then nodes which have no signal (value = 0) are
 	 * not printed.
@@ -90,7 +90,7 @@ void Brain::print_network(std::ostringstream &fileName, bool isolate_path, bool 
 	out_stream.close();
 }
 
-void Brain::print_neuron_adj(std::ostringstream &fileName)
+void Brain::print_neuron_adj(const std::ostringstream &fileName)
 {
 	std::ofstream out_stream;
 	out_stream.open(fileName.str(), std::fstream::trunc);
