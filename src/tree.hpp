@@ -14,7 +14,7 @@ public:
 	Tree();
 	Tree(std::valarray<std::pair<double, double>> b, std::vector<Node*> &all);
 
-	Node *get_root(void);
+	Neuron *get_root(void);
 	std::valarray<double> get_grow_dir(void);
 
 	void grow_axon(double l);
@@ -30,7 +30,7 @@ private:
 	void impose_bc(std::valarray<double> &p);
 	double gaussian(double x, double c);
 
-	Node *root;
+	Neuron *root;
 	std::vector<Node*> *all;
 	std::valarray<double> grow_dir;
 	std::valarray<std::pair<double, double>> bounds;

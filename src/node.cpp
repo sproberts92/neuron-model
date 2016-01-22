@@ -22,18 +22,36 @@ void Node::clear_signal(void)
 
 void Node::push_temp_next(void)
 {
-	for(auto it_next : next)
-		it_next->buffer = it_next->buffer | value;
+	for(auto &it_next : next)
+		it_next->buffer = it_next->buffer + value;
 
 	value = 0;
 }
 
-bool Node::pop_temp(double thresh)
+bool Node::pop_temp(double noise)
 {
 	auto r_gen = rand_gen<double>(0.0, 1.0);
 
 	bool success = false;
-	if(on && (thresh == 0.0 || (thresh != 1.0 && r_gen.get_rnum() > thresh)))
+	if(on && (noise == 0.0 || (noise != 1.0 && r_gen.get_rnum() > noise)))
+	{
+		value = buffer > 0 ? 1 : 0;
+		success = true;
+	}
+
+	buffer = 0;
+
+	return success;
+}
+
+Neuron::Neuron(const std::valarray<double> p, int t) : Node(p), thresh(t) {}
+
+bool Neuron::pop_temp(double noise)
+{
+	auto r_gen = rand_gen<double>(0.0, 1.0);
+
+	bool success = false;
+	if(on && buffer >= thresh && (noise == 0.0 || (noise != 1.0 && r_gen.get_rnum() > noise)))
 	{
 		value = buffer;
 		success = true;

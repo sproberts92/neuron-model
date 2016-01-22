@@ -22,13 +22,24 @@ public:
 
 	void clear_signal(void);
 	void push_temp_next(void);
+	virtual bool pop_temp(double noise);
+
+protected:
+	int value;
+	int buffer;
+	bool on;
+
+private:
+	const std::valarray<double> pos;
+	std::vector<Node*> next;
+};
+
+class Neuron : public Node
+{
+public:
+	Neuron(const std::valarray<double> p, int t);
 	bool pop_temp(double noise);
 
 private:
-	bool value;
-	bool on;
-	bool buffer;
-
-	const std::valarray<double> pos;
-	std::vector<Node*> next;
+	int thresh;
 };

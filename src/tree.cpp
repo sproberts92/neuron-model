@@ -3,14 +3,14 @@
 Tree::Tree(std::valarray<std::pair<double, double>> b, std::vector<Node*> &a)
 	: bounds(b), all(&a)
 {
-	root = new Node(r_vec(bounds));
+	root = new Neuron(r_vec(bounds), 2);
 	all->push_back(root);
 
 	grow_dir = r_vec(unit_box(bounds.size()));
 	normalise(grow_dir);
 }
 
-Node *Tree::get_root(void)
+Neuron *Tree::get_root(void)
 {
 	return root;
 }
