@@ -6,9 +6,17 @@ OBJECT_DIR = build
 BINARY_DIR = bin
 EXTERN_DIR = ext
 ###################################
-CC = cl
 LINK = link
-CFLAGS = /Ox /c /EHsc /W3 /Fo.\$(OBJECT_DIR)\ \
+# CC = cl
+# CFLAGS = /EHsc /W3 /Ox /c /Fo.\$(OBJECT_DIR)\ \
+CC = icl
+CFLAGS = /EHsc /Wall /Wextra /Wpedantic /Qdiag-disable:remark /O3 /arch=SSSE3 /c /Fo.\$(OBJECT_DIR)\ \
+/D__builtin_huge_val()=HUGE_VAL \
+/D__builtin_huge_valf()=HUGE_VALF \
+/D__builtin_nan=nan \
+/D__builtin_nanf=nanf \
+/D__builtin_nans=nan \
+/D__builtin_nansf=nanf \
 /I $(EXTERN_DIR)\libconfig\lib
 
 LIBS = $(EXTERN_DIR)\libconfig\x64\Release\libconfig.lib "C:\Program Files (x86)\Windows Kits\10\Lib\10.0.10240.0\um\x64\User32.lib"
