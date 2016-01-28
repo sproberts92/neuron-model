@@ -2,3 +2,7 @@
 	path = ext/libconfig
 	url = https://github.com/hyperrealm/libconfig.git
 	ignore = dirty
+[submodule "ext/engine-opengl"]
+	path = ext/engine-opengl
+	url = git@bitbucket.org:sproberts92/engine-opengl.git
+	ignore = dirty
