@@ -27,18 +27,25 @@ int main()
 	brain.print_neuron_adj(file_name(config.neuron_adj, {config.n_neurons, (int)config.link_fwhm_param}));
 	std::cout << "Done." << std::endl;
 
-	std::cout << "Searching for loops..." << std::endl;
-	brain.find_loops(3);
-	brain.print_network(file_name(config.network_r), 1, 0);
+	// std::cout << "Searching for loops..." << std::endl;
+	// brain.find_loops(3);
+	// brain.print_network(file_name(config.network_r), 1, 0);
 
 	// write_propagation_loop_frames(brain, config);
 
 	std::cout << "Network size: " << brain.network_size() << " nodes." << std::endl;
 	std::cout << "Connections: " << brain.connections() << " synapses." << std::endl << std::endl;
 
-	std::cout << "Runtime: " << double(clock() - begin) /CLOCKS_PER_SEC << " seconds." << std::endl;
+	std::cout << "Network built in " << double(clock() - begin) /CLOCKS_PER_SEC << " seconds." << std::endl;
+	std::cout << "Running..." << std::endl;
 
-	key_state_t key_state;
+	brain.path_nodes = brain.all_nodes;
+
+	write_propagation_loop_frames(brain, config);
+
+	return EXIT_SUCCESS;
+
+/*	key_state_t key_state;
 
 	std::queue<bool> queue;
 	
@@ -105,9 +112,9 @@ int main()
 			queue.pop();
 		}
 
-		brain.print_network(file_name(config.signal_prop, i++), 1, 1);
+		// brain.print_network(file_name(config.signal_prop, i++), 1, 1);
 		brain.propagate_signal(0.0);
-	}
+	}*/
 
 	return 0;
 }
@@ -134,15 +141,25 @@ void write_propagation_loop_frames(Brain &brain, user_config_t &config)
 	std::cout << "Writing signal propagation frames..." << std::endl;
 
 	brain.clear_signals();
-	brain.insert_signal(0);
+	// brain.insert_signal(0);
+
+	for (int i = 0; i < config.n_neurons/4; ++i)
+	{
+		brain.insert_signal(i);
+	}
+
+	std::ofstream out_stream("output\\Activity.dat", std::fstream::trunc);
 
 	for (int i = 0; i < config.prop_iter; i++)
 	{
-		std::cout << 100 * i / config.prop_iter << "%\r";
+	// brain.insert_signal(0);
+		// std::cout << 100 * i / config.prop_iter << "%\r";
 
-		brain.propagate_signal(0.0);
-		brain.print_network(file_name(config.signal_prop, i), 1, 1);
+		out_stream << brain.propagate_signal(0.0) << std::endl;
+		brain.print_network(file_name(config.signal_prop, i), 0, 1);
 	}
+
+
 
 	brain.clear_signals();
 

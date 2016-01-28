@@ -20,7 +20,7 @@ public:
 	void clear_signals(void);
 	void insert_signal(int neuron_index);
 	bool read_signal(int neuron_index);
-	void propagate_signal(double noise);
+	int propagate_signal(double noise);
 
 	void print_network(const std::ostringstream &fileName, bool isolate_path, bool isolate_signal);
 	void print_neuron_adj(const std::ostringstream &fileName);
@@ -28,6 +28,8 @@ public:
 	int connections(void);
 	void read_message(std::vector<bool> &message);
 
+	std::vector<Node*> all_nodes;
+	std::vector<Node*> path_nodes;
 private:
 	void place_neurons(int n, std::valarray<std::pair<double, double>> b);
 	void grow_axons(double l);
@@ -40,8 +42,6 @@ private:
 	bool set_synapse_flag(Node &node, std::vector<Node*> &path);
 	bool Brain::set_u_node_flag(Node &node);
 	std::vector<Tree> neurons;
-	std::vector<Node*> all_nodes;
-	std::vector<Node*> path_nodes;
 	std::vector<Node*> read_nodes;
 	std::vector<Node*> synapses;
 	std::valarray<std::valarray<bool>> neuron_adjacency;

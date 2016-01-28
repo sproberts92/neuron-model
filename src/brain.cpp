@@ -56,15 +56,18 @@ bool Brain::read_signal(int neuron_index)
 	return neurons[neuron_index].get_root()->get_value();
 }
 
-void Brain::propagate_signal(double thresh)
+int Brain::propagate_signal(double thresh)
 {
 	/* Phase 1 - move to temp variable of next node(s) */
 	for(auto it_n : path_nodes)
 		it_n->push_temp_next();
 
 	/* Phase 2 - move from temp variable to value variable */
+	int sum = 0;
 	for(auto it_n : path_nodes)
-		it_n->pop_temp(thresh);
+		sum += it_n->pop_temp(thresh);
+
+	return sum;
 }
 
 void Brain::print_network(const std::ostringstream &fileName, bool isolate_path, bool isolate_signal)
