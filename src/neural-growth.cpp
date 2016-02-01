@@ -1,6 +1,7 @@
 #include <iostream>
 #include <queue>
 #include <ctime>
+#include <sstream>
 
 #include <chrono>
 #include <thread>
@@ -9,7 +10,7 @@
 #include "interface.hpp"
 #include "messages.hpp"
 
-void write_propagation_loop_frames(Brain &brain, user_config_t &config);
+void write_propagation_loop_frames(Brain &brain, user_config_t &config, int i);
 bool compare_messages(std::vector<bool> message_1, std::vector<bool> message_2);
 
 int main()
@@ -136,7 +137,7 @@ bool compare_messages(std::vector<bool> message_1, std::vector<bool> message_2)
 	else return false;
 }
 
-void write_propagation_loop_frames(Brain &brain, user_config_t &config)
+void write_propagation_loop_frames(Brain &brain, user_config_t &config, int i)
 {
 	std::cout << "Writing signal propagation frames..." << std::endl;
 
@@ -148,15 +149,16 @@ void write_propagation_loop_frames(Brain &brain, user_config_t &config)
 		brain.insert_signal(i);
 	}
 
-	std::ofstream out_stream("output\\Activity.dat", std::fstream::trunc);
+	auto f  = file_name(config.activity,{config.n_neurons, (int)config.link_fwhm_param, i});
+	std::ofstream out_stream(f.str(), std::fstream::trunc);
 
 	for (int i = 0; i < config.prop_iter; i++)
 	{
-	// brain.insert_signal(0);
+		// brain.insert_signal(0);
 		// std::cout << 100 * i / config.prop_iter << "%\r";
 
 		out_stream << brain.propagate_signal(0.0) << std::endl;
-		brain.print_network(file_name(config.signal_prop, i), 0, 1);
+		// brain.print_network(file_name(config.signal_prop, i), 0, 1);
 	}
 
 
