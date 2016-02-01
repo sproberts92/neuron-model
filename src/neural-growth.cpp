@@ -1,3 +1,5 @@
+#pragma warning(disable : 1744)
+
 #include <iostream>
 #include <queue>
 #include <ctime>
@@ -5,6 +7,8 @@
 
 #include <chrono>
 #include <thread>
+
+#include "glsr.hpp"
 
 #include "brain.hpp"
 #include "interface.hpp"
@@ -42,7 +46,45 @@ int main()
 
 	brain.path_nodes = brain.all_nodes;
 
-	write_propagation_loop_frames(brain, config);
+	glsr::Context context;
+
+	std::vector<double> particles;
+	for(auto i : brain.all_nodes)
+		for(auto &j : i->get_pos())
+			particles.push_back(j);
+	
+	context.p_systems.push_back(glsr::Particles(1000000, "src\\shaders\\vertex_shader_p.glsl", "src\\shaders\\fragment_shader_p.glsl"));
+	context.p_systems.push_back(glsr::Particles(1000, "src\\shaders\\vertex_shader_p2.glsl", "src\\shaders\\fragment_shader_p2.glsl"));
+
+	brain.clear_signals();
+		
+	std::vector<double> particles2;
+	particles2.reserve(10000);
+	
+	for (int i = 0; i < 10000; ++i)
+		particles2.push_back(0.0f);
+	
+	brain.insert_signal(0);
+
+	for (int i = 0; i < config.n_neurons/4; ++i)
+		brain.insert_signal(i);
+	
+	while(!glfwWindowShouldClose(context.window))
+	{
+		context.p_systems[0].update_pp_data(particles, particles.size());
+
+		int ii = 0;
+		for(auto i : brain.all_nodes)
+			if (i->get_value())
+				for(auto &j : i->get_pos())
+					particles2[ii++] = j;
+		context.p_systems[1].update_pp_data(particles2, ii);
+
+		context.draw();
+		// brain.propagate_signal(0.0);
+	}
+
+	// write_propagation_loop_frames(brain, config, 0);
 
 	return EXIT_SUCCESS;
 
