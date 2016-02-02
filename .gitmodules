@@ -6,3 +6,7 @@
 	path = ext/engine-opengl
 	url = git@bitbucket.org:sproberts92/engine-opengl.git
 	ignore = all
+[submodule "tests/ext/catch"]
+	path = tests/ext/catch
+	url = https://github.com/philsquared/Catch.git
+	ignore = all
