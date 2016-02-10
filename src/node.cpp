@@ -48,7 +48,7 @@ bool Neuron::pop_temp(double noise)
 
 	if(on && buffer >= thresh && (noise == 0.0 || (noise != 1.0 && r_gen.get_rnum() > noise)))
 		value = buffer;
-	
+
 	buffer = 0;
 
 	return (bool)value;

@@ -168,7 +168,7 @@ void Brain::connect_network(double l, double fwhm)
 			}
 		}
 	}
-	
+
 	std::cout << "100%\n" << std::endl;
 }
 
@@ -209,7 +209,7 @@ void Brain::read_message(std::vector<bool> &message)
 
 bool Brain::depth_first_path_search(int &ln, int &loop_length, Node &node, Node &loop_root, std::vector<Node*> &r_path, std::vector<Node*> &s_path)
 {
-	static int loop_c = 0;	
+	static int loop_c = 0;
 	static int loop_l = std::numeric_limits<int>::max();
 
 	if(loop_length - (loop_l*loop_c) - 5 > loop_l)

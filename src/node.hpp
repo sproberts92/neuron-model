@@ -15,7 +15,7 @@ public:
 
 	void turn_on(void);
 	void turn_off(void);
-	
+
 	std::valarray<double> get_pos(void);
 	std::vector<Node*> get_next(void);
 	void push_next(Node &n);

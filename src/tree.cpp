@@ -105,7 +105,7 @@ Node *Tree::grow_branch(Tree &target, double l, double c)
 {
 	Node *shortest = nullptr;
 	double r = find_shortest(target, &shortest);
-	
+
 	static rand_gen<double> r_gen = rand_gen<double>(0, 1);
 	/* TO DO: replace static with smart-pointer that can be gc'd later*/
 	/* TO DO: read constants in gaussian from config.cfg */
