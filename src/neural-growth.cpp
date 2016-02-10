@@ -1,7 +1,6 @@
 #pragma warning(disable : 1744)
 
 #include <iostream>
-#include <queue>
 #include <ctime>
 #include <sstream>
 
@@ -64,11 +63,12 @@ int main()
 	for (int i = 0; i < 10000; ++i)
 		particles2.push_back(0.0f);
 	
-	brain.insert_signal(0);
-
-	for (int i = 0; i < config.n_neurons/4; ++i)
+	int nn = config.n_neurons/4;
+	std::cout << nn << std::endl;
+	for (int i = 0; i < nn; ++i)
 		brain.insert_signal(i);
 	
+	double init = glfwGetTime();
 	while(!glfwWindowShouldClose(context.window))
 	{
 		context.p_systems[0].update_pp_data(particles, particles.size());
@@ -81,7 +81,12 @@ int main()
 		context.p_systems[1].update_pp_data(particles2, ii);
 
 		context.draw();
-		// brain.propagate_signal(0.0);
+
+		if((glfwGetTime() - init) > 0.05)
+		{
+			brain.propagate_signal(0.0);
+			init = glfwGetTime();
+		}
 	}
 
 	// write_propagation_loop_frames(brain, config, 0);

@@ -48,7 +48,11 @@ void Brain::clear_signals(void)
 
 void Brain::insert_signal(int neuron_index)
 {
-	neurons[neuron_index].get_root()->set_value(1);
+	Node *root = neurons[neuron_index].get_root();
+
+	root->set_value(1);
+	live_nodes.push_back(root);
+	live_nodes_s.insert(root);
 }
 
 bool Brain::read_signal(int neuron_index)
@@ -58,14 +62,30 @@ bool Brain::read_signal(int neuron_index)
 
 int Brain::propagate_signal(double thresh)
 {
+	int length = live_nodes.size();
+
 	/* Phase 1 - move to temp variable of next node(s) */
-	for(auto it_n : path_nodes)
-		it_n->push_temp_next();
+	for (int i = 0; i < length; ++i)
+	{
+		Node *front = live_nodes.front();
+		live_nodes.pop_front();
+
+		front->push_temp_next();
+
+		std::vector<Node*> next = front->get_next();
+
+		for(auto it_n : next)
+		{
+			auto result = live_nodes_s.insert(it_n);
+			if(result.second)
+				live_nodes.push_back(it_n);
+		}
+	}
 
 	/* Phase 2 - move from temp variable to value variable */
 	int sum = 0;
-	for(auto it_n : path_nodes)
-		sum += it_n->pop_temp(thresh);
+	for(auto it : live_nodes)
+		sum += it->pop_temp(thresh);
 
 	return sum;
 }

@@ -4,7 +4,9 @@
 #include <sstream>
 #include <iostream>
 #include <algorithm>
+#include <deque>
 #include <map>
+#include <set>
 
 #include "utility.hpp"
 #include "rand_gen.hpp"
@@ -30,6 +32,8 @@ public:
 
 	std::vector<Node*> all_nodes;
 	std::vector<Node*> path_nodes;
+	std::deque<Node*> live_nodes;
+
 private:
 	void place_neurons(int n, std::valarray<std::pair<double, double>> b);
 	void grow_axons(double l);
@@ -44,5 +48,6 @@ private:
 	std::vector<Tree> neurons;
 	std::vector<Node*> read_nodes;
 	std::vector<Node*> synapses;
+	std::set<Node*> live_nodes_s;
 	std::valarray<std::valarray<bool>> neuron_adjacency;
 };
