@@ -15,13 +15,24 @@
 
 void write_propagation_loop_frames(Brain &brain, user_config_t &config, int i);
 bool compare_messages(std::vector<bool> message_1, std::vector<bool> message_2);
+void visualise(Brain &brain, user_config_t &config);
+void simulate(int k, user_config_t &config);
 
 int main()
 {
-	clock_t begin = clock();
-
 	user_config_t config;
 	getConfigInfo(&config);
+
+	for (int i = 0; i < 50; ++i)
+		simulate(i, config);
+	
+	return EXIT_SUCCESS;
+}
+
+void simulate(int k, user_config_t &config)
+{
+	clock_t begin = clock();
+
 
 	Brain brain;
 	brain.create_network(config);
@@ -45,6 +56,12 @@ int main()
 
 	brain.path_nodes = brain.all_nodes;
 
+	// visualise(brain, config);
+	write_propagation_loop_frames(brain, config, k);
+}
+
+void visualise(Brain &brain, user_config_t &config)
+{
 	glsr::Context context;
 
 	std::vector<double> particles;
@@ -78,6 +95,7 @@ int main()
 			if (i->get_value())
 				for(auto &j : i->get_pos())
 					particles2[ii++] = j;
+		
 		context.p_systems[1].update_pp_data(particles2, ii);
 
 		context.draw();
@@ -88,8 +106,6 @@ int main()
 			init = glfwGetTime();
 		}
 	}
-
-	return EXIT_SUCCESS;
 }
 
 bool compare_messages(std::vector<bool> message_1, std::vector<bool> message_2)
@@ -114,26 +130,18 @@ void write_propagation_loop_frames(Brain &brain, user_config_t &config, int i)
 	std::cout << "Writing signal propagation frames..." << std::endl;
 
 	brain.clear_signals();
-	// brain.insert_signal(0);
-
+	
 	for (int i = 0; i < config.n_neurons/4; ++i)
-	{
 		brain.insert_signal(i);
-	}
-
+	
 	auto f  = file_name(config.activity,{config.n_neurons, (int)config.link_fwhm_param, i});
 	std::ofstream out_stream(f.str(), std::fstream::trunc);
 
 	for (int i = 0; i < config.prop_iter; i++)
 	{
-		// brain.insert_signal(0);
-		// std::cout << 100 * i / config.prop_iter << "%\r";
-
+		std::cout << 100 * i / config.prop_iter << "%\r";
 		out_stream << brain.propagate_signal(0.0) << std::endl;
-		// brain.print_network(file_name(config.signal_prop, i), 0, 1);
 	}
-
-
 
 	brain.clear_signals();
 

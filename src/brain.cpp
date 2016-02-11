@@ -22,6 +22,12 @@ void Brain::create_network(user_config_t &config)
 	grow_read_assembly(0);
 }
 
+Brain::~Brain()
+{
+	for (auto i : all_nodes)
+		delete i;
+}
+
 void Brain::find_loops(int n)
 {
 	std::vector<Node*> n_path, r_path, s_path;

@@ -15,6 +15,8 @@
 class Brain
 {
 public:
+	~Brain();
+
 	void create_network(user_config_t &config);
 
 	void find_loops(int n);
