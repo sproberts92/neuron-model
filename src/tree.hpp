@@ -27,6 +27,7 @@ private:
 
 	double find_shortest(const Tree &target, Node **shortest_ptr);
 	Node *add_node(Node *add_at, std::valarray<double> g_dir);
+	Synapse *add_synapse(Node *add_at, std::valarray<double> g_dir);
 	void impose_bc(std::valarray<double> &p);
 	double gaussian(double x, double c);
 

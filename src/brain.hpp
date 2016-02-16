@@ -15,6 +15,7 @@
 class Brain
 {
 public:
+	Brain(void);
 	~Brain();
 
 	void create_network(user_config_t &config);
@@ -34,7 +35,7 @@ public:
 
 	std::vector<Node*> all_nodes;
 	std::vector<Node*> path_nodes;
-	std::deque<Node*> live_nodes;
+	std::deque<Node*> *live_nodes;
 
 private:
 	void place_neurons(int n, std::valarray<std::pair<double, double>> b);
@@ -49,7 +50,7 @@ private:
 	bool Brain::set_u_node_flag(Node &node);
 	std::vector<Tree> neurons;
 	std::vector<Node*> read_nodes;
-	std::vector<Node*> synapses;
-	std::set<Node*> live_nodes_s;
+	std::vector<Synapse*> synapses;
+	std::set<Node*> *live_nodes_s;
 	std::valarray<std::valarray<bool>> neuron_adjacency;
 };

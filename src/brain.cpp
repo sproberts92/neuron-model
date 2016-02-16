@@ -1,5 +1,11 @@
 #include "brain.hpp"
 
+Brain::Brain(void)
+{
+	live_nodes = new std::deque<Node*>;
+	live_nodes_s = new std::set<Node*>;
+}
+
 void Brain::create_network(user_config_t &config)
 {
 	auto bounds = convert_bounds(config);
@@ -20,12 +26,15 @@ void Brain::create_network(user_config_t &config)
 	connect_network(config.schwann_l, config.link_fwhm_param);
 
 	grow_read_assembly(0);
-}
+}	
 
 Brain::~Brain()
 {
 	for (auto i : all_nodes)
 		delete i;
+
+	delete live_nodes;
+	delete live_nodes_s;
 }
 
 void Brain::find_loops(int n)
@@ -57,8 +66,8 @@ void Brain::insert_signal(int neuron_index)
 	Node *root = neurons[neuron_index].get_root();
 
 	root->set_value(1);
-	live_nodes.push_back(root);
-	live_nodes_s.insert(root);
+	live_nodes->push_back(root);
+	live_nodes_s->insert(root);
 }
 
 bool Brain::read_signal(int neuron_index)
@@ -68,13 +77,13 @@ bool Brain::read_signal(int neuron_index)
 
 int Brain::propagate_signal(double thresh)
 {
-	int length = live_nodes.size();
+	int length = live_nodes->size();
 
 	/* Phase 1 - move to temp variable of next node(s) */
 	for (int i = 0; i < length; ++i)
 	{
-		Node *front = live_nodes.front();
-		live_nodes.pop_front();
+		Node *front = live_nodes->front();
+		live_nodes->pop_front();
 
 		front->push_temp_next();
 
@@ -82,15 +91,15 @@ int Brain::propagate_signal(double thresh)
 
 		for(auto it_n : next)
 		{
-			auto result = live_nodes_s.insert(it_n);
+			auto result = live_nodes_s->insert(it_n);
 			if(result.second)
-				live_nodes.push_back(it_n);
+				live_nodes->push_back(it_n);
 		}
 	}
 
 	/* Phase 2 - move from temp variable to value variable */
 	int sum = 0;
-	for(auto it : live_nodes)
+	for(auto it : *live_nodes)
 		sum += it->pop_temp(thresh);
 
 	return sum;

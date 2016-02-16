@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <vector>
 #include <valarray>
 #include "rand_gen.hpp"
@@ -38,8 +39,18 @@ class Neuron : public Node
 {
 public:
 	Neuron(const std::valarray<double> p, int t);
-	bool pop_temp(double noise);
+	// bool pop_temp(double noise);
 
 private:
 	int thresh;
+};
+
+class Synapse : public Node
+{
+public:
+	Synapse(const std::valarray<double> p);
+	// bool pop_temp(double noise);
+
+private:
+	double thresh;
 };
