@@ -1,0 +1,60 @@
+USER_SOURCES = neuron-test.cpp node_test.cpp
+EXECUTABLE = neuron-test.exe
+###################################
+SOURCE_DIR = src
+OBJECT_DIR = build
+BINARY_DIR = bin
+EXTERN_DIR = ext
+# TESTOB_DIR = ..\build
+###################################
+LINK = link
+# CC = cl
+# CFLAGS = /EHsc /W3 /Ox /c /Fo.\$(OBJECT_DIR)\ \
+CC = icl
+CFLAGS = /EHsc /Wall /Wextra /Wpedantic /Qdiag-disable:remark /O3 /arch=SSSE3 /c /Fo.\$(OBJECT_DIR)\ \
+/D__builtin_huge_val()=HUGE_VAL \
+/D__builtin_huge_valf()=HUGE_VALF \
+/D__builtin_nan=nan \
+/D__builtin_nanf=nanf \
+/D__builtin_nans=nan \
+/D__builtin_nansf=nanf \
+/I $(EXTERN_DIR)\catch\include
+
+# OBJS = $(TESTOB_DIR)\node.obj
+
+LIBS =
+# $(EXTERN_DIR)\libconfig\x64\Release\libconfig.lib \
+#"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.10240.0\um\x64\User32.lib"
+
+# DLLS_SRC = $(EXTERN_DIR)\libconfig\x64\Release\libconfig.dll
+
+SOURCES = $(SOURCE_DIR)\$(USER_SOURCES: = src\)
+__OBJECTS = $(OBJECT_DIR)\$(USER_SOURCES: = build\)
+_OBJECTS = $(__OBJECTS:.cpp=.obj)
+OBJECTS = $(_OBJECTS:.c=.obj)
+
+BINARY = $(BINARY_DIR)\$(EXECUTABLE)
+
+all: $(BINARY) $(BINARY_DIR) $(OBJECTS)
+
+echo_objects:
+	echo $(OBJECTS)
+
+echo_sources:
+	echo $(SOURCES)
+
+# Stack size is set to 8 Mb
+$(BINARY): $(OBJECTS)
+	$(LINK) $(OBJECTS) $(LIBS) /STACK:8388608 /OUT:$(BINARY)	
+
+$(BINARY_DIR): $(DLLS_SRC)
+	for %n in ($**) do copy /y /v /b %n $@
+
+{$(SOURCE_DIR)\}.cpp{$(OBJECT_DIR)\}.obj::
+	$(CC) $(CFLAGS) $<
+
+{$(SOURCE_DIR)\}.c{$(OBJECT_DIR)\}.obj::
+	$(CC) $(CFLAGS) $<
+
+clean:
+	del $(OBJECT_DIR)\*.obj $(BINARY_DIR)\*.dll $(BINARY_DIR)\*.exe
