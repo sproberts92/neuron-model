@@ -1,6 +1,4 @@
-@echo off
-
-for /l %%x in (1, 1, %1) do (		
-	echo %%x
-	bin\neural-growth.exe
-)
+pushd tests
+nmake /f nmakefile
+bin\neuron-test.exe
+popd

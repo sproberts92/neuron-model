@@ -5,11 +5,13 @@ SOURCE_DIR = src
 OBJECT_DIR = build
 BINARY_DIR = bin
 EXTERN_DIR = ext
-# TESTOB_DIR = ..\build
+
+TESTOB_DIR = ..\build
+TESTIN_DIR = ..\src
 ###################################
 LINK = link
 # CC = cl
-# CFLAGS = /EHsc /W3 /Ox /c /Fo.\$(OBJECT_DIR)\ \
+# CFLAGS = /EHsc /W3 /Ox /c /Fo.\$(OBJECT_DIR)\ 
 CC = icl
 CFLAGS = /EHsc /Wall /Wextra /Wpedantic /Qdiag-disable:remark /O3 /arch=SSSE3 /c /Fo.\$(OBJECT_DIR)\ \
 /D__builtin_huge_val()=HUGE_VAL \
@@ -18,9 +20,10 @@ CFLAGS = /EHsc /Wall /Wextra /Wpedantic /Qdiag-disable:remark /O3 /arch=SSSE3 /c
 /D__builtin_nanf=nanf \
 /D__builtin_nans=nan \
 /D__builtin_nansf=nanf \
-/I $(EXTERN_DIR)\catch\include
+/I $(EXTERN_DIR)\catch\include \
+/I $(TESTIN_DIR) \
 
-# OBJS = $(TESTOB_DIR)\node.obj
+TEST_OBJS = $(TESTOB_DIR)\node.obj
 
 LIBS =
 # $(EXTERN_DIR)\libconfig\x64\Release\libconfig.lib \
@@ -45,7 +48,7 @@ echo_sources:
 
 # Stack size is set to 8 Mb
 $(BINARY): $(OBJECTS)
-	$(LINK) $(OBJECTS) $(LIBS) /STACK:8388608 /OUT:$(BINARY)	
+	$(LINK) $(OBJECTS) $(TEST_OBJS) $(LIBS) /STACK:8388608 /OUT:$(BINARY)
 
 $(BINARY_DIR): $(DLLS_SRC)
 	for %n in ($**) do copy /y /v /b %n $@

@@ -3,8 +3,8 @@
 Node::Node(const std::valarray<double> p)
 	: pos(p), value(0), on(true), buffer(0) {}
 
-bool Node::get_value(void) { return value; }
-void Node::set_value(const bool v) { value = v; }
+bool Node::get_value(void) { return value; } //
+void Node::set_value(const bool v) { value = v; } //
 
 void Node::turn_on(void) { on = true; }
 void Node::turn_off(void) { on = false; }
@@ -32,7 +32,7 @@ bool Node::pop_temp(double noise)
 {
 	auto r_gen = rand_gen<double>(0.0, 1.0);
 
-	// if(on && (noise == 0.0 || (noise != 1.0 && r_gen.get_rnum() > noise)))
+	if(on && (noise == 0.0 || (noise != 1.0 && r_gen.get_rnum() > noise)))
 		value = buffer > 0 ? 1 : 0;
 
 	buffer = 0;

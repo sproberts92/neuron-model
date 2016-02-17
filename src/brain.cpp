@@ -179,7 +179,7 @@ void Brain::connect_network(double l, double fwhm)
 			else if(Node *synapse = neurons[i].grow_branch(neurons[j], l, fwhm))
 			{
 				neuron_adjacency[i][j] = true;
-				synapses.push_back(synapse);
+				// synapses.push_back(synapse);
 			}
 		}
 	}
