@@ -1,11 +1,5 @@
 #include "node_test.hpp"
 
-bool valarrays_are_equal(std::valarray<bool> result)
-{
- 	int reduced = std::accumulate(begin(result), end(result), 0);
- 	return reduced == result.size() ? true : false;
-}
-
 TEST_CASE("Test node setup", "[node]")
 {
 	std::valarray<double> test_pos = {1.1, 2.2, 3.3};
