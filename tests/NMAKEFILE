@@ -1,4 +1,4 @@
-USER_SOURCES = neuron-test.cpp node_test.cpp test_utilities.cpp test_test_utilities.cpp
+USER_SOURCES = neuron-test.cpp node_test.cpp tree_test.cpp test_utilities.cpp test_test_utilities.cpp
 EXECUTABLE = neuron-test.exe
 ###################################
 SOURCE_DIR = src
@@ -23,8 +23,8 @@ CFLAGS = /EHsc /Wall /Wextra /Wpedantic /Qdiag-disable:remark /O3 /arch=SSSE3 /c
 /I $(EXTERN_DIR)\catch\include \
 /I $(TESTIN_DIR) \
 
-TEST_OBJS = $(TESTOB_DIR)\node.obj
-
+TEST_OBJS = $(TESTOB_DIR)\node.obj \
+$(TESTOB_DIR)\tree.obj
 LIBS =
 # $(EXTERN_DIR)\libconfig\x64\Release\libconfig.lib \
 #"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.10240.0\um\x64\User32.lib"
