@@ -101,3 +101,13 @@ TEST_CASE("Test node propagation", "[node]")
 		REQUIRE(next_node.get_value() == false);
 	}
 }
+
+TEST_CASE("Test Neuron derived from Node")
+{
+	
+}
+
+TEST_CASE("Test Synapse derived from Node")
+{
+	
+}
