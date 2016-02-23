@@ -24,9 +24,7 @@ void Brain::create_network(user_config_t &config)
 
 	std::cout << "Axon growth complete. Growing dendrites..." << std::endl;
 	connect_network(config.schwann_l, config.link_fwhm_param);
-
-	grow_read_assembly(0);
-}	
+}
 
 Brain::~Brain()
 {
@@ -77,12 +75,28 @@ bool Brain::read_signal(int neuron_index)
 
 int Brain::propagate_signal(double thresh)
 {
+	/* Conceptually a propagation step occurs as follows:
+	 *
+	 * int sum = 0;
+	 * for (auto i : all_nodes)
+	 *     i->push_temp_next();
+	 * for (auto i : all_nodes)
+	 *     sum += i->pop_temp(0.0);
+	 *
+	 * however it is very inefficient to touch all nodes in the network,
+	 * therefore we use the code below instead. This stores a queue (a deque
+	 * actually, so that it is iteratable) of all the nodes that are actually
+	 * live so that only they are updated. At the same time, a set is
+	 * maintained in order to ensure uniqueness, by attempting to add to the
+	 * set before adding to the deque. */
+
 	int length = live_nodes->size();
 
 	/* Phase 1 - move to temp variable of next node(s) */
 	for (int i = 0; i < length; ++i)
 	{
 		Node *front = live_nodes->front();
+		live_nodes_s->erase(front);
 		live_nodes->pop_front();
 
 		front->push_temp_next();
@@ -92,15 +106,33 @@ int Brain::propagate_signal(double thresh)
 		for(auto it_n : next)
 		{
 			auto result = live_nodes_s->insert(it_n);
+
 			if(result.second)
 				live_nodes->push_back(it_n);
+			/* Only put into the queue if we could successfully insert into
+			 * the set first, this ensures that elements in the queue are
+			 * unique */
 		}
 	}
 
 	/* Phase 2 - move from temp variable to value variable */
 	int sum = 0;
+	std::vector<Node*> erase;
+
 	for(auto it : *live_nodes)
-		sum += it->pop_temp(thresh);
+		if(it->pop_temp(thresh))
+			sum++;
+		else
+			erase.push_back(it);
+
+	/* If propagation does not occur, e.g. in the case of not enough signals
+	 * entering a neuron to cause a firing, then this node should be removed
+	 * from the collection of live nodes.*/
+	for(auto it : erase)
+	{
+		live_nodes->erase(std::find(live_nodes->begin(), live_nodes->end(), it));
+		live_nodes_s->erase(it);
+	}
 
 	return sum;
 }
