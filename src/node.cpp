@@ -42,17 +42,17 @@ bool Node::pop_temp(double noise)
 
 Neuron::Neuron(const std::valarray<double> p, int t) : Node(p), thresh(t) {}
 
-// bool Neuron::pop_temp(double noise)
-// {
-// 	auto r_gen = rand_gen<double>(0.0, 1.0);
+bool Neuron::pop_temp(double noise)
+{
+	auto r_gen = rand_gen<double>(0.0, 1.0);
 
-// 	if(on && buffer >= thresh && (noise == 0.0 || (noise != 1.0 && r_gen.get_rnum() > noise)))
-// 		value = buffer;
+	if(on && buffer >= thresh && (noise == 0.0 || (noise != 1.0 && r_gen.get_rnum() > noise)))
+		value = buffer;
 
-// 	buffer = 0;
+	buffer = 0;
 
-// 	return (bool)value;
-// }
+	return (bool)value;
+}
 
 Synapse::Synapse(const std::valarray<double> p) : Node(p), thresh(1.0f) {}
 

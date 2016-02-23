@@ -39,7 +39,7 @@ class Neuron : public Node
 {
 public:
 	Neuron(const std::valarray<double> p, int t);
-	// bool pop_temp(double noise);
+	bool pop_temp(double noise);
 
 private:
 	int thresh;
