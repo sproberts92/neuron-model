@@ -26,7 +26,7 @@ int main()
 	for (int i = 0; i < 5; ++i)
 		for (int j = 0; j < 1; ++j)
 			simulate(i, j, config);
-	
+
 	return EXIT_SUCCESS;
 }
 
@@ -37,19 +37,7 @@ void simulate(int i, int j, user_config_t &config)
 	Brain *brain = new Brain;
 	brain->create_network(config);
 
-	// std::cout << "Printing network. ";
-	// brain->print_network(file_name(config.network_c), 0, 0);
-	// brain->print_neuron_adj(file_name(config.neuron_adj, {config.n_neurons, (int)config.link_fwhm_param}));
-	// std::cout << "Done." << std::endl;
-
-	// std::cout << "Searching for loops..." << std::endl;
-	// brain->find_loops(3);
-	// brain->print_network(file_name(config.network_r), 1, 0);
-
-	// write_propagation_loop_frames(brain, config);
-
 	std::cout << "Network size: " << brain->network_size() << " nodes." << std::endl;
-	std::cout << "Connections: " << brain->connections() << " synapses." << std::endl << std::endl;
 
 	std::cout << "Network built in " << double(clock() - begin) /CLOCKS_PER_SEC << " seconds." << std::endl;
 	std::cout << "Running..." << std::endl;
@@ -72,7 +60,7 @@ void visualise(Brain *brain, user_config_t &config)
 			particles.push_back(j);
 
 	context->p_systems.push_back(glsr::Particles(10000000, "src\\shaders\\vertex_shader_p.glsl", "src\\shaders\\fragment_shader_p.glsl"));
-	context->p_systems.push_back(glsr::Particles(10000, "src\\shaders\\vertex_shader_p2.glsl", "src\\shaders\\fragment_shader_p2.glsl"));
+	context->p_systems.push_back(glsr::Particles(100000, "src\\shaders\\vertex_shader_p2.glsl", "src\\shaders\\fragment_shader_p2.glsl"));
 
 	brain->clear_signals();
 
@@ -82,7 +70,8 @@ void visualise(Brain *brain, user_config_t &config)
 	for (int i = 0; i < 10000; ++i)
 		particles2.push_back(0.0f);
 
-	int nn = config.n_neurons/1;
+	int nn = config.n_neurons/2;
+	// nn = 1;
 	std::cout << nn << std::endl;
 	for (int i = 0; i < nn; ++i)
 		brain->insert_signal(i);
@@ -98,14 +87,13 @@ void visualise(Brain *brain, user_config_t &config)
 			if (i->get_value())
 				for(auto &j : i->get_pos())
 					particles2[ii++] = j;
-		
+
 		context->p_systems[1].update_pp_data(particles2, ii);
 
 		context->draw();
 
-		if((glfwGetTime() - init) > 0.5)
+		if((glfwGetTime() - init) > 0.01)
 		{
-			// std::cout << f++ << std::endl;
 			std::cout << brain->propagate_signal(0.0)  << std::endl;
 			init = glfwGetTime();
 		}
@@ -116,32 +104,15 @@ void visualise(Brain *brain, user_config_t &config)
 	delete context;
 }
 
-bool compare_messages(std::vector<bool> message_1, std::vector<bool> message_2)
-{
-	std::vector<bool> mask = {1, 1, 1, 1, 0, 0, 0, 1};
-
-	if(message_1.size() && message_2.size())
-	{
-		bool match = true;
-		for (int i = 0; i < mask.size(); ++i)
-			if(mask[i] && message_1[i] != message_2[i])
-				match = false;
-
-		return match;
-	}
-
-	else return false;
-}
-
 void write_propagation_loop_frames(Brain *brain, user_config_t &config, int i, int j)
 {
 	std::cout << "Writing signal propagation frames..." << std::endl;
 
 	brain->clear_signals();
-	
+
 	for (int i = 0; i < config.n_neurons; ++i)
 		brain->insert_signal(i);
-	
+
 	auto f  = file_name(config.activity,{config.n_neurons, (int)config.link_fwhm_param, i, j});
 	std::ofstream out_stream(f.str(), std::fstream::trunc);
 
