@@ -59,19 +59,21 @@ void visualise(Brain *brain, user_config_t &config)
 		for(auto &j : i->get_pos())
 			particles.push_back(j);
 
+	int max_particles2 = 100000;
+
 	context->p_systems.push_back(glsr::Particles(10000000, "src\\shaders\\vertex_shader_p.glsl", "src\\shaders\\fragment_shader_p.glsl"));
-	context->p_systems.push_back(glsr::Particles(100000, "src\\shaders\\vertex_shader_p2.glsl", "src\\shaders\\fragment_shader_p2.glsl"));
+	context->p_systems.push_back(glsr::Particles(max_particles2, "src\\shaders\\vertex_shader_p2.glsl", "src\\shaders\\fragment_shader_p2.glsl"));
 
 	brain->clear_signals();
 
 	std::vector<double> particles2;
-	particles2.reserve(10000);
+	particles2.reserve(max_particles2);
 
-	for (int i = 0; i < 10000; ++i)
+	for (int i = 0; i < max_particles2; ++i)
 		particles2.push_back(0.0f);
 
-	int nn = config.n_neurons/2;
-	// nn = 1;
+	int nn = config.n_neurons;
+	// nn = 70;
 	std::cout << nn << std::endl;
 	for (int i = 0; i < nn; ++i)
 		brain->insert_signal(i);
@@ -84,9 +86,11 @@ void visualise(Brain *brain, user_config_t &config)
 
 		int ii = 0;
 		for(auto i : brain->all_nodes)
-			if (i->get_value())
+		{
+			if (i->get_value() && ii < max_particles2)
 				for(auto &j : i->get_pos())
 					particles2[ii++] = j;
+		}
 
 		context->p_systems[1].update_pp_data(particles2, ii);
 
