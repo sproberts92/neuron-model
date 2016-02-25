@@ -56,7 +56,7 @@ bool Brain::read_signal(int neuron_index)
 	return neurons[neuron_index].get_root()->get_value();
 }
 
-int Brain::propagate_signal(double thresh)
+int Brain::propagate_signal(double thresh, double up, double down)
 {
 	/* Conceptually a propagation step occurs as follows:
 	 *
@@ -97,6 +97,10 @@ int Brain::propagate_signal(double thresh)
 			 * unique */
 		}
 	}
+
+	/* Phase 1.5 - update synapse thresholds */
+	for(auto it : all_synapses)
+		it->update_threshold(up, down);
 
 	/* Phase 2 - move from temp variable to value variable */
 	int sum = 0;
@@ -162,15 +166,15 @@ int Brain::network_size(void)
 	return static_cast<int>(all_nodes.size());
 }
 
-// int Brain::connections(void)
-// {
-// 	return static_cast<int>(synapses.size());
-// }
+int Brain::connections(void)
+{
+	return static_cast<int>(all_synapses.size());
+}
 
 void Brain::place_neurons(int n, std::valarray<std::pair<double, double>> bounds)
 {
 	for (int i = 0; i < n; i++)
-		neurons.push_back(Tree::Tree(bounds, all_nodes));
+		neurons.push_back(Tree::Tree(bounds, all_nodes, all_synapses));
 
 	neuron_adjacency.resize(n, std::valarray<bool>(false, n));
 }

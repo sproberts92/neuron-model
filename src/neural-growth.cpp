@@ -98,7 +98,7 @@ void visualise(Brain *brain, user_config_t &config)
 
 		if((glfwGetTime() - init) > 0.01)
 		{
-			std::cout << brain->propagate_signal(0.0)  << std::endl;
+			brain->propagate_signal(0.0, 0.1, 0.005);
 			init = glfwGetTime();
 		}
 	}
@@ -108,22 +108,22 @@ void visualise(Brain *brain, user_config_t &config)
 	delete context;
 }
 
-void write_propagation_loop_frames(Brain *brain, user_config_t &config, int i, int j)
+void write_propagation_loop_frames(Brain *brain, user_config_t &config, int ii, int jj)
 {
 	std::cout << "Writing signal propagation frames..." << std::endl;
 
 	brain->clear_signals();
 
-	for (int i = 0; i < config.n_neurons; ++i)
+	for (int i = 0; i < 85; ++i)
 		brain->insert_signal(i);
 
-	auto f  = file_name(config.activity,{config.n_neurons, (int)config.link_fwhm_param, i, j});
+	auto f  = file_name(config.activity,{config.n_neurons, (int)config.link_fwhm_param, ii, jj});
 	std::ofstream out_stream(f.str(), std::fstream::trunc);
 
 	for (int i = 0; i < config.prop_iter; i++)
 	{
 		std::cout << 100 * i / config.prop_iter << "%\r";
-		out_stream << brain->propagate_signal(0.0) << std::endl;
+		out_stream << brain->propagate_signal(0.0, 0.1, 0.0001 * ii) << std::endl;
 	}
 
 	brain->clear_signals();

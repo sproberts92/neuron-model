@@ -12,7 +12,7 @@ class Tree
 {
 public:
 	Tree();
-	Tree(std::valarray<std::pair<double, double>> b, std::vector<Node*> &all);
+	Tree(std::valarray<std::pair<double, double>> b, std::vector<Node*> &a, std::vector<Synapse*> &s);
 
 	Neuron *get_root(void);
 	std::valarray<double> get_grow_dir(void);
@@ -27,12 +27,13 @@ private:
 
 	double find_shortest(const Tree &target, Node **shortest_ptr);
 	Node *add_node(Node *add_at, std::valarray<double> g_dir);
-	// Synapse *add_synapse(Node *add_at, std::valarray<double> g_dir);
+	Synapse *add_synapse(Node *add_at, std::valarray<double> g_dir);
 	void impose_bc(std::valarray<double> &p);
 	double gaussian(double x, double c);
 
 	Neuron *root;
 	std::vector<Node*> *all;
+	std::vector<Synapse*> *all_s;
 	std::valarray<double> grow_dir;
 	std::valarray<std::pair<double, double>> bounds;
 };

@@ -25,7 +25,7 @@ public:
 	void clear_signals(void);
 	void insert_signal(int neuron_index);
 	bool read_signal(int neuron_index);
-	int propagate_signal(double noise);
+	int propagate_signal(double noise, double up, double down);
 
 	void print_network(const std::ostringstream &fileName, bool isolate_path, bool isolate_signal);
 	void print_neuron_adj(const std::ostringstream &fileName);
@@ -43,7 +43,7 @@ private:
 	void connect_network(double l, double fwhm);
 
 	std::vector<Tree> neurons;
-	// std::vector<Synapse*> synapses;
+	std::vector<Synapse*> all_synapses;
 	std::set<Node*> *live_nodes_s;
 	std::valarray<std::valarray<bool>> neuron_adjacency;
 };

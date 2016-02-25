@@ -56,23 +56,21 @@ bool Neuron::pop_temp(double noise)
 
 Synapse::Synapse(const std::valarray<double> p) : Node(p), thresh(1.0f) {}
 
-// bool Synapse::pop_temp(double noise)
-// {
-// 	auto r_gen = rand_gen<double>(0.0, 1.0);
+bool Synapse::pop_temp(double noise)
+{
+	auto r_gen = rand_gen<double>(0.0, 1.0);
 
-// 	if(on && /*r_gen.get_rnum() <= thresh &&*/ (noise == 0.0 || (noise != 1.0 && r_gen.get_rnum() > noise)))
-// 	{
-// 		value = buffer;
-// 		if(thresh <= 1.0f)
-// 		{
-// 			// thresh += 0.1;
-// 		}
-// 	}
-// 	std::cout << "ThresH " << thresh << "a" << std::endl;
+	if(on && r_gen.get_rnum() <= thresh && (noise == 0.0 || (noise != 1.0 && r_gen.get_rnum() > noise)))
+		value = buffer;
+	buffer = 0;
 
-// 	// thresh -= 0.05;
-// 	// std::cout << thresh << std::endl;
-// 	buffer = 0;
+	return (bool)value;
+}
 
-// 	return (bool)value;
-// }
+void Synapse::update_threshold(double up, double down)
+{
+	if(buffer >= 2 && thresh < 1.0f)
+		thresh += up;
+	else if(thresh > 0.0f)
+		thresh -= down;
+}
