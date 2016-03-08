@@ -59,7 +59,6 @@ Synapse::Synapse(const std::valarray<double> p) : Node(p), thresh(1.0f) {}
 bool Synapse::pop_temp(double noise)
 {
 	auto r_gen = rand_gen<double>(0.0, 1.0);
-
 	if(on && r_gen.get_rnum() <= thresh && (noise == 0.0 || (noise != 1.0 && r_gen.get_rnum() > noise)))
 		value = buffer;
 	buffer = 0;
@@ -69,8 +68,9 @@ bool Synapse::pop_temp(double noise)
 
 void Synapse::update_threshold(double up, double down)
 {
-	if(buffer >= 2 && thresh < 1.0f)
-		thresh += up;
-	else if(thresh > 0.0f)
-		thresh -= down;
+	if(thresh <= 1.0f)
+		if(buffer)
+			thresh += up * buffer;
+		else
+			thresh -= down * buffer;
 }

@@ -23,15 +23,16 @@ int main()
 	user_config_t config;
 	getConfigInfo(&config);
 
-	for (int i = 0; i < 5; ++i)
-		for (int j = 0; j < 1; ++j)
-			simulate(i, j, config);
+	for (int ii = 500; ii <= 500; ii += 25)
+		for (int jj = 0; jj < 20; ++jj)
+			simulate(ii, jj, config);
 
 	return EXIT_SUCCESS;
 }
 
-void simulate(int i, int j, user_config_t &config)
+void simulate(int ii, int jj, user_config_t &config)
 {
+	// config.n_neurons = ii;
 	clock_t begin = clock();
 
 	Brain *brain = new Brain;
@@ -45,7 +46,7 @@ void simulate(int i, int j, user_config_t &config)
 	brain->path_nodes = brain->all_nodes;
 
 	visualise(brain, config);
-	// write_propagation_loop_frames(brain, config, i, j);
+	// write_propagation_loop_frames(brain, config, ii, jj);
 
 	delete brain;
 }
@@ -73,7 +74,7 @@ void visualise(Brain *brain, user_config_t &config)
 		particles2.push_back(0.0f);
 
 	int nn = config.n_neurons;
-	// nn = 70;
+	// nn = 85;
 	std::cout << nn << std::endl;
 	for (int i = 0; i < nn; ++i)
 		brain->insert_signal(i);
@@ -98,7 +99,7 @@ void visualise(Brain *brain, user_config_t &config)
 
 		if((glfwGetTime() - init) > 0.01)
 		{
-			brain->propagate_signal(0.0, 0.1, 0.005);
+			brain->propagate_signal(0.001, -.015f, -1.0f);
 			init = glfwGetTime();
 		}
 	}
