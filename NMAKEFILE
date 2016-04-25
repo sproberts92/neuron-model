@@ -17,7 +17,7 @@ CFLAGS = /EHsc /Wall /Wextra /Wpedantic /Qdiag-disable:remark /O3 /arch=SSSE3 /c
 /D__builtin_nanf=nanf \
 /D__builtin_nans=nan \
 /D__builtin_nansf=nanf \
-/I $(EXTERN_DIR)\libconfig\lib \
+/I $(EXTERN_DIR)\yajl\build\yajl-2.1.1\include \
 /I $(EXTERN_DIR)\engine-opengl\include \
 /I $(EXTERN_DIR)\engine-opengl\src \
 /I $(EXTERN_DIR)\engine-opengl\ext\glfw\include \
@@ -25,12 +25,12 @@ CFLAGS = /EHsc /Wall /Wextra /Wpedantic /Qdiag-disable:remark /O3 /arch=SSSE3 /c
 /I $(EXTERN_DIR)\engine-opengl\ext\stb \
 /I $(EXTERN_DIR)\engine-opengl\ext\glm
 
-LIBS = $(EXTERN_DIR)\libconfig\x64\Release\libconfig.lib \
+LIBS = $(EXTERN_DIR)\yajl\build\yajl-2.1.1\lib\Release\yajl.lib \
 "C:\Program Files (x86)\Windows Kits\10\Lib\10.0.10240.0\um\x64\User32.lib"\
 $(EXTERN_DIR)\engine-opengl\lib\glsr.lib \
 $(EXTERN_DIR)\engine-opengl\ext\glfw\build\src\Release\glfw3dll.lib \
 
-DLLS_SRC = $(EXTERN_DIR)\libconfig\x64\Release\libconfig.dll \
+DLLS_SRC = $(EXTERN_DIR)\yajl\build\yajl-2.1.1\lib\Release\yajl.dll \
 $(EXTERN_DIR)\engine-opengl\lib\glsr.dll \
 $(EXTERN_DIR)\engine-opengl\lib\glfw3.dll \
 $(EXTERN_DIR)\engine-opengl\lib\glew32.dll \

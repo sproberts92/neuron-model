@@ -1,8 +1,12 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include <stdio.h>
 #include <stdlib.h>
-#include "libconfig.h"
+#include <string.h>
+#include <stdint.h>
+
+#include "yajl/yajl_tree.h"
 
 typedef struct{
 	const char *dir, *name, *ext;
@@ -14,8 +18,11 @@ typedef struct{
 	path_t growth, network_c, network_r, signal_prop, neuron_adj, activity;
 }user_config_t;
 
-void getConfigInfo(user_config_t *config);
-void check_lookup(config_setting_t *setting);
-void check_val_lookup(int lookup_success);
+int check_parse_error(yajl_val node, char *errbuf, int v);
+char *read_file(long int *length, const char *file_name);
+int read_config(user_config_t *cf);
+int get_json_int(yajl_val *node, char *name[]);
+double get_json_double(yajl_val *node, const char *name[]);	
+void *get_json_array(yajl_val *node, const char *name[], size_t type_size);
 
 #endif

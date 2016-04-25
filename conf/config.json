@@ -1,0 +1,57 @@
+{
+	"settings": {
+		"dim": 3,
+		"n_neurons": 200,
+		"growth_iter": 100,
+		"prop_iter": 500,
+		"schwann_l": 0.5,
+		"link_fwhm_param": 15.0,
+		"bounds": -50.0
+		// "bounds": [-50.0, 50.0, -50.0, 50.0, -50.0, 50.0]
+	},
+
+	"paths":
+	{
+		"growth":
+		{
+			"dir": "output\\growth",
+			"name": "growth_",
+			"ext": "dat"
+		},
+
+		"network_c":
+		{
+			"dir": "output",
+			"name": "Complete_Network",
+			"ext": "dat"
+		},
+
+		"network_r":
+		{
+			"dir": "output",
+			"name": "Reduced_Network",
+			"ext": "dat"
+		},
+
+		"neuron_adj":
+		{
+			"dir": "output\\adjacency",
+			"name": "neur_adj",
+			"ext": "dat"
+		},
+
+		"signal_prop":
+		{
+			"dir": "output\\signal",
+			"name": "signal_",
+			"ext": "dat"
+		},
+
+		"activity":
+		{
+			"dir": "output\\activity",
+			"name": "activity_",
+			"ext": "dat"
+		}
+	}
+}

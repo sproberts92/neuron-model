@@ -21,13 +21,16 @@ void simulate(int i, int j, user_config_t &config);
 int main()
 {
 	user_config_t config;
-	getConfigInfo(&config);
+	read_config(&config);
+
+	// std::cout << config.bounds[0] << std::endl;
+
+	return EXIT_SUCCESS;
 
 	for (int ii = 500; ii <= 500; ii += 25)
 		for (int jj = 0; jj < 20; ++jj)
 			simulate(ii, jj, config);
 
-	return EXIT_SUCCESS;
 }
 
 void simulate(int ii, int jj, user_config_t &config)
