@@ -10,3 +10,7 @@
 	path = tests/ext/catch
 	url = https://github.com/philsquared/Catch.git
 	ignore = all
+[submodule "ext/yajl"]
+	path = ext/yajl
+	url = https://github.com/lloyd/yajl.git
+	ignore = all
