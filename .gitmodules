@@ -1,7 +1,3 @@
-[submodule "ext/libconfig"]
-	path = ext/libconfig
-	url = https://github.com/hyperrealm/libconfig.git
-	ignore = all
 [submodule "ext/engine-opengl"]
 	path = ext/engine-opengl
 	url = git@bitbucket.org:sproberts92/engine-opengl.git
