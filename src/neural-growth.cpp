@@ -99,7 +99,7 @@ void visualise(Brain *brain, user_config_t &config)
 
 		if((glfwGetTime() - init) > 0.01)
 		{
-			brain->propagate_signal(0.001, -.015f, -1.0f);
+			brain->propagate_signal(0.001);
 			init = glfwGetTime();
 		}
 	}
@@ -124,7 +124,7 @@ void write_propagation_loop_frames(Brain *brain, user_config_t &config, int ii, 
 	for (int i = 0; i < config.prop_iter; i++)
 	{
 		std::cout << 100 * i / config.prop_iter << "%\r";
-		out_stream << brain->propagate_signal(0.0, 0.1, 0.0001 * ii) << std::endl;
+		out_stream << brain->propagate_signal(0.0) << std::endl;
 	}
 
 	brain->clear_signals();

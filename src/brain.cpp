@@ -56,7 +56,7 @@ bool Brain::read_signal(int neuron_index)
 	return neurons[neuron_index].get_root()->get_value();
 }
 
-int Brain::propagate_signal(double thresh, double up, double down)
+int Brain::propagate_signal(double thresh)
 {
 	/* Conceptually a propagation step occurs as follows:
 	 *
@@ -100,7 +100,7 @@ int Brain::propagate_signal(double thresh, double up, double down)
 
 	/* Phase 1.5 - update synapse thresholds */
 	for(auto it : all_synapses)
-		it->update_threshold(up, down);
+		it->update_threshold();
 
 	/* Phase 2 - move from temp variable to value variable */
 	int sum = 0;

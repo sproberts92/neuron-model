@@ -50,8 +50,9 @@ class Synapse : public Node
 public:
 	Synapse(const std::valarray<double> p);
 	bool pop_temp(double noise);
-	void update_threshold(double up, double down);
+	void update_threshold(void);
 
 private:
 	double thresh;
+	int last_visited;
 };
