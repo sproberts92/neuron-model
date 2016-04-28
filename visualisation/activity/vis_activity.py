@@ -30,8 +30,8 @@ class Plot:
 
 		for k in range(self.ymin, self.ymax + 1, self.ystep):
 			data_t = []
-			for i in range(self.averages):
-				file_name = '{0}_{1}_{2}.dat'.format(self.file_name, i, k)
+			for av in range(self.averages):
+				file_name = '{0}_{1}_{2}.dat'.format(self.file_name, k, av)
 				data_t1 = np.loadtxt(file_name)
 				data_t1[data_t1 > self.zlim] = self.zlim
 				data_t.append(data_t1)
@@ -63,46 +63,64 @@ class Plot:
 		ax[1].plot_surface(xv, yv, smoothed,  cmap=cm.jet, cstride=5, rstride=1, linewidth=0)
 		f.tight_layout()
 
+		d = np.array([np.reshape(xv, -1), np.reshape(yv, -1), np.reshape(smoothed, -1)])
 
+		np.savetxt("for_pgfplots.dat", np.transpose(d))
 def main():
-	num_stim = Plot(
+	# num_stim = Plot(
+	# 	xmin = 0,
+	# 	xmax = 500,
+	# 	xstep = 1,
+	# 	ymin = 0,
+	# 	ymax = 116,
+	# 	ystep = 5,
+	# 	averages = 20,
+	# 	zlim = 1000,
+	# 	file_name =  '.\\output\\activity\\NumStim_200\\activity__200',
+	# 	title = 'Synapse threshold fall rate',
+	# 	xlabel = 'Time',
+	# 	ylabel = 'No of neurons stimulated',
+	# 	zlabel = 'Active neurons',
+	# 	xsmoothing = 5,
+	# 	ysmoothing = 35
+	# 	)
+
+	# sym_dec_rate = Plot(
+	# 	xmin = 25,
+	# 	xmax = 500,
+	# 	xstep = 1,
+	# 	ymin = 0,
+	# 	ymax = 501,
+	# 	ystep = 25,
+	# 	averages = 20,
+	# 	zlim = 1000,
+	# 	file_name = '.\\output\\activity\\SynapseDecayRate\\activity__200_0',
+	# 	title = 'Synapse threshold fall rate',
+	# 	xlabel = 'Time',
+	# 	ylabel = 'Synapse threshold fall rate x 10^-3',
+	# 	zlabel = 'Active neurons',
+	# 	xsmoothing = 5,
+	# 	ysmoothing = 35
+	# 	)
+
+	sym_dec_rate = Plot(
 		xmin = 0,
 		xmax = 500,
 		xstep = 1,
 		ymin = 0,
-		ymax = 116,
+		ymax = 60,
 		ystep = 5,
-		averages = 20,
-		zlim = 1000,
-		file_name =  '.\\output\\activity\\NumStim_200\\activity__200',
-		title = 'Synapse threshold fall rate',
+		averages = 5,
+		zlim = 1500,
+		file_name = '.\\output\\activity\\activity__200_15',
+		title = 'Target age',
 		xlabel = 'Time',
-		ylabel = 'No of neurons stimulated',
+		ylabel = 'Target age',
 		zlabel = 'Active neurons',
-		xsmoothing = 5,
-		ysmoothing = 35
+		xsmoothing = 1,
+		ysmoothing = 1
 		)
-
-	sym_dec_rate = Plot(
-		xmin = 25,
-		xmax = 500,
-		xstep = 1,
-		ymin = 0,
-		ymax = 501,
-		ystep = 25,
-		averages = 20,
-		zlim = 1000,
-		file_name = '.\\output\\activity\\SynapseDecayRate\\activity__200_0',
-		title = 'Synapse threshold fall rate',
-		xlabel = 'Time',
-		ylabel = 'Synapse threshold fall rate x 10^-3',
-		zlabel = 'Active neurons',
-		xsmoothing = 5,
-		ysmoothing = 35
-		)
-
-
-	num_stim.plot()
+	# num_stim.plot()
 	sym_dec_rate.plot()
 	plt.show()
 

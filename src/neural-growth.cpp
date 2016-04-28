@@ -23,8 +23,8 @@ int main()
 	user_config_t config;
 	getConfigInfo(&config);
 
-	for (int ii = 500; ii <= 500; ii += 25)
-		for (int jj = 0; jj < 20; ++jj)
+	for (int ii = 0; ii <= 60; ii += 5)
+		for (int jj = 0; jj < 5; ++jj)
 			simulate(ii, jj, config);
 
 	return EXIT_SUCCESS;
@@ -46,8 +46,8 @@ void simulate(int ii, int jj, user_config_t &config)
 
 	brain->path_nodes = brain->all_nodes;
 
-	visualise(brain, config);
-	// write_propagation_loop_frames(brain, config, ii, jj);
+	// visualise(brain, config);
+	write_propagation_loop_frames(brain, config, ii, jj);
 
 	delete brain;
 }
@@ -75,7 +75,6 @@ void visualise(Brain *brain, user_config_t &config)
 		particles2.push_back(0.0f);
 
 	int nn = config.n_neurons;
-	// nn = 85;
 	std::cout << nn << std::endl;
 	for (int i = 0; i < nn; ++i)
 		brain->insert_signal(i);
@@ -116,7 +115,8 @@ void write_propagation_loop_frames(Brain *brain, user_config_t &config, int ii, 
 
 	brain->clear_signals();
 
-	for (int i = 0; i < 85; ++i)
+	int nn = config.n_neurons;
+	for (int i = 0; i < nn; ++i)
 		brain->insert_signal(i);
 
 	auto f  = file_name(config.activity,{config.n_neurons, (int)config.link_fwhm_param, ii, jj});
@@ -125,7 +125,7 @@ void write_propagation_loop_frames(Brain *brain, user_config_t &config, int ii, 
 	for (int i = 0; i < config.prop_iter; i++)
 	{
 		std::cout << 100 * i / config.prop_iter << "%\r";
-		out_stream << brain->propagate_signal(0.0) << std::endl;
+		out_stream << brain->propagate_signal(0.001) << std::endl;
 	}
 
 	brain->clear_signals();
