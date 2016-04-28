@@ -5,6 +5,11 @@
 #include <valarray>
 #include "rand_gen.hpp"
 
+typedef struct
+{
+	int last_visited = 0;
+} Statistics;
+
 class Node
 {
 public:
@@ -23,7 +28,8 @@ public:
 
 	void clear_signal(void);
 	void push_temp_next(void);
-	virtual bool pop_temp(double noise);
+	virtual bool pop_temp(double noise, Statistics &s);
+	virtual void update_threshold(void);
 
 protected:
 	int value;
@@ -39,17 +45,19 @@ class Neuron : public Node
 {
 public:
 	Neuron(const std::valarray<double> p, int t);
-	bool pop_temp(double noise);
+	bool pop_temp(double noise, Statistics &s);
+	void Neuron::update_threshold(void);
 
 private:
 	int thresh;
+	int last_visited;
 };
 
 class Synapse : public Node
 {
 public:
 	Synapse(const std::valarray<double> p, int t);
-	bool pop_temp(double noise);
+	bool pop_temp(double noise, Statistics &s);
 	void update_threshold(void);
 
 private:

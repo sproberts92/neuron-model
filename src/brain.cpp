@@ -56,7 +56,7 @@ bool Brain::read_signal(int neuron_index)
 	return neurons[neuron_index].get_root()->get_value();
 }
 
-int Brain::propagate_signal(double thresh)
+int Brain::propagate_signal(double thresh, Long_Run_Statistics &lrs)
 {
 	/* Conceptually a propagation step occurs as follows:
 	 *
@@ -99,7 +99,7 @@ int Brain::propagate_signal(double thresh)
 	}
 
 	/* Phase 1.5 - update synapse thresholds */
-	for(auto it : all_synapses)
+	for(auto it : all_nodes)
 		it->update_threshold();
 
 	/* Phase 2 - move from temp variable to value variable */
@@ -107,11 +107,20 @@ int Brain::propagate_signal(double thresh)
 	std::vector<Node*> erase;
 
 	for(auto it : *live_nodes)
-		if(it->pop_temp(thresh))
+	{
+		Statistics ns;
+		
+		if(it->pop_temp(thresh, ns))
+		{
 			sum++;
+
+			if(ns.last_visited < 150)
+				lrs.last_visited[ns.last_visited]++;
+		}
 		else
 			erase.push_back(it);
-
+		
+	}
 	/* If propagation does not occur, e.g. in the case of not enough signals
 	 * entering a neuron to cause a firing, then this node should be removed
 	 * from the collection of live nodes.*/

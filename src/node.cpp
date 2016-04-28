@@ -28,7 +28,7 @@ void Node::push_temp_next(void)
 	value = 0;
 }
 
-bool Node::pop_temp(double noise)
+bool Node::pop_temp(double noise, Statistics &s)
 {
 	auto r_gen = rand_gen<double>(0.0, 1.0);
 
@@ -40,23 +40,35 @@ bool Node::pop_temp(double noise)
 	return (bool)value;
 }
 
-Neuron::Neuron(const std::valarray<double> p, int t) : Node(p), thresh(t) {}
+void Node::update_threshold(void) {}
 
-bool Neuron::pop_temp(double noise)
+Neuron::Neuron(const std::valarray<double> p, int t) : Node(p), thresh(t), last_visited(0) {}
+
+bool Neuron::pop_temp(double noise, Statistics &s)
 {
 	auto r_gen = rand_gen<double>(0.0, 1.0);
 
 	if(on && buffer >= thresh && (noise == 0.0 || (noise != 1.0 && r_gen.get_rnum() > noise)))
 		value = buffer;
 
+	if(buffer)
+	{
+		s.last_visited = last_visited;
+		last_visited = 0;
+	}
 	buffer = 0;
 
 	return (bool)value;
 }
 
+void Neuron::update_threshold(void)
+{
+	last_visited++;
+}
+
 Synapse::Synapse(const std::valarray<double> p, int t) : Node(p), target_age(t), last_visited(-1.0f) {}
 
-bool Synapse::pop_temp(double noise)
+bool Synapse::pop_temp(double noise, Statistics &s)
 {
 	auto r_gen = rand_gen<double>(0.0, 1.0);
 	if(		on

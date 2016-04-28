@@ -7,10 +7,16 @@
 #include <deque>
 #include <map>
 #include <set>
+#include <array>
 
 #include "utility.hpp"
 #include "rand_gen.hpp"
 #include "tree.hpp"
+
+typedef struct
+{
+	std::array<int, 150> last_visited = {0};
+} Long_Run_Statistics;
 
 class Brain
 {
@@ -25,7 +31,7 @@ public:
 	void clear_signals(void);
 	void insert_signal(int neuron_index);
 	bool read_signal(int neuron_index);
-	int propagate_signal(double noise);
+	int propagate_signal(double noise, Long_Run_Statistics &lrs);
 
 	void print_network(const std::ostringstream &fileName, bool isolate_path, bool isolate_signal);
 	void print_neuron_adj(const std::ostringstream &fileName);

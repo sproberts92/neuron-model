@@ -97,9 +97,11 @@ void visualise(Brain *brain, user_config_t &config)
 
 		context->draw();
 
+		Long_Run_Statistics lrs;
+
 		if((glfwGetTime() - init) > 0.01)
 		{
-			brain->propagate_signal(0.001);
+			brain->propagate_signal(0.001, lrs);
 			init = glfwGetTime();
 		}
 	}
@@ -124,11 +126,16 @@ void write_propagation_loop_frames(Brain *brain, user_config_t &config, int ii, 
 	auto f  = file_name(config.activity,{config.n_neurons, (int)config.link_fwhm_param, ii, jj});
 	std::ofstream out_stream(f.str(), std::fstream::trunc);
 
+	Long_Run_Statistics lrs;
+
 	for (int i = 0; i < config.prop_iter; i++)
 	{
 		std::cout << 100 * i / config.prop_iter << "%\r";
-		out_stream << brain->propagate_signal(0.001) << std::endl;
+		out_stream << brain->propagate_signal(0.001, lrs) << std::endl;
 	}
+
+	for(auto it : lrs.last_visited)
+		std::cout << it << " ";
 
 	brain->clear_signals();
 
