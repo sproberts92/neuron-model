@@ -107,6 +107,8 @@ void visualise(Brain *brain, user_config_t &config)
 	glfwTerminate();
 
 	delete context;
+
+	exit(0);
 }
 
 void write_propagation_loop_frames(Brain *brain, user_config_t &config, int ii, int jj)
