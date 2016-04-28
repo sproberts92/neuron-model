@@ -23,7 +23,7 @@ void Brain::create_network(user_config_t &config)
 	std::cout << "100%\n" << std::endl;
 
 	std::cout << "Axon growth complete. Growing dendrites..." << std::endl;
-	connect_network(config.schwann_l, config.link_fwhm_param);
+	connect_network(config.schwann_l, config.link_fwhm_param, config.target_age);
 }
 
 Brain::~Brain()
@@ -186,7 +186,7 @@ void Brain::grow_axons(double l)
 }
 
 
-void Brain::connect_network(double l, double fwhm)
+void Brain::connect_network(double l, double fwhm, int t)
 {
 	for (int i = 0; i < neurons.size(); ++i)
 	{
@@ -195,7 +195,7 @@ void Brain::connect_network(double l, double fwhm)
 		{
 			if(neurons[i].get_root() == neurons[j].get_root())
 				continue;
-			else if(Node *synapse = neurons[i].grow_branch(neurons[j], l, fwhm))
+			else if(Node *synapse = neurons[i].grow_branch(neurons[j], l, fwhm, t))
 			{
 				neuron_adjacency[i][j] = true;
 				// synapses.push_back(synapse);

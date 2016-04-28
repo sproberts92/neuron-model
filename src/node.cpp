@@ -54,13 +54,13 @@ bool Neuron::pop_temp(double noise)
 	return (bool)value;
 }
 
-Synapse::Synapse(const std::valarray<double> p) : Node(p), thresh(1.0f), last_visited(-1.0f) {}
+Synapse::Synapse(const std::valarray<double> p, int t) : Node(p), target_age(t), last_visited(-1.0f) {}
 
 bool Synapse::pop_temp(double noise)
 {
 	auto r_gen = rand_gen<double>(0.0, 1.0);
 	if(		on
-			&& (last_visited < 0 || last_visited > 20) 
+			&& (last_visited < 0 || last_visited > target_age)
 			&& (noise == 0.0 || (noise != 1.0 && r_gen.get_rnum() > noise))
 		)
 		value = buffer;

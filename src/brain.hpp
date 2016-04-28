@@ -40,7 +40,7 @@ public:
 private:
 	void place_neurons(int n, std::valarray<std::pair<double, double>> b);
 	void grow_axons(double l);
-	void connect_network(double l, double fwhm);
+	void connect_network(double l, double fwhm, int t);
 
 	std::vector<Tree> neurons;
 	std::vector<Synapse*> all_synapses;

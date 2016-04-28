@@ -81,13 +81,13 @@ Node *Tree::add_node(Node *add_at, std::valarray<double> rel_pos)
 	return new_axon;
 }
 
-Synapse *Tree::add_synapse(Node *add_at, std::valarray<double> rel_pos)
+Synapse *Tree::add_synapse(Node *add_at, std::valarray<double> rel_pos, int t)
 {
 	auto new_pos = rel_pos + add_at->get_pos();
 
 	impose_bc(new_pos);
 
-	Synapse *new_axon = new Synapse(new_pos);
+	Synapse *new_axon = new Synapse(new_pos, t);
 	add_at->push_next(*new_axon);
 	all->push_back(new_axon);
 	all_s->push_back(new_axon);
@@ -115,7 +115,7 @@ void Tree::impose_bc(std::valarray<double> &p)
 	}
 }
 
-Node *Tree::grow_branch(Tree &target, double l, double c)
+Node *Tree::grow_branch(Tree &target, double l, double c, int t)
 {
 	Node *shortest = nullptr;
 	double r = find_shortest(target, &shortest);
@@ -127,7 +127,7 @@ Node *Tree::grow_branch(Tree &target, double l, double c)
 	if(r != 0 && c != 0 && r_gen.get_rnum() < gaussian(r, c))
 	{
 		auto vec_r = l * (root->get_pos() - shortest->get_pos()) / r;
-		Synapse *synapse = add_synapse(shortest, vec_r);
+		Synapse *synapse = add_synapse(shortest, vec_r, t);
 		Node *dendrite_head = synapse;
 
 		for (int i = 0; i < (int)(r / l - 1); ++i)

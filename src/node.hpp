@@ -48,11 +48,11 @@ private:
 class Synapse : public Node
 {
 public:
-	Synapse(const std::valarray<double> p);
+	Synapse(const std::valarray<double> p, int t);
 	bool pop_temp(double noise);
 	void update_threshold(void);
 
 private:
-	double thresh;
+	int target_age;
 	int last_visited;
 };

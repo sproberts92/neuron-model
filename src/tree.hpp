@@ -18,7 +18,7 @@ public:
 	std::valarray<double> get_grow_dir(void);
 
 	void grow_axon(double l);
-	Node *grow_branch(Tree &target, double l, double c);
+	Node *grow_branch(Tree &target, double l, double c, int t);
 
 private:
 	std::valarray<std::pair<double, double>> unit_box(size_t d);
@@ -27,7 +27,7 @@ private:
 
 	double find_shortest(const Tree &target, Node **shortest_ptr);
 	Node *add_node(Node *add_at, std::valarray<double> g_dir);
-	Synapse *add_synapse(Node *add_at, std::valarray<double> g_dir);
+	Synapse *add_synapse(Node *add_at, std::valarray<double> g_dir, int t);
 	void impose_bc(std::valarray<double> &p);
 	double gaussian(double x, double c);
 

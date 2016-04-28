@@ -32,7 +32,8 @@ int main()
 
 void simulate(int ii, int jj, user_config_t &config)
 {
-	// config.n_neurons = ii;
+	config.target_age = ii;
+
 	clock_t begin = clock();
 
 	Brain *brain = new Brain;
