@@ -43,14 +43,14 @@ class Plot:
 		f = plt.figure(figsize=plt.figaspect(0.45))
 		ax.append(f.add_subplot(121, projection='3d'))
 		ax.append(f.add_subplot(122, projection='3d'))
-		
+
 		ax[0].set_title(self.title)
 		ax[1].set_title(self.title + ' - smoothed')
 		for x in [0,1]:
 			ax[x].set_xlabel(self.xlabel)
 			ax[x].set_ylabel(self.ylabel)
 			ax[x].set_zlabel(self.zlabel)
-	
+
 		smoothed = nd.gaussian_filter(data, [self.xsmoothing, self.ysmoothing])
 
 		shape = np.shape(smoothed)
@@ -64,8 +64,8 @@ class Plot:
 		f.tight_layout()
 
 		d = np.array([np.reshape(xv, -1), np.reshape(yv, -1), np.reshape(smoothed, -1)])
+		np.savetxt(".\\output\\for_pgfplots.dat", np.transpose(d))
 
-		np.savetxt("for_pgfplots.dat", np.transpose(d))
 def main():
 	# num_stim = Plot(
 	# 	xmin = 0,
@@ -112,7 +112,7 @@ def main():
 		ystep = 5,
 		averages = 5,
 		zlim = 1500,
-		file_name = '.\\output\\activity\\activity__200_15',
+		file_name = '.\\output\\activity\\Target_age\\activity__200_15',
 		title = 'Target age',
 		xlabel = 'Time',
 		ylabel = 'Target age',
