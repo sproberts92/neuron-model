@@ -23,7 +23,7 @@ int main()
 	user_config_t config;
 	getConfigInfo(&config);
 
-	for (int ii = 0; ii <= 60; ii += 5)
+	for (int ii = 80; ii >= 50; ii -= 2)
 		for (int jj = 0; jj < 5; ++jj)
 			simulate(ii, jj, config);
 
@@ -32,7 +32,7 @@ int main()
 
 void simulate(int ii, int jj, user_config_t &config)
 {
-	config.target_age = ii;
+	// config.target_age = ii;
 
 	clock_t begin = clock();
 
@@ -46,8 +46,8 @@ void simulate(int ii, int jj, user_config_t &config)
 
 	brain->path_nodes = brain->all_nodes;
 
-	// visualise(brain, config);
-	write_propagation_loop_frames(brain, config, ii, jj);
+	visualise(brain, config);
+	// write_propagation_loop_frames(brain, config, ii, jj);
 
 	delete brain;
 }
