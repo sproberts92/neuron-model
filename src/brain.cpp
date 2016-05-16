@@ -114,7 +114,7 @@ int Brain::propagate_signal(double thresh, Long_Run_Statistics &lrs)
 		{
 			sum++;
 
-			if(ns.last_visited < 150)
+			if(ns.last_visited > 0 && ns.last_visited < 150)
 				lrs.last_visited[ns.last_visited]++;
 		}
 		else

@@ -63,4 +63,5 @@ public:
 private:
 	int target_age;
 	int last_visited;
+	double window;
 };

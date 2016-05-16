@@ -49,13 +49,14 @@ bool Neuron::pop_temp(double noise, Statistics &s)
 	auto r_gen = rand_gen<double>(0.0, 1.0);
 
 	if(on && buffer >= thresh && (noise == 0.0 || (noise != 1.0 && r_gen.get_rnum() > noise)))
-		value = buffer;
-
-	if(buffer)
 	{
 		s.last_visited = last_visited;
+		value = buffer;
+	}	
+
+	if(buffer)
 		last_visited = 0;
-	}
+
 	buffer = 0;
 
 	return (bool)value;
@@ -66,18 +67,21 @@ void Neuron::update_threshold(void)
 	last_visited++;
 }
 
-Synapse::Synapse(const std::valarray<double> p, int t) : Node(p), target_age(t), last_visited(-1.0f) {}
+Synapse::Synapse(const std::valarray<double> p, int t) : Node(p), target_age(t), last_visited(-1.0f), window(10.0f) {}
 
 bool Synapse::pop_temp(double noise, Statistics &s)
 {
 	auto r_gen = rand_gen<double>(0.0, 1.0);
 	if(		on
-			&& (last_visited < 0 || last_visited > target_age)
+			&& last_visited > target_age
 			&& (noise == 0.0 || (noise != 1.0 && r_gen.get_rnum() > noise))
-		)
+		){
 		value = buffer;
+	}
 
-	if(buffer) last_visited = 0;
+	if(buffer)
+		last_visited = 0;
+
 	buffer = 0;
 
 	return (bool)value;
