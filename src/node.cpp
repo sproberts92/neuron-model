@@ -42,7 +42,10 @@ bool Node::pop_temp(double noise, Statistics &s)
 
 void Node::update_threshold(void) {}
 
-Neuron::Neuron(const std::valarray<double> p, int t) : Node(p), thresh(t), last_visited(0) {}
+Neuron::Neuron(const std::valarray<double> p, int t) : Node(p), thresh(t), last_visited(0)
+{
+	history.resize(1000, 0);
+}
 
 bool Neuron::pop_temp(double noise, Statistics &s)
 {
@@ -52,7 +55,34 @@ bool Neuron::pop_temp(double noise, Statistics &s)
 	{
 		s.last_visited = last_visited;
 		value = buffer;
-	}	
+		history[0] = true;
+	}
+	else
+		history[0] = false;
+
+
+	int len = 6;
+	std::array<bool, 6> pat_win;
+
+	for (int i = 0; i < len; ++i)
+		pat_win[i] = history[i];
+
+	for (int i = len; i < history.size() - len; ++i)
+	{
+		int success = 0;
+
+		if (std::accumulate(history.begin(), history.end(), 0) > 3)
+		{
+			for (int j = 0; j < len; ++j)
+				if (history[i + j] == pat_win[j])
+					success++;
+				else
+					break;
+			if(success == len){
+				s.pattern_found.push_back(i);
+			}
+		}
+	}
 
 	if(buffer)
 		last_visited = 0;
@@ -65,6 +95,8 @@ bool Neuron::pop_temp(double noise, Statistics &s)
 void Neuron::update_threshold(void)
 {
 	last_visited++;
+	history.pop_back();
+	history.push_front(false);
 }
 
 Synapse::Synapse(const std::valarray<double> p, int t) : Node(p), target_age(t), last_visited(-1.0f), window(10.0f) {}

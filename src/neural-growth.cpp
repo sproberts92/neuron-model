@@ -46,8 +46,8 @@ void simulate(int ii, int jj, user_config_t &config)
 
 	brain->path_nodes = brain->all_nodes;
 
-	visualise(brain, config);
-	// write_propagation_loop_frames(brain, config, ii, jj);
+	// visualise(brain, config);
+	write_propagation_loop_frames(brain, config, ii, jj);
 
 	delete brain;
 }
@@ -136,6 +136,13 @@ void write_propagation_loop_frames(Brain *brain, user_config_t &config, int ii, 
 
 	for(auto it : lrs.last_visited)
 		std::cout << it << " ";
+	std::cout << std::endl;
+
+	std::ofstream out_stream2("output/PatternFound.dat", std::fstream::app);
+
+	for(auto it : lrs.pattern_found)
+		out_stream2 << it << " ";
+	out_stream2 << std::endl;
 
 	brain->clear_signals();
 

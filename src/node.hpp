@@ -3,11 +3,15 @@
 #include <iostream>
 #include <vector>
 #include <valarray>
+#include <array>
+#include <deque>
+#include <numeric>
 #include "rand_gen.hpp"
 
 typedef struct
 {
 	int last_visited = 0;
+	std::vector<int> pattern_found;
 } Statistics;
 
 class Node
@@ -51,6 +55,7 @@ public:
 private:
 	int thresh;
 	int last_visited;
+	std::deque<bool> history;
 };
 
 class Synapse : public Node

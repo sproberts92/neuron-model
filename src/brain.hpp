@@ -16,6 +16,7 @@
 typedef struct
 {
 	std::array<int, 150> last_visited = {0};
+	std::array<int, 1000> pattern_found = {0};
 } Long_Run_Statistics;
 
 class Brain

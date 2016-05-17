@@ -109,7 +109,7 @@ int Brain::propagate_signal(double thresh, Long_Run_Statistics &lrs)
 	for(auto it : *live_nodes)
 	{
 		Statistics ns;
-		
+
 		if(it->pop_temp(thresh, ns))
 		{
 			sum++;
@@ -119,7 +119,10 @@ int Brain::propagate_signal(double thresh, Long_Run_Statistics &lrs)
 		}
 		else
 			erase.push_back(it);
-		
+
+		if(!ns.pattern_found.empty())
+			for(auto it : ns.pattern_found)
+				lrs.pattern_found[it]++;
 	}
 	/* If propagation does not occur, e.g. in the case of not enough signals
 	 * entering a neuron to cause a firing, then this node should be removed
