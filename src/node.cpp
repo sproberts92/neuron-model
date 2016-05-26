@@ -44,7 +44,7 @@ void Node::update_threshold(void) {}
 
 Neuron::Neuron(const std::valarray<double> p, int t) : Node(p), thresh(t), last_visited(0)
 {
-	history.resize(1000, 0);
+	history.resize(3000, 0);
 }
 
 bool Neuron::pop_temp(double noise, Statistics &s)
@@ -60,9 +60,8 @@ bool Neuron::pop_temp(double noise, Statistics &s)
 	else
 		history[0] = false;
 
-
-	int len = 6;
-	std::array<bool, 6> pat_win;
+	int len = 10;
+	std::array<bool, 10> pat_win;
 
 	for (int i = 0; i < len; ++i)
 		pat_win[i] = history[i];
@@ -71,7 +70,7 @@ bool Neuron::pop_temp(double noise, Statistics &s)
 	{
 		int success = 0;
 
-		if (std::accumulate(history.begin(), history.end(), 0) > 3)
+		if (std::accumulate(history.begin(), history.end(), 0) > 5)
 		{
 			for (int j = 0; j < len; ++j)
 				if (history[i + j] == pat_win[j])
@@ -99,13 +98,14 @@ void Neuron::update_threshold(void)
 	history.push_front(false);
 }
 
-Synapse::Synapse(const std::valarray<double> p, int t) : Node(p), target_age(t), last_visited(-1.0f), window(10.0f) {}
+Synapse::Synapse(const std::valarray<double> p, int t) : Node(p), target_age(t), last_visited(-1.0f), window(20.0f) {}
 
 bool Synapse::pop_temp(double noise, Statistics &s)
 {
 	auto r_gen = rand_gen<double>(0.0, 1.0);
 	if(		on
-			&& last_visited > target_age
+			// && last_visited > target_age
+			&& r_gen.get_rnum() > std::max((target_age - last_visited)/window, (double)0.0f)
 			&& (noise == 0.0 || (noise != 1.0 && r_gen.get_rnum() > noise))
 		){
 		value = buffer;
