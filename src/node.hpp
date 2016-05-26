@@ -56,6 +56,8 @@ private:
 	int thresh;
 	int last_visited;
 	std::deque<bool> history;
+
+	void gather_statistics(Statistics &s);
 };
 
 class Synapse : public Node

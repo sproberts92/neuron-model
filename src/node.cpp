@@ -47,19 +47,8 @@ Neuron::Neuron(const std::valarray<double> p, int t) : Node(p), thresh(t), last_
 	history.resize(3000, 0);
 }
 
-bool Neuron::pop_temp(double noise, Statistics &s)
+void Neuron::gather_statistics(Statistics &s)
 {
-	auto r_gen = rand_gen<double>(0.0, 1.0);
-
-	if(on && buffer >= thresh && (noise == 0.0 || (noise != 1.0 && r_gen.get_rnum() > noise)))
-	{
-		s.last_visited = last_visited;
-		value = buffer;
-		history[0] = true;
-	}
-	else
-		history[0] = false;
-
 	int len = 10;
 	std::array<bool, 10> pat_win;
 
@@ -82,6 +71,22 @@ bool Neuron::pop_temp(double noise, Statistics &s)
 			}
 		}
 	}
+}
+
+bool Neuron::pop_temp(double noise, Statistics &s)
+{
+	auto r_gen = rand_gen<double>(0.0, 1.0);
+
+	if(on && buffer >= thresh && (noise == 0.0 || (noise != 1.0 && r_gen.get_rnum() > noise)))
+	{
+		s.last_visited = last_visited;
+		value = buffer;
+		history[0] = true;
+	}
+	else
+		history[0] = false;
+
+	gather_statistics(s);
 
 	if(buffer)
 		last_visited = 0;
