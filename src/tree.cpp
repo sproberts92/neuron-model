@@ -20,14 +20,24 @@ std::valarray<double> Tree::get_grow_dir(void)
 	return grow_dir;
 }
 
-double Tree::find_shortest(const Tree &target, Node **shortest_ptr)
+double Tree::find_shortest(const Tree &target, Node **shortest_ptr, std::valarray<double> &vec_r, user_config_t &cf)
 {
 	Node *list_ptr = target.root;
+
 	double shortest_r = std::numeric_limits<double>::infinity();
 
 	while(!list_ptr->get_next().empty())
 	{
 		auto temp = list_ptr->get_pos() - root->get_pos();
+
+		for (int i = 0; i < size(temp); ++i)
+		{
+			auto box_l = cf.bounds[2*i + 1] - cf.bounds[2 * i];
+
+			/* Impose periodic boundary conditions. Isn't it beautiful? */
+			temp[i] -= ((temp[i] > box_l/2) - (temp[i] < -box_l/2)) * box_l;
+		}
+
 		double r = (temp * temp).sum();
 
 		/* Compare r^2 values, don't need to waste time with sqrt */
@@ -35,6 +45,7 @@ double Tree::find_shortest(const Tree &target, Node **shortest_ptr)
 		{
 			shortest_r = r;
 			*shortest_ptr = list_ptr;
+			vec_r = temp;
 		}
 
 		list_ptr = list_ptr->get_next().front();
@@ -110,27 +121,28 @@ void Tree::impose_bc(std::valarray<double> &p)
 	for (int i = 0; i < p.size(); i++)
 	{
 		// Impose periodic boundary conditions
-		if(p[i] < bounds[i].first) p[i] += (bounds[i].second - bounds[i].first);
-		if(p[i] >= bounds[i].second) p[i] -= (bounds[i].second - bounds[i].first);
+		if(p[i] < bounds[i].first)  p[i] += (bounds[i].second - bounds[i].first);
+		if(p[i] > bounds[i].second) p[i] -= (bounds[i].second - bounds[i].first);
 	}
 }
 
-Node *Tree::grow_branch(Tree &target, double l, double c, int t)
+Node *Tree::grow_branch(Tree &target, user_config_t &cf)
 {
 	Node *shortest = nullptr;
-	double r = find_shortest(target, &shortest);
+
+	std::valarray<double> vec_r;
+	double r = find_shortest(target, &shortest, vec_r, cf);
 
 	static rand_gen<double> r_gen = rand_gen<double>(0, 1);
 	/* TO DO: replace static with smart-pointer that can be gc'd later*/
 	/* TO DO: read constants in gaussian from config.cfg */
-
-	if(r != 0 && c != 0 && r_gen.get_rnum() < gaussian(r, c))
+	if(r != 0 && cf.link_fwhm_param != 0 && r_gen.get_rnum() < gaussian(r, cf.link_fwhm_param))
 	{
-		auto vec_r = l * (root->get_pos() - shortest->get_pos()) / r;
-		Synapse *synapse = add_synapse(shortest, vec_r, t);
+		vec_r = cf.schwann_l * vec_r / r;
+		Synapse *synapse = add_synapse(shortest, vec_r, cf.target_age);
 		Node *dendrite_head = synapse;
 
-		for (int i = 0; i < (int)(r / l - 1); ++i)
+		for (int i = 0; i < (int)(r / cf.schwann_l - 1); ++i)
 			dendrite_head = add_node(dendrite_head, vec_r);
 
 		dendrite_head->push_next(*root);

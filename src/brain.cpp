@@ -6,24 +6,24 @@ Brain::Brain(void)
 	live_nodes_s = new std::set<Node*>;
 }
 
-void Brain::create_network(user_config_t &config)
+void Brain::create_network(user_config_t &cf)
 {
-	auto bounds = convert_bounds(config);
-	place_neurons(config.n_neurons, bounds);
+	auto bounds = convert_bounds(cf);
+	place_neurons(cf.n_neurons, bounds);
 
 	std::cout << "Neuron layout complete. Growing axons..." << std::endl;
 
-	for (int i = 0; i < config.growth_iter; i++)
+	for (int i = 0; i < cf.growth_iter; i++)
 	{
-		std::cout << 100 * i / config.growth_iter << "%\r";
+		std::cout << 100 * i / cf.growth_iter << "%\r";
 
-		grow_axons(config.schwann_l);
-		print_network(file_name(config.growth, i), 0, 0);
+		grow_axons(cf.schwann_l);
+		print_network(file_name(cf.growth, i), 0, 0);
 	}
 	std::cout << "100%\n" << std::endl;
 
 	std::cout << "Axon growth complete. Growing dendrites..." << std::endl;
-	connect_network(config.schwann_l, config.link_fwhm_param, config.target_age);
+	connect_network(cf);
 }
 
 Brain::~Brain()
@@ -122,7 +122,7 @@ int Brain::propagate_signal(double thresh, Long_Run_Statistics &lrs)
 
 		if(!ns.pattern_found.empty())
 			for(auto it : ns.pattern_found)
-				lrs.pattern_found[it]++;
+				if(it > 0) lrs.pattern_found[it]++;
 	}
 	/* If propagation does not occur, e.g. in the case of not enough signals
 	 * entering a neuron to cause a firing, then this node should be removed
@@ -198,7 +198,7 @@ void Brain::grow_axons(double l)
 }
 
 
-void Brain::connect_network(double l, double fwhm, int t)
+void Brain::connect_network(user_config_t &cf)
 {
 	for (int i = 0; i < neurons.size(); ++i)
 	{
@@ -207,7 +207,7 @@ void Brain::connect_network(double l, double fwhm, int t)
 		{
 			if(neurons[i].get_root() == neurons[j].get_root())
 				continue;
-			else if(Node *synapse = neurons[i].grow_branch(neurons[j], l, fwhm, t))
+			else if(Node *synapse = neurons[i].grow_branch(neurons[j], cf))
 			{
 				neuron_adjacency[i][j] = true;
 				// synapses.push_back(synapse);

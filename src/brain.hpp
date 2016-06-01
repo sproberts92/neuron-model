@@ -12,11 +12,12 @@
 #include "utility.hpp"
 #include "rand_gen.hpp"
 #include "tree.hpp"
+#include "config.h"
 
 typedef struct
 {
 	std::array<int, 150> last_visited = {0};
-	std::array<int, 3000> pattern_found = {0};
+	std::array<int, 1<<10> pattern_found = {0};
 } Long_Run_Statistics;
 
 class Brain
@@ -47,7 +48,7 @@ public:
 private:
 	void place_neurons(int n, std::valarray<std::pair<double, double>> b);
 	void grow_axons(double l);
-	void connect_network(double l, double fwhm, int t);
+	void connect_network(user_config_t &cf);
 
 	std::vector<Tree> neurons;
 	std::vector<Synapse*> all_synapses;
