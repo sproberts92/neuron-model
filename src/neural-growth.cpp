@@ -46,6 +46,9 @@ void simulate(int ii, int jj, user_config_t &config)
 
 	brain->path_nodes = brain->all_nodes;
 
+	auto f  = file_name(config.neuron_adj,{config.n_neurons, ii, jj});
+	brain->print_neuron_adj(f);
+
 	// visualise(brain, config);
 	write_propagation_loop_frames(brain, config, ii, jj);
 
