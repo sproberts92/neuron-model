@@ -44,33 +44,23 @@ void Node::update_threshold(void) {}
 
 Neuron::Neuron(const std::valarray<double> p, int t) : Node(p), thresh(t), last_visited(0)
 {
-	history.resize(3000, 0);
+	history.resize(1<<10, 0);
 }
 
 void Neuron::gather_statistics(Statistics &s)
 {
 	int len = 10;
-	std::array<bool, 10> pat_win;
-
+	
+	int d_sum = 0;
+	int b_sum = 0;
 	for (int i = 0; i < len; ++i)
-		pat_win[i] = history[i];
-
-	for (int i = len; i < history.size() - len; ++i)
 	{
-		int success = 0;
-
-		if (std::accumulate(history.begin(), history.end(), 0) > 5)
-		{
-			for (int j = 0; j < len; ++j)
-				if (history[i + j] == pat_win[j])
-					success++;
-				else
-					break;
-			if(success == len){
-				s.pattern_found.push_back(i);
-			}
-		}
+		d_sum += history[i];
+		b_sum += history[i] << i; 
 	}
+
+	if(d_sum > 3)
+		s.pattern_found.push_back(b_sum);
 }
 
 bool Neuron::pop_temp(double noise, Statistics &s)
