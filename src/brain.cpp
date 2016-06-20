@@ -24,6 +24,8 @@ void Brain::create_network(user_config_t &cf)
 
 	std::cout << "Axon growth complete. Growing dendrites..." << std::endl;
 	connect_network(cf);
+	print_network(file_name(cf.network_c), 0, 0);
+	print_neurons(file_name(cf.network_n));
 }
 
 Brain::~Brain()
@@ -155,6 +157,23 @@ void Brain::print_network(const std::ostringstream &fileName, bool isolate_path,
 				out_stream << it_d << " ";
 			out_stream << std::endl;
 		}
+
+	out_stream.close();
+}
+
+void Brain::print_neurons(const std::ostringstream &fileName)
+{
+	/* Print the positions of neurons only */
+
+	std::ofstream out_stream;
+	out_stream.open(fileName.str(), std::fstream::trunc);
+
+	for(auto it_n : neurons)
+	{
+		for(auto it_d : it_n.get_root()->get_pos())
+			out_stream << it_d << " ";
+		out_stream << std::endl;
+	}
 
 	out_stream.close();
 }

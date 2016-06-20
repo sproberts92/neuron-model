@@ -36,6 +36,7 @@ public:
 	int propagate_signal(double noise, Long_Run_Statistics &lrs);
 
 	void print_network(const std::ostringstream &fileName, bool isolate_path, bool isolate_signal);
+	void print_neurons(const std::ostringstream &fileName);
 	void print_neuron_adj(const std::ostringstream &fileName);
 	int network_size(void);
 	int connections(void);

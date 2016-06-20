@@ -10,7 +10,7 @@ void getConfigInfo(user_config_t *config)
 
 	if(config_read_file(&cfg, "conf/config.cfg") != CONFIG_TRUE)
 	{
-		fprintf(stderr, "\nConfiguration read failed. Check conf/config.cfg exists.\n");
+		fprintf(stderr, "\nConfiguration read failed. Check conf/config.cfg exists and is correctly formatted.\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -51,6 +51,15 @@ void getConfigInfo(user_config_t *config)
 	lookup_success &= config_setting_lookup_string(setting, "dir", &(config->network_c.dir));
 	lookup_success &= config_setting_lookup_string(setting, "name", &(config->network_c.name));
 	lookup_success &= config_setting_lookup_string(setting, "ext", &(config->network_c.ext));
+	check_val_lookup(lookup_success);
+
+	setting = config_lookup(&cfg, "application.paths.network_n");
+	check_lookup(setting);
+
+	lookup_success = 1;
+	lookup_success &= config_setting_lookup_string(setting, "dir", &(config->network_n.dir));
+	lookup_success &= config_setting_lookup_string(setting, "name", &(config->network_n.name));
+	lookup_success &= config_setting_lookup_string(setting, "ext", &(config->network_n.ext));
 	check_val_lookup(lookup_success);
 
 	setting = config_lookup(&cfg, "application.paths.network_r");
