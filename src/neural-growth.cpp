@@ -23,8 +23,8 @@ int main()
 	user_config_t config;
 	getConfigInfo(&config);
 
-	for (int ii = 80; ii >= 50; ii -= 2)
-		for (int jj = 0; jj < 5; ++jj)
+	for (int ii = 0; ii < 500; ii += 10)
+		for (int jj = 0; jj < 10; ++jj)
 			simulate(ii, jj, config);
 
 	return EXIT_SUCCESS;
@@ -32,7 +32,7 @@ int main()
 
 void simulate(int ii, int jj, user_config_t &config)
 {
-	// config.target_age = ii;
+	config.link_fwhm_param = ii/10.0f;
 
 	clock_t begin = clock();
 
