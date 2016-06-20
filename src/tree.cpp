@@ -147,7 +147,7 @@ Node *Tree::grow_branch(Tree &target, user_config_t &cf)
 
 		dendrite_head->push_next(*root);
 
-		return nullptr;
+		return dendrite_head;
 	}
 	else return nullptr;
 }
