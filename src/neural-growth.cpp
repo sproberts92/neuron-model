@@ -32,7 +32,7 @@ int main()
 
 void simulate(int ii, int jj, user_config_t &config)
 {
-	config.link_fwhm_param = ii/10.0f;
+	// config.link_fwhm_param = ii/10.0f;
 
 	clock_t begin = clock();
 
@@ -44,7 +44,8 @@ void simulate(int ii, int jj, user_config_t &config)
 	std::cout << "Network built in " << double(clock() - begin) /CLOCKS_PER_SEC << " seconds." << std::endl;
 	std::cout << "Running..." << std::endl;
 
-	brain->path_nodes = brain->all_nodes;
+	// brain->path_nodes = brain->all_nodes;
+	brain->find_loops(3);
 
 	auto f  = file_name(config.neuron_adj,{config.n_neurons, ii, jj});
 	brain->print_neuron_adj(f);

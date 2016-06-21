@@ -236,3 +236,100 @@ void Brain::connect_network(user_config_t &cf)
 
 	std::cout << "100%\n" << std::endl;
 }
+
+void Brain::find_loops(int n)
+{
+	std::vector<Node*> n_path, r_path, s_path;
+	/* n_paths = node path
+	 * r_paths = root path (ie neurons)
+	 * s_paths = synapse path */
+
+	int loop_num = 3;
+	int loop_length = 0;
+	Node *loop_root = neurons.front().get_root();
+	depth_first_path_search(loop_num, loop_length, *loop_root, *loop_root, r_path, s_path);
+	std::cout << loop_length << std::endl;
+	turn_off_synapses(s_path);
+
+	std::cout << "Path nodes: " << path_nodes.size() << std::endl;
+}
+
+bool Brain::depth_first_path_search(int &ln, int &loop_length, Node &node, Node &loop_root, std::vector<Node*> &r_path, std::vector<Node*> &s_path)
+{
+	static int loop_c = 0;
+	static int loop_l = std::numeric_limits<int>::max();
+
+	if(loop_length - (loop_l*loop_c) - 5 > loop_l)
+		return false;
+
+	loop_length++;
+	bool is_root = set_root_flag(node, r_path);
+	bool is_synapse = set_synapse_flag(node, s_path);
+	bool is_u_node = set_u_node_flag(node);
+
+	for(auto it_n : node.get_next())
+	{
+		if(it_n == &loop_root && loop_c == 0)
+		{
+			loop_l = loop_length;
+			loop_c++;
+
+			std::cout << "Loop found, length: " << loop_l << " nodes, " << r_path.size() << " neurons." << std::endl;
+			if(depth_first_path_search(ln, loop_length, *it_n, loop_root, r_path, s_path))
+				return true;
+		}
+		else if(it_n == &loop_root && loop_length - (loop_l*loop_c) == loop_l)
+		{
+			std::cout << "Degenerate loop found, " << loop_length - 1 << " " << r_path.size() << " neurons." << std::endl;
+			if(++loop_c == ln || depth_first_path_search(ln, loop_length, *it_n, loop_root, r_path, s_path))
+				return true;
+		}
+		else if(!(std::find(r_path.begin(), r_path.end(), it_n) != r_path.end()))
+			if(depth_first_path_search(ln, loop_length, *it_n, loop_root, r_path, s_path))
+				return true;
+	}
+
+	loop_length--;
+	if(is_root)	r_path.pop_back();
+	if(is_synapse) s_path.pop_back();
+	if(is_u_node) path_nodes.pop_back();
+
+	return false;
+}
+
+void Brain::turn_off_synapses(std::vector<Node*> path_s)
+{
+	for(auto it : all_synapses)
+		if(!(std::find(path_s.begin(), path_s.end(), it) != path_s.end()))
+			it->turn_off();
+}
+
+bool Brain::set_root_flag(Node &node, std::vector<Node*> &path)
+{
+	if(std::find_if(neurons.begin(), neurons.end(), TreeRootComp(&node)) != neurons.end())
+	{
+		path.push_back(&node);
+		return true;
+	}
+	else return false;
+}
+
+bool Brain::set_synapse_flag(Node &node, std::vector<Node*> &path)
+{
+	if(std::find(all_synapses.begin(), all_synapses.end(), &node) != all_synapses.end())
+	{
+		path.push_back(&node);
+		return true;
+	}
+	else return false;
+}
+
+bool Brain::set_u_node_flag(Node &node)
+{
+	if(!(std::find(path_nodes.begin(), path_nodes.end(), &node) != path_nodes.end()))
+	{
+		path_nodes.push_back(&node);
+		return true;
+	}
+	else return false;
+}
