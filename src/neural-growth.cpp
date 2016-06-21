@@ -47,8 +47,10 @@ void simulate(int ii, int jj, user_config_t &config)
 	// brain->path_nodes = brain->all_nodes;
 	brain->find_loops(3);
 
-	auto f  = file_name(config.neuron_adj,{config.n_neurons, ii, jj});
-	brain->print_neuron_adj(f);
+	brain->print_network(file_name(config.network_c, 1), 1, 0);
+
+	// auto f  = file_name(config.neuron_adj,{config.n_neurons, ii, jj});
+	// brain->print_neuron_adj(f);
 
 	// visualise(brain, config);
 	write_propagation_loop_frames(brain, config, ii, jj);
@@ -124,7 +126,7 @@ void write_propagation_loop_frames(Brain *brain, user_config_t &config, int ii, 
 	brain->clear_signals();
 
 	int nn = config.n_neurons;
-	for (int i = 0; i < nn; ++i)
+	for (int i = 0; i < 1; ++i)
 		brain->insert_signal(i);
 
 	auto f  = file_name(config.activity,{config.n_neurons, (int)config.link_fwhm_param, ii, jj});
@@ -134,6 +136,8 @@ void write_propagation_loop_frames(Brain *brain, user_config_t &config, int ii, 
 
 	for (int i = 0; i < config.prop_iter; i++)
 	{
+		brain->print_network(file_name(config.signal_prop, i), 0, 1);
+		
 		std::cout << 100 * i / config.prop_iter << "%\r";
 		out_stream << brain->propagate_signal(0.001, lrs) << std::endl;
 	}

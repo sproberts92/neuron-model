@@ -140,9 +140,9 @@ int Brain::propagate_signal(double thresh, Long_Run_Statistics &lrs)
 
 void Brain::print_network(const std::ostringstream &fileName, bool isolate_path, bool isolate_signal)
 {
-	/* If isolate_signal == 1 then nodes which have no signal (value = 0) are
+	/* If isolate_path == 1 then nodes which are not on the signal path are
 	 * not printed.
-	 * If isolate_path == 1 then nodes which are not on the signal path are
+	 * If isolate_signal == 1 then nodes which have no signal (value = 0) are
 	 * not printed. */
 	std::ofstream out_stream;
 	out_stream.open(fileName.str(), std::fstream::trunc);
