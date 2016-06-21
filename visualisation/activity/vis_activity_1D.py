@@ -18,7 +18,7 @@ class Plot:
 				peaks[av] = np.NaN
 				continue
 
-			fft_window_min = 0
+			fft_window_min = 1000
 			fft_window_max = 5000
 
 			fft_data = np.fft.rfft(data[fft_window_min:fft_window_max])
@@ -39,6 +39,9 @@ class Plot:
 			# been determined?
 
 			interp_lspc = np.linspace(0, np.nanmax(period_lspc),  5*np.nanmax(period_lspc))
+
+			print(len(period_lspc), len(fft_data))
+
 			interp_data = np.interp(interp_lspc, period_lspc, fft_data)
 
 			peaks[av] = interp_lspc[np.nanargmax(interp_data)]
@@ -56,7 +59,7 @@ class Plot:
 
 	def plot_means(self):
 
-		nums = np.array(range(56, 81, 2))
+		nums = np.array(range(40, 55, 2))
 
 		data = np.empty(nums.size)
 		for index, val in zip(range(nums.size), nums):
@@ -73,6 +76,10 @@ class Plot:
 		print(poly)
 		print(np.corrcoef(nums, data))
 
+		file_out = open('Output/long_range_period_means.dat', 'w')
+		for i in range(len(nums)):
+			print("{0} {1}".format(nums[i], data[i]), file=file_out)
+		file_out.close()
 
 		plt.scatter(nums[idx], data[idx])
 		# plt.errorbar(nums[idx], data[idx], yerr=25)
@@ -87,6 +94,17 @@ class Plot:
 		ax.append(fig.add_subplot(131))
 		ax.append(fig.add_subplot(132))
 		ax.append(fig.add_subplot(133))
+
+		lspc = np.linspace(0,4999,5000)
+		file_out = open('Output/long_range_period.dat', 'w')
+		for i in range(len(lspc)):
+			print("{0} {1}".format(lspc[i], self.data[i]), file=file_out)
+		file_out.close()
+
+		file_out = open('Output/long_range_period_fft.dat', 'w')
+		for i in range(len(self.interp_lspc)):
+			print("{0} {1}".format(self.interp_lspc[i], self.interp_data[i]), file=file_out)
+		file_out.close()
 
 		ax[0].plot(self.data)
 		ax[1].plot(self.interp_lspc, self.interp_data)
@@ -134,13 +152,13 @@ def main():
 
 	periodic_activity = Plot(
 		averages = 5,
-		file_name = '.\\output\\activity\\activity__200_35',
+		file_name = '.\\output\\activity\\activity__200_30',
 		)
 
 	# num_stim.plot()
-	# periodic_activity.process(20)
-	# periodic_activity.plot_one()
-	periodic_activity.plot_means()
+	periodic_activity.process(58)
+	periodic_activity.plot_one()
+	# periodic_activity.plot_means()
 	plt.show()
 
 if __name__ == '__main__':
