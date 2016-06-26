@@ -8,6 +8,7 @@ def main():
 
 	call(['ffmpeg',
 		'-f', 'image2',
+		'-framerate', '25',
 		'-i', path.format('%d'),
 		'-b:v', '64M',
 		'{0}.avi'.format(out_name)])
