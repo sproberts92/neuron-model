@@ -5,16 +5,21 @@ from joblib import Parallel, delayed
 from tqdm import trange
 import warnings as warn
 
-u = 000
-v = 500
-s = 10
-a = 10
-b = 0
-n = 300
-
 def main():
-    length = np.array(Parallel(n_jobs=4)(delayed(process)(k) for k in trange(u, v, s))).T
-    np.save('length_nan_{0}'.format(n), length)
+    # name = 'length_mean_no_norm'
+    # name = 'length_nanmean_no_norm'
+
+    # name = 'length_mean_yes_norm'
+    name = 'length_nanmean_yes_norm'
+
+
+    for i in range(10,51,10):
+        length = np.array(Parallel(n_jobs=4)(delayed(process)(k, i, 40) for k in trange(0, 500, 1))).T
+        np.save('output/adjacency_processed/{0}_{1}'.format(name, i), length)
+
+    length = np.array(Parallel(n_jobs=4)(delayed(process)(k, 300, 10) for k in trange(10, 500, 10))).T
+    np.save('output/adjacency_processed/{0}_{1}'.format(name, 300), length)
+
 
 def check_matrix_diag(m):
     if 0 in np.diag(m):
@@ -22,18 +27,17 @@ def check_matrix_diag(m):
     else:
         return 1
 
-def process(k):
+def process(k, size, av):
 
-    length = np.zeros((a,2))
+    length = np.zeros((av,2))
 
-    for r in range(a):
-        # path = "./output/adjacency/good_plots/neur_adj_{0}_{1}_{2}.dat".format(n, k, r)
-        path = "./output/adjacency/neur_adj_{0}_{1}_{2}.dat".format(n, k, r)
+    for r in range(av):
+        path = "./output/adjacency/good_plots/neur_adj_{0}_{1}_{2}.dat".format(size, k, r)
         adj = np.loadtxt(path)
-        # adj = np.random.choice([0, 1], size=(50,50), p=[90./100, 10./100])
 
         # Save connectivity parameter
-        length[r, 0] = np.sum(adj) / float(n*n)
+        # length[r, 0] = np.sum(adj) / float(size)
+        length[r, 0] = np.sum(adj) / float(size*size)
 
         cum_paths = adj
 
@@ -52,9 +56,9 @@ def process(k):
     with warn.catch_warnings():
         # To catch "Mean of empty slice" warning
         warn.simplefilter("ignore", category=RuntimeWarning)
-        # print(np.mean(length,0))
-        # return length
-        return np.mean(length,0)
+
+        # return np.mean(length,0)
+        return np.nanmean(length,0)
 
 if __name__ == '__main__':
     main()
