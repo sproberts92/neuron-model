@@ -17,7 +17,7 @@ def f(i, fig, ax, signals=0):
     ax.text2D(0.0, 0.0, 't  = {0}'.format(i), transform=ax.transAxes)
 
     if signals:
-        lines = plot_scatt(signal_path.format(i), ax, c='r')
+        lines = plot_scatt(signal_path.format(i), ax, c='r', s=70)
         if lines:
             fig.canvas.draw()
             save_fig(i)
