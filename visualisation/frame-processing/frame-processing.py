@@ -14,6 +14,8 @@ neuron_path = 'output\\Complete_Network_Neurons.dat'
 def f(i, fig, ax, signals=0):
     ax.view_init(30, float(i) / float(545)* 360)
 
+    ax.text2D(0.0, 0.0, 't  = {0}'.format(i), transform=ax.transAxes)
+
     if signals:
         lines = plot_scatt(signal_path.format(i), ax, c='r')
         if lines:
