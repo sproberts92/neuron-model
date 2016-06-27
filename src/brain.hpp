@@ -52,7 +52,7 @@ private:
 	void connect_network(user_config_t &cf);
 
 	void turn_off_synapses(std::vector<Node*> path_s);
-	bool depth_first_path_search(int &ln, int &loop_length, Node &node, Node &loop_root, std::vector<Node*> &r_path, std::vector<Node*> &s_path);
+	bool depth_first_path_search(int &ln, int &loop_length, Node &node, Node &loop_root, std::vector<Node*> &r_path, std::vector<Node*> &s_path, int &loop_c, int &loop_l);
 	bool set_root_flag(Node &node, std::vector<Node*> &path);
 	bool set_synapse_flag(Node &node, std::vector<Node*> &path);
 	bool set_u_node_flag(Node &node);

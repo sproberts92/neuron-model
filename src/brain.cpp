@@ -247,18 +247,19 @@ void Brain::find_loops(int n)
 	int loop_num = 3;
 	int loop_length = 0;
 	Node *loop_root = neurons.front().get_root();
-	depth_first_path_search(loop_num, loop_length, *loop_root, *loop_root, r_path, s_path);
+	
+	int loop_c = 0;
+	int loop_l = std::numeric_limits<int>::max();
+	depth_first_path_search(loop_num, loop_length, *loop_root, *loop_root, r_path, s_path, loop_c, loop_l);
+	
 	std::cout << loop_length << std::endl;
 	turn_off_synapses(s_path);
 
 	std::cout << "Path nodes: " << path_nodes.size() << std::endl;
 }
 
-bool Brain::depth_first_path_search(int &ln, int &loop_length, Node &node, Node &loop_root, std::vector<Node*> &r_path, std::vector<Node*> &s_path)
+bool Brain::depth_first_path_search(int &ln, int &loop_length, Node &node, Node &loop_root, std::vector<Node*> &r_path, std::vector<Node*> &s_path, int &loop_c, int &loop_l)
 {
-	static int loop_c = 0;
-	static int loop_l = std::numeric_limits<int>::max();
-
 	if(loop_length - (loop_l*loop_c) - 5 > loop_l)
 		return false;
 
@@ -275,17 +276,17 @@ bool Brain::depth_first_path_search(int &ln, int &loop_length, Node &node, Node 
 			loop_c++;
 
 			std::cout << "Loop found, length: " << loop_l << " nodes, " << r_path.size() << " neurons." << std::endl;
-			if(depth_first_path_search(ln, loop_length, *it_n, loop_root, r_path, s_path))
+			if(depth_first_path_search(ln, loop_length, *it_n, loop_root, r_path, s_path, loop_c, loop_l))
 				return true;
 		}
 		else if(it_n == &loop_root && loop_length - (loop_l*loop_c) == loop_l)
 		{
 			std::cout << "Degenerate loop found, " << loop_length - 1 << " " << r_path.size() << " neurons." << std::endl;
-			if(++loop_c == ln || depth_first_path_search(ln, loop_length, *it_n, loop_root, r_path, s_path))
+			if(++loop_c == ln || depth_first_path_search(ln, loop_length, *it_n, loop_root, r_path, s_path, loop_c, loop_l))
 				return true;
 		}
 		else if(!(std::find(r_path.begin(), r_path.end(), it_n) != r_path.end()))
-			if(depth_first_path_search(ln, loop_length, *it_n, loop_root, r_path, s_path))
+			if(depth_first_path_search(ln, loop_length, *it_n, loop_root, r_path, s_path, loop_c, loop_l))
 				return true;
 	}
 
