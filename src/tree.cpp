@@ -1,9 +1,9 @@
 #include "tree.hpp"
 
-Tree::Tree(std::valarray<std::pair<double, double>> b, std::vector<Node*> &a, std::vector<Synapse*> &s)
+Tree::Tree(std::valarray<std::pair<double, double>> b, int cr, std::vector<Node*> &a, std::vector<Synapse*> &s)
 	: bounds(b), all(&a), all_s(&s)
 {
-	root = new Neuron(r_vec(bounds), 3);
+	root = new Neuron(r_vec(bounds), cr);
 	all->push_back(root);
 
 	grow_dir = r_vec(unit_box(bounds.size()));

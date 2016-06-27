@@ -9,7 +9,7 @@ Brain::Brain(void)
 void Brain::create_network(user_config_t &cf)
 {
 	auto bounds = convert_bounds(cf);
-	place_neurons(cf.n_neurons, bounds);
+	place_neurons(cf.n_neurons, bounds, cf.combination_rule);
 
 	std::cout << "Neuron layout complete. Growing axons..." << std::endl;
 
@@ -202,10 +202,10 @@ int Brain::connections(void)
 	return static_cast<int>(all_synapses.size());
 }
 
-void Brain::place_neurons(int n, std::valarray<std::pair<double, double>> bounds)
+void Brain::place_neurons(int n, std::valarray<std::pair<double, double>> bounds, int cr)
 {
 	for (int i = 0; i < n; i++)
-		neurons.push_back(Tree::Tree(bounds, all_nodes, all_synapses));
+		neurons.push_back(Tree::Tree(bounds, cr, all_nodes, all_synapses));
 
 	neuron_adjacency.resize(n, std::valarray<bool>(false, n));
 }

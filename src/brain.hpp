@@ -47,7 +47,7 @@ public:
 	std::deque<Node*> *live_nodes;
 
 private:
-	void place_neurons(int n, std::valarray<std::pair<double, double>> b);
+	void place_neurons(int n, std::valarray<std::pair<double, double>> b, int cr);
 	void grow_axons(double l);
 	void connect_network(user_config_t &cf);
 

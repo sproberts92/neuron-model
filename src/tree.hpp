@@ -13,7 +13,7 @@ class Tree
 {
 public:
 	Tree();
-	Tree(std::valarray<std::pair<double, double>> b, std::vector<Node*> &a, std::vector<Synapse*> &s);
+	Tree(std::valarray<std::pair<double, double>> b, int cr, std::vector<Node*> &a, std::vector<Synapse*> &s);
 
 	Neuron *get_root(void);
 	std::valarray<double> get_grow_dir(void);
