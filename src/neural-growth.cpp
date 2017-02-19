@@ -1,5 +1,3 @@
-#pragma warning(disable : 1744)
-
 #include <iostream>
 #include <ctime>
 #include <sstream>
@@ -7,7 +5,9 @@
 #include <chrono>
 #include <thread>
 
+#pragma warning( push, 0 )
 #include "glsr.hpp"
+#pragma warning( pop )
 
 #include "brain.hpp"
 #include "interface.hpp"
