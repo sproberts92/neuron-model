@@ -75,7 +75,7 @@ int Brain::propagate_signal(double thresh, Long_Run_Statistics &lrs)
 	 * maintained in order to ensure uniqueness, by attempting to add to the
 	 * set before adding to the deque. */
 
-	int length = live_nodes->size();
+	int length = (int)live_nodes->size();
 
 	/* Phase 1 - move to temp variable of next node(s) */
 	for (int i = 0; i < length; ++i)

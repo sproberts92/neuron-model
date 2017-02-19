@@ -92,7 +92,7 @@ void visualise(Brain *brain, user_config_t &config)
 	int f = 0;
 	while(!glfwWindowShouldClose(context->window))
 	{
-		context->p_systems[0].update_pp_data(particles, particles.size());
+		context->p_systems[0].update_pp_data(particles, (int)particles.size());
 
 		int ii = 0;
 		for(auto i : brain->all_nodes)

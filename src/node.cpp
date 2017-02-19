@@ -3,8 +3,8 @@
 Node::Node(const std::valarray<double> p)
 	: pos(p), value(0), on(true), buffer(0) {}
 
-bool Node::get_value(void) { return value; } //
-void Node::set_value(const bool v) { value = v; } //
+bool Node::get_value(void) { return !!value; }
+void Node::set_value(const bool v) { value = v; }
 
 void Node::turn_on(void) { on = true; }
 void Node::turn_off(void) { on = false; }
@@ -37,7 +37,7 @@ bool Node::pop_temp(double noise, Statistics &s)
 
 	buffer = 0;
 
-	return (bool)value;
+	return !!value;
 }
 
 void Node::update_threshold(void) {}
@@ -96,7 +96,7 @@ bool Neuron::pop_temp(double noise, Statistics &s)
 
 	buffer = 0;
 
-	return (bool)value;
+	return !!value;
 }
 
 void Neuron::update_threshold(void)
@@ -106,7 +106,7 @@ void Neuron::update_threshold(void)
 	history.push_front(false);
 }
 
-Synapse::Synapse(const std::valarray<double> p, int t) : Node(p), target_age(t), last_visited(-1.0f), window(20.0f) {}
+Synapse::Synapse(const std::valarray<double> p, int t) : Node(p), target_age(t), last_visited(-1), window(20.0f) {}
 
 bool Synapse::pop_temp(double noise, Statistics &s)
 {
@@ -124,7 +124,7 @@ bool Synapse::pop_temp(double noise, Statistics &s)
 
 	buffer = 0;
 
-	return (bool)value;
+	return !!value;
 }
 
 void Synapse::update_threshold(void)
