@@ -5,13 +5,13 @@
 #include <chrono>
 #include <thread>
 
-#pragma warning( push, 0 )
-#include "glsr.hpp"
-#pragma warning( pop )
-
 #include "brain.hpp"
 #include "interface.hpp"
 #include "messages.hpp"
+
+#pragma warning( push, 0 )
+#include "glsr.hpp"
+#pragma warning( pop )
 
 void write_propagation_loop_frames(Brain *brain, user_config_t &config, int i, int j);
 bool compare_messages(std::vector<bool> message_1, std::vector<bool> message_2);
