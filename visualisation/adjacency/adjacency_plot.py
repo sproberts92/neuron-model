@@ -9,17 +9,19 @@ from pprint import pprint
 
 colour = ['red', 'green', 'blue', 'yellow', 'orange', 'purple']
 
-name = 'length_nanmean_no_norm'
+# name = 'length_nanmean_no_norm'
 # name = 'length_nanmean_yes_norm'
 # name = 'length_mean_yes_norm'
-# name = 'length_mean_no_norm'
+name = 'length_mean_no_norm'
 
 # plot_transitions = True
 plot_transitions = False
 
 def f(x, a, b, c, d):
     # return a * np.log(b * (x-c)) + d
-    return a* (1 - np.exp(-x/b)) + c
+    # return a* (1 - np.exp(-x/b)) + c
+    # return a* np.exp(-(x-c)/b)
+    return a/(x-c) + b
 
 def make_plot(i, c, plot=False):
     length = np.load('./output/adjacency_processed/{0}_{1}.npy'.format(name, i))
@@ -49,10 +51,11 @@ def make_plot(i, c, plot=False):
             # return [i, x[j]]
 
     turning_pts = np.array(turning_pts)
-    pprint(turning_pts)
+    # pprint(turning_pts)
     return [i, np.mean(turning_pts)]
 
 def main():
+    print(name)
 
     p = []
     for i in range(10,51,10):
@@ -67,21 +70,21 @@ def main():
     # print(polyfit)
     # print(np.corrcoef(p.T[0], p.T[1]))
 
-    popt, pcov = cf(f, p.T[0], p.T[1])
+    # popt, pcov = cf(f, p.T[0], p.T[1])
 
     if plot_transitions is False:
 
         xl = np.linspace(10, 300, 300)
         # yl = polyfit[1] + polyfit[0] * xl
         # yl = f(xl, 6.2, 1/40, 2, 1)
-        yl = f(xl, *popt)
-        # yl = f(xl, .6, .2, 1, 3)
+        # yl = f(xl, *popt)
+        # yl = f(xl, 0.3725, 50.77, 0.00, 3)
 
-        print(popt)
+        # print(popt)
 
         plt.scatter(p.T[0], p.T[1])
 
-        plt.plot(xl,yl)
+        # plt.plot(xl,yl)
     else:
         plt.xlim([0,20])
         # plt.yscale('log')
