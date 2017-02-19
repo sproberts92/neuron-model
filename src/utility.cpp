@@ -26,6 +26,18 @@ std::ostringstream file_name(path_t &path, std::initializer_list<int> list)
 	return fileName;
 }
 
+std::ostringstream file_name(const std::string& path, std::initializer_list<int> list)
+{
+	std::ostringstream fileName;
+	fileName << path;
+
+	for(auto i : list)
+		fileName << "_" << i;
+
+	fileName << ".dat";
+	return fileName;
+}
+
 std::valarray<std::pair<double, double>> convert_bounds(user_config_t &config)
 {
 	std::valarray<std::pair<double, double>> bounds(config.dim);
