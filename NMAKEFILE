@@ -7,26 +7,33 @@ BINARY_DIR = bin
 EXTERN_DIR = ext
 ###################################
 LINK = link
-# CC = cl
-# CFLAGS = /EHsc /W3 /Ox /c /Fo.\$(OBJECT_DIR)\ \
-CC = icl
-CFLAGS = /EHsc /Wall /Wextra /Wpedantic /Qdiag-disable:remark /O3 /arch=SSSE3 /c /Fo.\$(OBJECT_DIR)\ \
-/D__builtin_huge_val()=HUGE_VAL \
-/D__builtin_huge_valf()=HUGE_VALF \
-/D__builtin_nan=nan \
-/D__builtin_nanf=nanf \
-/D__builtin_nans=nan \
-/D__builtin_nansf=nanf \
-/I $(EXTERN_DIR)\libconfig\lib \
-/I $(EXTERN_DIR)\engine-opengl\include \
-/I $(EXTERN_DIR)\engine-opengl\src \
-/I $(EXTERN_DIR)\engine-opengl\ext\glfw\include \
-/I $(EXTERN_DIR)\engine-opengl\ext\glew\include \
-/I $(EXTERN_DIR)\engine-opengl\ext\stb \
-/I $(EXTERN_DIR)\engine-opengl\ext\glm
+CC = cl
+CFLAGS = /EHsc /W3 /Ox /c /Fo.\$(OBJECT_DIR)\ \
+$(_INCLUDE_DIRS)
+# CC = icl
+# CFLAGS = /EHsc /Wall /Wextra /Wpedantic /Qdiag-disable:remark /O3 /arch=SSSE3 /c /Fo.\$(OBJECT_DIR)\ \
+# /D__builtin_huge_val()=HUGE_VAL \
+# /D__builtin_huge_valf()=HUGE_VALF \
+# /D__builtin_nan=nan \
+# /D__builtin_nanf=nanf \
+# /D__builtin_nans=nan \
+# /D__builtin_nansf=nanf \
+
+INCLUDE_DIRS = \
+$(EXTERN_DIR)\libconfig\lib \
+$(EXTERN_DIR)\engine-opengl\include \
+$(EXTERN_DIR)\engine-opengl\src \
+$(EXTERN_DIR)\engine-opengl\ext\glfw\include \
+$(EXTERN_DIR)\engine-opengl\ext\glew\include \
+$(EXTERN_DIR)\engine-opengl\ext\stb \
+$(EXTERN_DIR)\engine-opengl\ext\glm
+
+!IF "$(INCLUDE_DIRS)" != ""
+_INCLUDE_DIRS = /I $(INCLUDE_DIRS:  = /I )
+!ENDIF
 
 LIBS = $(EXTERN_DIR)\libconfig\x64\Release\libconfig.lib \
-"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.10240.0\um\x64\User32.lib"\
+"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.14393.0\um\x64\User32.lib"\
 $(EXTERN_DIR)\engine-opengl\lib\glsr.lib \
 $(EXTERN_DIR)\engine-opengl\ext\glfw\build\src\Release\glfw3dll.lib \
 
@@ -45,6 +52,12 @@ BINARY = $(BINARY_DIR)\$(EXECUTABLE)
 
 all: $(BINARY) $(BINARY_DIR) $(OBJECTS)
 
+echo_inc:
+	echo $(_INCLUDE_DIRS)
+
+echo_dlls:
+	echo $(DLLS_SRC)
+
 echo_objects:
 	echo $(OBJECTS)
 
@@ -53,7 +66,7 @@ echo_sources:
 
 # Stack size is set to 16 Mb
 $(BINARY): $(OBJECTS)
-	$(LINK) $(OBJECTS) $(LIBS) /STACK:16777216 /OUT:$(BINARY)	
+	$(LINK) $(OBJECTS) $(LIBS) /STACK:16777216 /OUT:$(BINARY)
 
 $(BINARY_DIR): $(DLLS_SRC)
 	for %n in ($**) do copy /y /v /b %n $@
