@@ -4,6 +4,10 @@
 #include <stdlib.h>
 #include "libconfig.h"
 
+/* This module is a bit messy, but I intend to replace libconfig with a JSON
+ * based solution such as YAJL so there isn't much point in tidying it up at
+ * the moment (see branch json-config for the start of this conversion). */
+
 typedef struct{
 	const char *dir, *name, *ext;
 }path_t;

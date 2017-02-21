@@ -13,9 +13,26 @@
 #include "glsr.hpp"
 #pragma warning( pop )
 
+// Place signals at neurons and propagate the signals through the network while
+// gathering statistics and writing output data to file, including network
+// activity levels and recurrence of patterns of activity at neurons.
 void write_propagation_loop_frames(Brain *brain, user_config_t &config, int i, int j);
-bool compare_messages(std::vector<bool> message_1, std::vector<bool> message_2);
+
+// Place one signal at each neuron and propagate the signals through the
+// network with OpenGL visualisation, the simulation will run indefinitely
+// until cancelled by the user with ESC. The program will exit at then end of
+// this function so that this function can be used without modifying main() to
+// remove loops.
+// To do: Read the proportion of neurons where a signal is placed from config.
 void visualise(Brain *brain, user_config_t &config);
+
+// Run a single simulation, consisting of growing and connecting a network,
+// placing signals in the network, allowing propagation of the signals through
+// the network and gathering statistics on this propagation OR growing a single
+// network, placing signals and allowing propagation with OpenGL visualisation.
+// In this case the program exits after a single simulation.
+// To do: At the moment the functionality is hard selected but should be read
+// from config.
 void simulate(int i, int j, user_config_t &config);
 
 int main()
@@ -41,21 +58,25 @@ void simulate(int ii, int jj, user_config_t &config)
 
 	std::cout << "Network size: " << brain->network_size() << " nodes." << std::endl;
 
-	std::cout << "Network built in " << double(clock() - begin) /CLOCKS_PER_SEC << " seconds." << std::endl;
+	std::cout << "Network built in " << double(clock() - begin) /CLOCKS_PER_SEC
+	<< " seconds." << std::endl;
 	std::cout << "Running..." << std::endl;
 
+	// To do: Toggle the below functionality from config.
+	//
 	// brain->path_nodes = brain->all_nodes;
-
+	//
 	// auto fl  = file_name("output/three_loops/tl", {config.n_neurons, (int)config.link_fwhm_param, ii, jj});
 	// std::ofstream out_stream(fl.str(), std::fstream::app);
 	// out_stream << brain->find_loops(3) << std::endl;
-
+	//
 	// brain->print_network(file_name(config.network_c, 1), 1, 0);
-
+	//
 	// auto f  = file_name(config.neuron_adj,{config.n_neurons, ii, jj});
 	// brain->print_neuron_adj(f);
-
+	//
 	// visualise(brain, config);
+
 	write_propagation_loop_frames(brain, config, ii, jj);
 
 	delete brain;
@@ -72,8 +93,10 @@ void visualise(Brain *brain, user_config_t &config)
 
 	int max_particles2 = 100000;
 
-	context->p_systems.push_back(glsr::Particles(10000000, "src\\shaders\\vertex_shader_p.glsl", "src\\shaders\\fragment_shader_p.glsl"));
-	context->p_systems.push_back(glsr::Particles(max_particles2, "src\\shaders\\vertex_shader_p2.glsl", "src\\shaders\\fragment_shader_p2.glsl"));
+	context->p_systems.push_back(glsr::Particles(10000000,
+		"src/shaders/vertex_shader_p.glsl", "src/shaders/fragment_shader_p.glsl"));
+	context->p_systems.push_back(glsr::Particles(max_particles2,
+		"src/shaders/vertex_shader_p2.glsl", "src/shaders/fragment_shader_p2.glsl"));
 
 	brain->clear_signals();
 
@@ -119,7 +142,7 @@ void visualise(Brain *brain, user_config_t &config)
 
 	delete context;
 
-	exit(0);
+	exit(EXIT_SUCCESS);
 }
 
 void write_propagation_loop_frames(Brain *brain, user_config_t &config, int ii, int jj)

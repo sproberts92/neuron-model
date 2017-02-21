@@ -3,21 +3,21 @@
 std::ostringstream file_name(path_t &path)
 {
 	std::ostringstream fileName;
-	fileName << path.dir << "\\" << path.name << "." << path.ext;
+	fileName << path.dir << "/" << path.name << "." << path.ext;
 	return fileName;
 }
 
 std::ostringstream file_name(path_t &path, int it)
 {
 	std::ostringstream fileName;
-	fileName << path.dir << "\\" << path.name << it << "." << path.ext;
+	fileName << path.dir << "/" << path.name << it << "." << path.ext;
 	return fileName;
 }
 
 std::ostringstream file_name(path_t &path, std::initializer_list<int> list)
 {
 	std::ostringstream fileName;
-	fileName << path.dir << "\\" << path.name;
+	fileName << path.dir << "/" << path.name;
 
 	for(auto i : list)
 		fileName << "_" << i;

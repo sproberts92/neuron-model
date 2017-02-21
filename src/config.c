@@ -10,7 +10,8 @@ void getConfigInfo(user_config_t *config)
 
 	if(config_read_file(&cfg, "conf/config.cfg") != CONFIG_TRUE)
 	{
-		fprintf(stderr, "\nConfiguration read failed. Check conf/config.cfg exists and is correctly formatted.\n");
+		fprintf(stderr, "\nConfiguration read failed. Check conf/config.cfg "
+			"exists and is correctly formatted.\n");
 		exit(EXIT_FAILURE);
 	}
 
