@@ -1,6 +1,6 @@
 #include "brain.hpp"
 
-Brain::Brain(void)
+Brain::Brain()
 {
 	live_nodes = new std::deque<Node*>;
 	live_nodes_s = new std::set<Node*>;
@@ -13,17 +13,22 @@ void Brain::create_network(user_config_t &cf)
 
 	std::cout << "Neuron layout complete. Growing axons..." << std::endl;
 
+	// Create one new Schwann cell of length cf.schwann_l for cf.growth_iter
+	// steps.
 	for (int i = 0; i < cf.growth_iter; i++)
 	{
 		std::cout << 100 * i / cf.growth_iter << "%\r";
 
 		grow_axons(cf.schwann_l);
-		print_network(file_name(cf.growth, i), 0, 0);
+
+		// To do: Toggle this from config.
+		// print_network(file_name(cf.growth, i), 0, 0);
 	}
 	std::cout << "100%\n" << std::endl;
 
 	std::cout << "Axon growth complete. Growing dendrites..." << std::endl;
 	connect_network(cf);
+
 	print_network(file_name(cf.network_c), 0, 0);
 	print_neurons(file_name(cf.network_n));
 }
@@ -39,7 +44,7 @@ Brain::~Brain()
 
 void Brain::clear_signals(void)
 {
-	/* Phase 0 - reset all counters */
+	// Phase 0 - reset all counters.
 	for(auto it_n : all_nodes)
 		it_n->clear_signal();
 }
@@ -60,24 +65,24 @@ bool Brain::read_signal(int neuron_index)
 
 int Brain::propagate_signal(double thresh, Long_Run_Statistics &lrs)
 {
-	/* Conceptually a propagation step occurs as follows:
-	 *
-	 * int sum = 0;
-	 * for (auto i : all_nodes)
-	 *     i->push_temp_next();
-	 * for (auto i : all_nodes)
-	 *     sum += i->pop_temp(0.0);
-	 *
-	 * however it is very inefficient to touch all nodes in the network,
-	 * therefore we use the code below instead. This stores a queue (a deque
-	 * actually, so that it is iteratable) of all the nodes that are actually
-	 * live so that only they are updated. At the same time, a set is
-	 * maintained in order to ensure uniqueness, by attempting to add to the
-	 * set before adding to the deque. */
+	// Conceptually a propagation step occurs as follows:
+	//
+	// int sum = 0;
+	// for (auto i : all_nodes)
+	//     i->push_temp_next();
+	// for (auto i : all_nodes)
+	//     sum += i->pop_temp(0.0);
+	//
+	// however it is very inefficient to touch all nodes in the network,
+	// therefore we use the code below instead. This stores a queue (a deque
+	// actually, so that it is iteratable) of all the nodes that are actually
+	// live so that only they are updated. At the same time, a set is
+	// maintained in order to ensure uniqueness, by attempting to add to the
+	// set before adding to the deque.
 
 	int length = (int)live_nodes->size();
 
-	/* Phase 1 - move to temp variable of next node(s) */
+	// Phase 1 - move to temp variable of next node(s).
 	for (int i = 0; i < length; ++i)
 	{
 		Node *front = live_nodes->front();
@@ -94,17 +99,17 @@ int Brain::propagate_signal(double thresh, Long_Run_Statistics &lrs)
 
 			if(result.second)
 				live_nodes->push_back(it_n);
-			/* Only put into the queue if we could successfully insert into
-			 * the set first, this ensures that elements in the queue are
-			 * unique */
+			// Only put into the queue if we could successfully insert into
+			// the set first, this ensures that elements in the queue are
+			// unique.
 		}
 	}
 
-	/* Phase 1.5 - update synapse thresholds */
+	// Phase 1.5 - update synapse thresholds.
 	for(auto it : all_nodes)
 		it->update_threshold();
 
-	/* Phase 2 - move from temp variable to value variable */
+	// Phase 2 - move from temp variable to value variable.
 	int sum = 0;
 	std::vector<Node*> erase;
 
@@ -122,13 +127,12 @@ int Brain::propagate_signal(double thresh, Long_Run_Statistics &lrs)
 		else
 			erase.push_back(it);
 
-		if(!ns.pattern_found.empty())
-			for(auto p_it : ns.pattern_found)
-				if(p_it > 0) lrs.pattern_found[p_it]++;
+		for(auto p_it : ns.pattern_found)
+			if(p_it > 0) lrs.pattern_found[p_it]++;
 	}
-	/* If propagation does not occur, e.g. in the case of not enough signals
-	 * entering a neuron to cause a firing, then this node should be removed
-	 * from the collection of live nodes.*/
+	// If propagation does not occur, e.g. in the case of not enough signals
+	// entering a neuron to cause a firing, then this node should be removed
+	// from the collection of live nodes.
 	for(auto it : erase)
 	{
 		live_nodes->erase(std::find(live_nodes->begin(), live_nodes->end(), it));
@@ -138,12 +142,13 @@ int Brain::propagate_signal(double thresh, Long_Run_Statistics &lrs)
 	return sum;
 }
 
-void Brain::print_network(const std::ostringstream &fileName, bool isolate_path, bool isolate_signal)
+void Brain::print_network(const std::ostringstream &fileName,
+	bool isolate_path, bool isolate_signal)
 {
-	/* If isolate_path == 1 then nodes which are not on the signal path are
-	 * not printed.
-	 * If isolate_signal == 1 then nodes which have no signal (value = 0) are
-	 * not printed. */
+	// If isolate_path == 1 then nodes which are not on the signal path are
+	// not printed.
+	// If isolate_signal == 1 then nodes which have no signal (value = 0) are
+	// not printed.
 	std::ofstream out_stream;
 	out_stream.open(fileName.str(), std::fstream::trunc);
 
@@ -163,7 +168,7 @@ void Brain::print_network(const std::ostringstream &fileName, bool isolate_path,
 
 void Brain::print_neurons(const std::ostringstream &fileName)
 {
-	/* Print the positions of neurons only */
+	// Print the positions of neurons only.
 
 	std::ofstream out_stream;
 	out_stream.open(fileName.str(), std::fstream::trunc);
@@ -240,9 +245,9 @@ void Brain::connect_network(user_config_t &cf)
 bool Brain::find_loops(int n)
 {
 	std::vector<Node*> n_path, r_path, s_path;
-	/* n_paths = node path
-	 * r_paths = root path (ie neurons)
-	 * s_paths = synapse path */
+	// n_paths = node path
+	// r_paths = root path (ie neurons)
+	// s_paths = synapse path
 
 	 int iter = 0;
 
@@ -253,7 +258,8 @@ bool Brain::find_loops(int n)
 	int loop_c = 0;
 	int loop_l = std::numeric_limits<int>::max();
 
-	if(depth_first_path_search(loop_num, loop_length, *loop_root, *loop_root, r_path, s_path, loop_c, loop_l, iter))
+	if(depth_first_path_search(loop_num, loop_length, *loop_root, *loop_root,
+		r_path, s_path, loop_c, loop_l, iter))
 	{
 		std::cout << loop_length << std::endl;
 		turn_off_synapses(s_path);
@@ -265,7 +271,9 @@ bool Brain::find_loops(int n)
 		return false;
 }
 
-bool Brain::depth_first_path_search(int &ln, int &loop_length, Node &node, Node &loop_root, std::vector<Node*> &r_path, std::vector<Node*> &s_path, int &loop_c, int &loop_l, int &iter)
+bool Brain::depth_first_path_search(int &ln, int &loop_length, Node &node,
+	Node &loop_root, std::vector<Node*> &r_path, std::vector<Node*> &s_path,
+	int &loop_c, int &loop_l, int &iter)
 {
 	if(iter++ > 10000000)
 		return false;
@@ -285,19 +293,26 @@ bool Brain::depth_first_path_search(int &ln, int &loop_length, Node &node, Node 
 			loop_l = loop_length;
 			loop_c++;
 
-			std::cout << "Loop found, length: " << loop_l << " nodes, " << r_path.size() << " neurons." << std::endl;
+			std::cout << "Loop found, length: " << loop_l << " nodes, "
+			<< r_path.size() << " neurons." << std::endl;
+
 			if(r_path.size() > neurons.size() / (ln - 1))
-			if(depth_first_path_search(ln, loop_length, *it_n, loop_root, r_path, s_path, loop_c, loop_l, iter))
-				return true;
+				if(depth_first_path_search(ln, loop_length, *it_n, loop_root,
+					r_path, s_path, loop_c, loop_l, iter))
+					return true;
 		}
 		else if(it_n == &loop_root && loop_length - (loop_l*loop_c) == loop_l)
 		{
-			std::cout << "Degenerate loop found, " << loop_length - 1 << " " << r_path.size() << " neurons." << std::endl;
-			if(++loop_c == ln || depth_first_path_search(ln, loop_length, *it_n, loop_root, r_path, s_path, loop_c, loop_l, iter))
+			std::cout << "Degenerate loop found, " << loop_length - 1 << " "
+			<< r_path.size() << " neurons." << std::endl;
+
+			if(++loop_c == ln || depth_first_path_search(ln, loop_length,
+				*it_n, loop_root, r_path, s_path, loop_c, loop_l, iter))
 				return true;
 		}
 		else if(!(std::find(r_path.begin(), r_path.end(), it_n) != r_path.end()))
-			if(depth_first_path_search(ln, loop_length, *it_n, loop_root, r_path, s_path, loop_c, loop_l, iter))
+			if(depth_first_path_search(ln, loop_length, *it_n, loop_root,
+				r_path, s_path, loop_c, loop_l, iter))
 				return true;
 	}
 
@@ -318,7 +333,8 @@ void Brain::turn_off_synapses(std::vector<Node*> path_s)
 
 bool Brain::set_root_flag(Node &node, std::vector<Node*> &path)
 {
-	if(std::find_if(neurons.begin(), neurons.end(), TreeRootComp(&node)) != neurons.end())
+	if(std::find_if(neurons.begin(), neurons.end(), TreeRootComp(&node))
+		!= neurons.end())
 	{
 		path.push_back(&node);
 		return true;
@@ -328,7 +344,8 @@ bool Brain::set_root_flag(Node &node, std::vector<Node*> &path)
 
 bool Brain::set_synapse_flag(Node &node, std::vector<Node*> &path)
 {
-	if(std::find(all_synapses.begin(), all_synapses.end(), &node) != all_synapses.end())
+	if(std::find(all_synapses.begin(), all_synapses.end(), &node)
+		!= all_synapses.end())
 	{
 		path.push_back(&node);
 		return true;
@@ -338,7 +355,8 @@ bool Brain::set_synapse_flag(Node &node, std::vector<Node*> &path)
 
 bool Brain::set_u_node_flag(Node &node)
 {
-	if(!(std::find(path_nodes.begin(), path_nodes.end(), &node) != path_nodes.end()))
+	if(!(std::find(path_nodes.begin(), path_nodes.end(), &node)
+		!= path_nodes.end()))
 	{
 		path_nodes.push_back(&node);
 		return true;
